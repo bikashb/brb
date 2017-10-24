@@ -1,0 +1,26 @@
+.parent-container{
+	background-color: rgba(115,131,191,0.9);
+	margin-left: 1200px;
+	margin-top: 50px;
+	width:450px;
+	height: 460px; 
+	text-align: center;
+	border-radius: 15px;
+}
+.prop-send-button{
+	padding: 15px 25px;
+	border: none;
+	background-color:#005A95;
+	font-size: 18px;
+	color: #fbd490;
+	margin-bottom: 10px;
+	border-radius: 10px;
+	border-bottom-color: 4px solid #556080;
+}
+.prop-send-button:hover{
+	background-color: #fbd490;
+	color:#005A95;
+}
+.parent-container h1{
+	color: #fbd490;
+}
