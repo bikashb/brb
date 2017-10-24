@@ -18,7 +18,7 @@ class Dashboard extends Component {
 		this.setState({AllPlans:this.props.AllPlans})
 	}
 	componentWillReceiveProps(nextProps) {
-		this.setState({AllPlans: nextProps.AllPlans})	
+		this.setState({AllPlans: nextProps.AllPlans})
 	}
 	getAllDetailsUnderPlan=(plan)=>{
 		this.setState({selectedPlan: plan.title});
@@ -53,14 +53,14 @@ class Dashboard extends Component {
 	    .then((response)=>{
 	      console.log(response.date);
 	    });
-	    
+
 	}
 	render () {
 		const { AllPlans, AllExercises, AllWorkouts } = this.state;
 		const myScrollbar_dash1 = {
           height: 500
         };
-         
+
 		return (
 			<div>
 				<div className="rgt_panel_heading" id="myDashboard">
@@ -92,33 +92,30 @@ class Dashboard extends Component {
                                         <thead>
                                             <tr>
                                                <th width="25%">Plan Name</th>
-												<th width="25%">Students details</th>
-												<th width="20%">Days</th>
+												<th width="35%">Start & End Date</th>
+												<th width="10%">Duration</th>
 												<th width="30%">Other Details</th>
                                             </tr>
                                         </thead>
                                     </table>
                                      <div className="dashTblScroll">
-									<table className="table table-striped">								 
-										
+									<table className="table table-striped">
+
 										 <tbody>
 											{AllPlans.map((plans)=>
 											<tr>
 												<td width="25%" className="text-truncate">{plans.title}</td>
-												<td width="25%" className="text-truncate" >
-													<span>--</span>
+												<td width="35%" className="text-truncate" >
+													<span>10 Oct 2017 - 9 Nov 2017</span>
 												</td>
-												<td width="20%" className="valign-middle">
-													<div className="progress">
-														<div className="progress-bar  progress-bar-success" role="progressbar"  style={{width:plans.avg_workout_duration.toString()}} aria-valuenow={plans.avg_workout_duration.toString()} aria-valuemin="0" aria-valuemax="100" title={plans.avg_workout_duration.toString()}>{plans.avg_workout_duration.toString()}</div>
-
-													</div>
+												<td width="10%" className="valign-middle">
+													<span>30</span>
 												</td>
 												<td width="30%" className="text-truncate lstscroll" data-toggle="modal" data-target="#showPlan" ><a href="javascript:void(0)" onClick={()=>this.getAllDetailsUnderPlan(plans)}>Click to view</a></td>
 											</tr>
 											)}
-										 </tbody> 
-										 
+										 </tbody>
+
 									</table> </div>
 								</div>
 							</div>
@@ -130,11 +127,11 @@ class Dashboard extends Component {
 							<div className="card-block pt-3">
 								<h4 className="card-title mt-3">toffee candy brownie</h4>
 								<p className="card-text">Donut toffee candy brownie sDonut toffee candy brownie sDonut toffee candy brownie sDonut toffee candy brownie soufflé macaroon.</p>
-								<button className="btn btn-info" 
+								<button className="btn btn-info"
 									onClick={(e)=>{
 										this.props.show(e, '#coursesAndWorkoutsTab');
 										$(document).ready(function() {
-											['.studentsTab', '.exercisesTab', '.creationTab',
+											['.studentsTab', '.creationTab',
 											 '.plansTab', '.viewAssignedTab'].map((tab) => {
 												if(tab == '.studentsTab') $(tab).addClass('active');
 												else $(tab).removeClass('active');
@@ -170,7 +167,7 @@ class Dashboard extends Component {
 								{AllWorkouts.map((workout)=>
 									(<div>
 										<h1>Workout Title : <span className="blue_txt1">{workout.title}</span></h1>
-										 
+
 										{workout.exercises[0].length?
 											workout.exercises[0].map(exercise=>(
 												<div>
@@ -181,7 +178,7 @@ class Dashboard extends Component {
 												</div>
 											)):<div className="red_txt1">No exercises available </div>
 										}
-									</div>)	
+									</div>)
 								)}
 								</div>
 							</div>

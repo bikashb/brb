@@ -10,14 +10,12 @@ import CourseAndWorkoutTab from '../courseAndWorkoutTab/courseAndWorkoutTab.js'
 import ShowPlan from '../showPlan/showPlan.js';
 import Dashboard from '../dashboard/dashboard.js';
 import ShowStudentList from '../showStudentList/showStudentList.js';
-import ShowFullExercise from '../showExerciseFull/showExerciseFull.js';
 import ShowAssignedStudent from '../showAssignedStudent/showAssignedStudent';
 import CreateALL from '../createAll/createAll.js';
 import Footer from '../footer/footer.js';
 import InstructorProfile from '../InstructorProfile/instructorprofile.js';
 import APIs from '../template/constants.js';
 import GroupMessage from '../GroupMessage/groupmessage.js';
-
 
 class  Home extends Component {
   constructor() {
@@ -32,7 +30,7 @@ class  Home extends Component {
       selectedStudent:[],
       selectedStudentsVideo:[],
       SelectedStudentsUnderExercise:[],
-      listOfplans:[],
+      listOfplans: [],
       listOfWorkouts:[],
       exerciseInPlans:[],
       showView:false,
@@ -73,6 +71,7 @@ class  Home extends Component {
     this.getAllPlans();
     this.getAllWorkouts();
   }
+
   getStudentDetails=()=>{
     axios.post(APIs.GetAllStudents)/*Get list of students*/
     .then((response)=>{
@@ -93,15 +92,61 @@ class  Home extends Component {
      axios.get(APIs.GetAllPlans+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
       this.setState({listOfplans:response.data.plans});
-      console.log(this.state.listOfplans);
     });
   }
 
   getAllWorkouts=()=>{
     axios.get(APIs.GetAllWorkout+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({listOfWorkouts:response.data.workouts});
-      console.log(this.state.listOfWorkouts);
+      this.setState({listOfWorkouts: response.data.workouts});
+    });
+  }
+
+  deleteExercise(index) {
+    let { allVideos } = this.state;
+    allVideos.splice(index, 1);
+    this.setState({
+      allVideos: allVideos
+    });
+  }
+
+  editExercise(exercise, index) {
+    let { allVideos } = this.state;
+    allVideos.splice(index, 1, exercise);
+    this.setState({
+      allVideos: allVideos
+    });
+  }
+
+  deleteWorkout(index) {
+    let { listOfWorkouts } = this.state;
+    listOfWorkouts.splice(index, 1);
+    this.setState({
+      listOfWorkouts: listOfWorkouts
+    });
+  }
+
+  editWorkout(workout, index) {
+    let { listOfWorkouts } = this.state;
+    listOfWorkouts.splice(index, 1, workout);
+    this.setState({
+      listOfWorkouts: listOfWorkouts
+    });
+  }
+
+  deleteCourse(index) {
+    let { listOfplans } = this.state;
+    listOfplans.splice(index, 1);
+    this.setState({
+      listOfplans: listOfplans
+    });
+  }
+
+  editCourse(course, index) {
+    let { listOfplans } = this.state;
+    listOfplans.splice(index, 1, course);
+    this.setState({
+      listOfplans: listOfplans
     });
   }
 
@@ -125,35 +170,35 @@ class  Home extends Component {
   selectStudentChanged = (newStudent) =>{
     this.setState({selectedStudent:newStudent})
   }
+
   selectStudentUnderExerciseChanged = (newData) =>{
     console.log(newData)
     this.setState({SelectedStudentsUnderExercise:newData})
   }
+
   csvFile = (e) =>{
     console.log('csv uploading...');
     e.preventDefault();
     var fileSelect = document.getElementById('myCsvfile');
     console.log(fileSelect.files.length)
-    if(fileSelect.files.length)
-    {
-    var files = fileSelect.files;
-    var formData = new FormData();
-    var file = files[0];
-    formData.append('myCsvfile', file, file.name);
-    console.log('File: ', file);
-    axios.post(APIs.CSVUpload,formData)
-    .then((response)=>{
-      console.log(response.status);
-      if (response.status == 201) {
-        alert("file upload successful");
-        this.getStudentDetails();
-      }
-      if (response.status == 500){
-        alert('response error')
-      }
-    });
-    }else
-    {
+    if(fileSelect.files.length) {
+      var files = fileSelect.files;
+      var formData = new FormData();
+      var file = files[0];
+      formData.append('myCsvfile', file, file.name);
+      console.log('File: ', file);
+      axios.post(APIs.CSVUpload,formData)
+      .then((response)=>{
+        console.log(response.status);
+        if (response.status == 201) {
+          alert("file upload successful");
+          this.getStudentDetails();
+        }
+        if (response.status == 500){
+          alert('response error')
+        }
+      });
+    } else {
       alert("select any .csv file")
     }
   }
@@ -171,82 +216,69 @@ class  Home extends Component {
   }
 
   AssignStudents(){
-    var array = this.state.SelectedStudentsUnderExercise.toString().replace(/,/g , "").trim().split(" ")
-    console.log(array.length)
-    if(array.length>1){
-    var temp=[];
-    for(let i=0; i<array.length; i+=2) {
-        temp.push({'user_id': array[i], exercise_id: array[i+1]})
-    }
-        axios.post(APIs.AssignExerciseToStudent, {list:temp})
-        .then((response)=>{
-            console.log(response)
-            if(response.status == 201){
-                alert(response.data.message);
-                this.setState({SelectedStudentsUnderExercise:[],selectedStudent:[]})
-            }
-        });
-    }
-    else{
+    let array = this.state.SelectedStudentsUnderExercise.toString().replace(/,/g , "").trim().split(" ");
+    if(array.length>1) {
+      let temp = [];
+      for(let i=0; i<array.length; i+=2)
+        temp.push({'user_id': array[i], exercise_id: array[i+1]});
+      axios.post(APIs.AssignExerciseToStudent, {list:temp})
+      .then((response) => {
+          console.log(response)
+          if(response.status == 201) {
+              alert(response.data.message);
+              this.setState({SelectedStudentsUnderExercise:[],selectedStudent:[]})
+          }
+      });
+    } else {
         alert('Select Some students');
     }
-
-
-    console.log(temp);
-
   }
+
   render() {
-        const myScrollbar = {
-          height: 500
-        };
+    const myScrollbar = {
+      height: 500
+    };
     return (
         <div>
            <header className="navbar clearfix cus_Hgt" id="header">
         <div className="container-fluid cus_Hgt">
             <div className="navbar-brand">
                 <a href="index.html">
-                    <img src="images/resoltz-bright-log-text.png" alt=":: ReoltZ ::" className="img-responsive" />
-
+                  <img src="images/resoltz-bright-log-text.png" alt=":: ReoltZ ::" className="img-responsive" />
                 </a>
                 <div id="sidebar-collapse" className="sidebar-collapse btn">
                     <i className="fa fa-bars" data-icon1="fa fa-bars" data-icon2="fa fa-bars"></i>
-
                 </div>
             </div>
             <ul className="nav navbar-nav usrTop pull-right ">
-
-                <li className="dropdown user" id="header-user">
-                    <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-
-                        <span className="username">{localStorage.getItem("username")}  </span>
-                        <i className="fa fa-angle-down"></i>
-                    </a>
-                    <ul className="dropdown-menu">
-                        <li><a data-toggle="modal" data-target="#myProfileModal"><i className="fa fa-user"></i> My Profile</a></li>
-                        <li><a href="/" onClick={this.logout}><i className="fa fa-power-off"></i> Log Out</a></li>
-                    </ul>
-                </li>
+              <li className="dropdown user" id="header-user">
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                  <span className="username">{localStorage.getItem("username")}  </span>
+                  <i className="fa fa-angle-down"></i>
+                </a>
+                <ul className="dropdown-menu">
+                  <li><a data-toggle="modal" data-target="#myProfileModal"><i className="fa fa-user"></i> My Profile</a></li>
+                  <li><a href="/" onClick={this.logout}><i className="fa fa-power-off"></i> Log Out</a></li>
+                </ul>
+              </li>
             </ul>
         </div>
-
     </header>
     <section id="page" className="container-fluid">
         <Sidebar show={this.show}/>
         <div id="main-content">
            <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 dash_img"><img src="images/dash_pic.png" alt="ResoltZ" />
-                    <div className="dash_img_txt">
-                        <h1>Lorem ipsum dol</h1>
-                        <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
-                        <ul>
-                            <li>pretium</li>
-                            <li>arcu</li>
-                            <li>massa</li>
-                        </ul>
-                    </div>
-
+                  <div className="dash_img_txt">
+                    <h1>Lorem ipsum dol</h1>
+                    <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
+                    <ul>
+                      <li>pretium</li>
+                      <li>arcu</li>
+                      <li>massa</li>
+                    </ul>
+                  </div>
                 </div>
-
             </div>
              <div className="row profilBlk" id="myProfile">
                 <div className="col-md-3">
@@ -273,22 +305,6 @@ class  Home extends Component {
                     <div className="col-md-12" id="course-block">
                       <CourseAndWorkoutTab />
                             <div className="tab-content">
-                                <div className="tab-pane exercisesTab" id="a">
-                                {this.state.allVideos.length?
-                                  <div>
-                                    <ShowFullExercise
-                                        AllStudents={this.state.allStudents}
-                                        AllVideos={this.state.allVideos}
-                                        SelectedStudents={this.state.selectedStudent}
-                                        SelectedStudentsUnderExercise={this.state.SelectedStudentsUnderExercise}
-                                        selectStudentUnderExerciseChanged={this.selectStudentUnderExerciseChanged}
-                                    />
-
-                                    <button className="btn btn-info btn_align_Assign_stu" onClick={this.AssignStudents.bind(this)}>
-                                        Assign Students
-                                    </button>
-                                  </div>:<h2 className="nocsv">Currently no exercises available please create exercise !</h2>}
-                                </div>
                                 <div className="tab-pane studentsTab" id="b">
                                   <ReactScrollbar style={myScrollbar}>
                                     <ShowStudentList
@@ -297,38 +313,43 @@ class  Home extends Component {
                                       selectStudentChanged={this.selectStudentChanged}
                                     />
                                   </ReactScrollbar>
-                                    <div className="csv_mas">
-
-                                      <form className="csvClass">
-                                          <label>Upload CSV File</label>
-                                          <input id="myCsvfile" name="myCsvfile"
-                                            encType="multipart/form-data"  type="file"/>
-                                          <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
-                                      </form>
-                                      <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
-                                    </div>
+                                  <div className="csv_mas">
+                                    <form className="csvClass">
+                                      <label>Upload CSV File</label>
+                                      <input id="myCsvfile" name="myCsvfile"
+                                        encType="multipart/form-data"  type="file"/>
+                                      <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
+                                    </form>
+                                    <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
+                                  </div>
                                 </div>
                                 <div className="tab-pane viewAssignedTab" id="c">
-
-                                    <ShowAssignedStudent
-                                        AllExercise={this.state.allVideos}
-                                        show={this.show}
-                                    />
+                                  <ShowAssignedStudent
+                                    AllExercise={this.state.allVideos}
+                                    show={this.show}
+                                  />
                                 </div>
                                 <div className="tab-pane plansTab" id="d">
-                                    <ShowPlan
-                                        AllPlans={this.state.listOfplans}
-                                        AllStudents={this.state.allStudents}
-                                    />
+                                  <ShowPlan
+                                      AllPlans={this.state.listOfplans}
+                                      AllStudents={this.state.allStudents}
+                                  />
                                 </div>
                                 <div className="tab-pane creationTab" id="e">
-                                    <CreateALL
-                                        AllExercises={this.state.allVideos}
-                                        AllWorkouts={this.state.listOfWorkouts}
-                                        callAllExercises={this.getAllExercise}
-                                        callAllWorkouts={this.getAllWorkouts}
-                                        callAllPlans={this.getAllPlans}
-                                    />
+                                  <CreateALL
+                                    AllExercises={this.state.allVideos}
+                                    AllWorkouts={this.state.listOfWorkouts}
+                                    AllPlans={this.state.listOfplans}
+                                    callAllExercises={this.getAllExercise}
+                                    callAllWorkouts={this.getAllWorkouts}
+                                    callAllPlans={this.getAllPlans}
+                                    deleteExercise={this.deleteExercise.bind(this)}
+                                    editExercise={this.editExercise.bind(this)}
+                                    deleteWorkout={this.deleteWorkout.bind(this)}
+                                    editWorkout={this.editWorkout.bind(this)}
+                                    deleteCourse={this.deleteCourse.bind(this)}
+                                    editCourse={this.editCourse.bind(this)}
+                                  />
                                 </div>
                             </div>
                         </div>:null}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 import ShowWorkout from '../showWorkout/showWorkout.js';
+import PlanList from './planList.js'
 import APIs from '../template/constants.js';
 
 export default class Plan extends Component {
@@ -13,8 +14,45 @@ export default class Plan extends Component {
       duration: '',
       description: '',
       intensity: '',
-      selectedWorkout: []
+      selectedWorkout: [],
+      currentCourse: {},
+      currentIndex: -1
     };
+  }
+
+  setupEditCourse(course, index) {
+    this.setState({
+      mode: 'update',
+      title: course.title,
+      duration: course.duration,
+      description: course.description,
+      intensity: course.intensity,
+      selectedWorkout: course.workouts
+    });
+  }
+
+  updateCourse(e) {
+    e.preventDefault();
+    let { currentIndex, currentCourse } = this.state;
+    currentCourse.title = this.state.title;
+    currentCourse.duration= this.state.duration;
+    currentCourse.description= this.state.description;
+    currentCourse.intensity = this.state.intensity;
+    this.props.editCourse(currentCourse, currentIndex);
+    this.resetFields();
+  }
+
+  resetFields() {
+    this.setState({
+      mode: 'create',
+      title: '',
+      duration: '',
+      description: '',
+      intensity: '',
+      selectedWorkout: [],
+      currentCourse: {},
+      currentIndex: -1
+    });
   }
 
   /*Create Plan Starts*/
@@ -57,6 +95,29 @@ export default class Plan extends Component {
           this.props.AllWorkouts.length ?
           <div>
             <div  className="col-md-5 col-lg-5 col-xs-12 createCourse create-plan">
+              <div>
+                <span>
+                  <a onClick={(e) => this.resetFields()}
+                    style={
+                      this.state.mode === 'create' ?
+                      {border: '2px solid blue', padding: '2px'} :
+                      {}
+                    }>
+                    Create
+                  </a>
+                </span>
+                <span>{' '}</span>
+                <span>
+                  <a data-target='#plansViewModal' data-toggle='modal'
+                    style={
+                      this.state.mode !== 'create' ?
+                      {border: '2px solid blue', padding: '2px' } :
+                      {}
+                    }>
+                    View/Update
+                  </a>
+                </span>
+              </div>
               <form role="form" >
                 <div className="form-group">
                   <label>Title</label>
@@ -83,10 +144,17 @@ export default class Plan extends Component {
                     value={this.state.intensity} className="form-control"
                     onChange={(e)=>this.setState({intensity: e.target.value})} />
                 </div>
-                <button className="btn btn-info"
-                  onClick={(e)=>this.createPlan(e)}>
-                  Create Plan
-                </button>
+                {
+                  this.state.mode === 'create' ?
+                  <button className="btn btn-info" type="submit"
+                    onClick={(e)=>this.createCourse(e)}>
+                    Create Course
+                  </button> :
+                  <button className="btn btn-info" type="submit"
+                    onClick={(e)=>this.updateCourse(e)}>
+                    Update Course
+                  </button>
+                }
               </form>
             </div>
             <ul className="wrkoutulli_1">
@@ -103,6 +171,24 @@ export default class Plan extends Component {
                   )}
               </CheckboxGroup>
             </ul>
+            <div id="plansViewModal" className="modal fade" role="dialog">
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 className="modal-title">All Courses</h4>
+                  </div>
+                  <div className="modal-body">
+                    <PlanList AllPlans={this.props.AllPlans}
+                      setupEditCourse={this.setupEditCourse.bind(this)}
+                      deleteCourse={this.props.deleteCourse.bind(this)}
+                      />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div> :
           <h2 className="nocsv">Currently no workouts available please create workout !</h2>
         }

@@ -9,7 +9,8 @@ export default class CreateAll extends Component {
 		this.state = {
 			currentTab: 'create-exercise',
 			AllWorkouts: [],
-			AllExercises: []
+			AllExercises: [],
+			AllPlans: []
 		};
 		this.getCurrentTab = this.getCurrentTab.bind(this);
 	}
@@ -17,40 +18,52 @@ export default class CreateAll extends Component {
 	componentWillMount() {
 		this.setState({
 			AllExercises: this.props.AllExercises,
-			AllWorkouts: this.props.AllWorkouts
+			AllWorkouts: this.props.AllWorkouts,
+			AllPlans: this.props.AllPlans
 		});
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			AllExercises: nextProps.AllExercises,
-			AllWorkouts: nextProps.AllWorkouts
+			AllWorkouts: nextProps.AllWorkouts,
+			AllPlans: nextProps.AllPlans
 		});
 	}
 
 	getCurrentTab() {
-		const { currentTab, AllExercises, AllWorkouts } = this.state;
+		const { currentTab, AllExercises, AllWorkouts, AllPlans } = this.state;
 		switch(currentTab) {
 			case 'create-exercise':
 				return (
 					<Exercise
 						AllExercises={AllExercises}
+						editExercise={this.props.editExercise}
+						deleteExercise={this.props.deleteExercise}
 						callAllExercises={this.props.callAllExercises} />
 				);
 			case 'create-plan':
 				return (
 					<Plan AllWorkouts={AllWorkouts}
+						AllPlans={AllPlans}
+						editCourse={this.props.editCourse}
+						deleteCourse={this.props.deleteCourse}
 						callAllPlans={this.props.callAllPlans} />
 				);
 			case 'create-workout':
 				return (
 					<Workout AllExercises={AllExercises}
+						AllWorkouts={AllWorkouts}
+						editWorkout={this.props.editWorkout}
+						deleteWorkout={this.props.deleteWorkout}
 						callAllWorkouts={this.props.callAllWorkouts} />
 				);
 			default:
 				return (
 					<Exercise
 						AllExercises={AllExercises}
+						editExercise={this.props.editExercise}
+						deleteExercise={this.props.deleteExercise}
 						callAllExercises={this.props.callAllExercises} />
 				);
 		}
@@ -80,15 +93,6 @@ export default class CreateAll extends Component {
 					</h4>&nbsp;
       	</div>
 				{this.getCurrentTab()}
-		    <div className="col-md-6 col-lg-6 col-xs-12 rgt_frm_img1">
-					<img src="images/create_exercise_img.png" />
-					<div className="beaches-banner-content">
-						<h4>Do you love Exercise?</h4>
-						<p>
-							Whedamet, consectetur adipiscing elit. Duis pharetra varius quam sit amet experience in the Caribbean for over 15 years!.
-						</p>
-					</div>
-				</div>
 			</div>
 		)
 	}

@@ -17,17 +17,12 @@ class CourseAndWorkoutTab extends Component {
 					<ul className="nav nav-tabs">
 						<li className="creationTab">
 							<a href="#e" data-toggle="tab" className="create_tab">
-								<span>Create</span>
+								<span>Create/View</span>
 							</a>
 						</li>
 						<li className="studentsTab">
 							<a href="#b" data-toggle="tab" className="student_tab">
 								<span>Students</span>
-							</a>
-						</li>
-						<li className="exercisesTab">
-							<a href="#a" data-toggle="tab" className="exercise_tab">
-								<span>Exercise</span>
 							</a>
 						</li>
 						<li className="plansTab">

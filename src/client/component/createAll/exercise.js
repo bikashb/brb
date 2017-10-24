@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import APIs from '../template/constants.js';
-import ExercisesViewModal from '../showExerciseFull/ExercisesViewModal.js';
+import ExerciseList from './exerciseList.js';
 
 export default class Exercise extends Component {
   constructor() {
@@ -12,8 +12,11 @@ export default class Exercise extends Component {
       type: '',
       intensity: '',
       description: '',
-      video_url: ''
+      video_url: '',
+      currentExercise: {},
+      currentIndex: -1
     };
+    this.resetFields = this.resetFields.bind(this);
   }
 
 	/*Create Exercise Starts*/
@@ -60,9 +63,11 @@ export default class Exercise extends Component {
 	}
 	/*Create Exercise Ends*/
 
-  setupEditExercise(exercise) {
+  setupEditExercise(exercise, index) {
     this.setState({
       mode: 'update',
+      currentExercise: exercise,
+      currentIndex: index,
       title: exercise.title,
       type: exercise.type,
       description: exercise.description,
@@ -72,22 +77,51 @@ export default class Exercise extends Component {
 
   updateExercise(e) {
     e.preventDefault();
-    console.log('uploading...');
+    let { currentIndex, currentExercise } = this.state;
+    currentExercise.title = this.state.title;
+    currentExercise.type = this.state.type;
+    currentExercise.description= this.state.description;
+    currentExercise.intensity = this.state.intensity;
+    this.props.editExercise(currentExercise, currentIndex);
+    this.resetFields();
+  }
+
+  resetFields() {
+    this.setState({
+      mode: 'create',
+      title: '',
+      type: '',
+      intensity: '',
+      description: '',
+      video_url: '',
+      currentExercise: {},
+      currentIndex: -1
+    });
   }
 
   render() {
     return (
-      <div  className="col-md-5 col-lg-5 col-xs-12 createCourse create-exercise">
+      <div><div className="col-md-5 col-lg-5 col-xs-12 createCourse create-exercise">
         <div>
           <span>
-            <a onChange={(e) => this.setState({mode: 'create'})}>
+            <a onClick={(e) => this.resetFields()}
+              style={
+                this.state.mode === 'create' ?
+                {border: '2px solid blue', padding: '2px'} :
+                {}
+              }>
               Create
             </a>
           </span>
           <span>{' '}</span>
           <span>
-            <a data-toggle="modal" data-target="#exercisesViewModal">
-              View
+            <a data-toggle="modal" data-target="#exercisesViewModal"
+              style={
+                this.state.mode !== 'create' ?
+                {border: '2px solid blue', padding: '2px' } :
+                {}
+              }>
+              View/Update
             </a>
           </span>
         </div>
@@ -139,8 +173,9 @@ export default class Exercise extends Component {
                 <h4 className="modal-title">All Exercises</h4>
               </div>
               <div className="modal-body">
-                <ExercisesViewModal
+                <ExerciseList
                   AllExercises={this.props.AllExercises}
+                  deleteExercise={this.props.deleteExercise}
                   setupEditExercise={this.setupEditExercise.bind(this)}
                   />
               </div>
@@ -148,6 +183,15 @@ export default class Exercise extends Component {
           </div>
         </div>
       </div>
+      <div className="col-md-6 col-lg-6 col-xs-12 rgt_frm_img1">
+        <img src="images/create_exercise_img.png" />
+        <div className="beaches-banner-content">
+          <h4>Do you love Exercise?</h4>
+          <p>
+            Whedamet, consectetur adipiscing elit. Duis pharetra varius quam sit amet experience in the Caribbean for over 15 years!.
+          </p>
+        </div>
+      </div></div>
     );
   }
 }

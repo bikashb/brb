@@ -13,7 +13,7 @@ class Sidebar extends Component {
 	}
 
 	updateActiveTab(activeTab) {
-		let tabs = ['.creationTab', '.studentsTab', '.exercisesTab', '.plansTab', '.viewAssignedTab'];
+		let tabs = ['.creationTab', '.studentsTab', '.plansTab', '.viewAssignedTab'];
 		$(document).ready(function() {
 			tabs.map((tab) => {
 				if(tab == activeTab) $(tab).addClass('active');
@@ -60,14 +60,6 @@ class Sidebar extends Component {
 										this.props.show(e, '#coursesAndWorkoutsTab');
 									}}>
 										<span className="sub-menu-text">Student List</span>
-									</a>
-								</li>
-								<li>
-									<a className="" onClick={(e)=>{
-										this.updateActiveTab('.exercisesTab');
-										this.props.show(e, '#coursesAndWorkoutsTab');
-									}}>
-										<span className="sub-menu-text">All Exercises</span>
 									</a>
 								</li>
 								<li>
