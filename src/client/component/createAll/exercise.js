@@ -102,13 +102,12 @@ export default class Exercise extends Component {
   render() {
     return (
       <div><div className="col-md-5 col-lg-5 col-xs-12 createCourse create-exercise">
-        <div>
+        <div className="create_up_btnMas">
           <span>
             <a onClick={(e) => this.resetFields()}
-              style={
+              className={
                 this.state.mode === 'create' ?
-                {border: '2px solid blue', padding: '2px'} :
-                {}
+                'createExerBtn' : ''
               }>
               Create
             </a>
@@ -116,10 +115,9 @@ export default class Exercise extends Component {
           <span>{' '}</span>
           <span>
             <a data-toggle="modal" data-target="#exercisesViewModal"
-              style={
+              className={
                 this.state.mode !== 'create' ?
-                {border: '2px solid blue', padding: '2px' } :
-                {}
+                'createExerBtn' : ''
               }>
               View/Update
             </a>
@@ -165,7 +163,7 @@ export default class Exercise extends Component {
         </form>
         <div id="exercisesViewModal" className="modal fade" role="dialog">
           <div className="modal-dialog" role="document">
-            <div className="modal-content">
+            <div className="modal-content flt_left">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>

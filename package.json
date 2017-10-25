@@ -1,5 +1,5 @@
 {
-  "name": "restlotz",
+  "name": "resoltz",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "pg": "^7.3.0",
     "react-checkbox-group": "^3.3.1",
     "react-content-loader": "^1.4.1",
+    "react-paginate": "^5.0.0",
     "react-scripts": "^1.0.14",
     "react-scrollbar": "^0.5.1",
     "react-scrollbar-js": "^1.0.1"

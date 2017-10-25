@@ -10,10 +10,7 @@ export default class InstructorProfile extends Component {
     this.state = {
       name: {value: '', isValid: true, message: ''},
       imagePath: {value: '', isValid: true, message: ''},
-      description: {value: '', isValid: true, message: ''},
-      courseCount: {value: '', isValid: true, message: ''},
-      visibleToStudents: {value: false},
-      visibleToInstructors: {value: false}
+      description: {value: '', isValid: true, message: ''}
     };
     this.onChange = this.onChange.bind(this);
     this.getProfile = this.getProfile.bind(this)
@@ -28,13 +25,9 @@ export default class InstructorProfile extends Component {
 
   onChange(e) {
     let { state } = this;
-    if(e.target.type == 'checkbox') {
-      state[e.target.name].value = e.target.checked;
-    } else {
-      state[e.target.name].value = e.target.value;
-      state[e.target.name].isValid = true;
-      state[e.target.name].message = '';
-    }
+    state[e.target.name].value = e.target.value;
+    state[e.target.name].isValid = true;
+    state[e.target.name].message = '';
     this.setState(state,
        () => {console.log('state modified: ', state);});
   }
@@ -47,10 +40,7 @@ export default class InstructorProfile extends Component {
       let profile = {
         name: response.data.data.user_name,
         imagePath: response.data.data.profile_img_url,
-        description: response.data.data.description,
-        courseCount: response.data.data.course_count,
-        visibleToStudents: response.data.data.visible_to_student,
-        visibleToInstructors: response.data.data.visible_to_instructor
+        description: response.data.data.description
       };
       let { state, props } = this;
       Object.keys(profile).map(key => {
@@ -90,10 +80,7 @@ export default class InstructorProfile extends Component {
             let profile = {
               user_name: state.name.value,
               image_url: response.data.url,
-              description: state.description.value,
-              course_count: state.courseCount.value,
-              visible_to_student: state.visibleToStudents.value,
-              visible_to_instructor: state.visibleToStudents.value
+              description: state.description.value
             };
             console.log('profile ready for updation: ', profile);
             axios.put(APIs.UpdateProfile, profile)
@@ -122,10 +109,7 @@ export default class InstructorProfile extends Component {
         let profile = {
           user_name: state.name.value,
           image_url: '',
-          description: state.description.value,
-          course_count: state.courseCount.value,
-          visible_to_student: state.visibleToStudents.value,
-          visible_to_instructor: state.visibleToStudents.value
+          description: state.description.value
         };
         console.log('profile ready for updation: ', profile);
         axios.put(APIs.UpdateProfile, profile)
@@ -155,12 +139,6 @@ export default class InstructorProfile extends Component {
     if (validator.isEmpty(state.description.value)) {
       state.description.isValid = false;
       state.description.message = 'This is a required field.';
-      this.setState(state);
-      return false;
-    }
-    if (state.courseCount.value < 0) {
-      state.courseCount.isValid = false;
-      state.courseCount.message = 'This is a required field.';
       this.setState(state);
       return false;
     }
@@ -201,36 +179,15 @@ export default class InstructorProfile extends Component {
                 </div>
                 <div className="form-group">
                   <label>About Me</label>
-                  <textarea name="description"  
+                  <textarea name="description" rows="10"
                     value={state.description.value}
                     onChange={this.onChange}>
                   </textarea>
                   <span className="help-block">{state.description.message}</span>
                 </div>
                 <div className="form-group">
-                  <label>Course Count</label>
-                  <input type="number" placeholder="Course Count"
-                     name="courseCount" id="courseCount"
-                     value={state.courseCount.value}
-                     onChange={this.onChange}
-                     />
-                  <span className="help-block">{state.courseCount.message}</span>
-                </div>
-                <div className="form-group">
-                  <label>Privacy Settings</label>&nbsp;&nbsp;
-                  <div>
-                    <input type="checkbox" name="visibleToStudents"
-                      checked={state.visibleToStudents.value}
-                      onChange={this.onChange}
-                    /> Visible To Students&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="checkbox" name="visibleToInstructors"
-                      checked={state.visibleToInstructors.value}
-                      onChange={this.onChange}
-                    /> Visible To Other Instructors&nbsp;&nbsp;
-                  </div>
-                </div>
-                <div className="form-group">
                   <label>Display Pic</label>
+                  <span>{'  '}</span>
                   <label>
                     <input type="file" name="imagePath"
                       onChange={this.onChange}

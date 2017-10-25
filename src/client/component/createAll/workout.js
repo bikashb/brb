@@ -91,13 +91,12 @@ export default class Workout extends Component {
           this.props.AllExercises.length ?
           <div>
             <div className="col-md-5 col-lg-5 col-xs-12 createCourse create-workout">
-              <div>
+              <div className="create_up_btnMas">
                 <span>
                   <a onClick={(e) => this.resetFields()}
-                    style={
+                    className={
                       this.state.mode === 'create' ?
-                      {border: '2px solid blue', padding: '2px'} :
-                      {}
+                      'createExerBtn' : ''
                     }>
                     Create
                   </a>
@@ -105,10 +104,9 @@ export default class Workout extends Component {
                 <span>{' '}</span>
                 <span>
                   <a data-target='#workoutsViewModal' data-toggle='modal'
-                    style={
+                    className={
                       this.state.mode !== 'create' ?
-                      {border: '2px solid blue', padding: '2px' } :
-                      {}
+                      'createExerBtn' : ''
                     }>
                     View/Update
                   </a>

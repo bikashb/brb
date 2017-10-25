@@ -2,7 +2,6 @@ const  knex =  require('../../services/dbservice.js');
 var controller =  {};
 
 controller.createExercise =  function(req,res){
-
     var exerciseData={};
     exerciseData.description=req.body.description;
     exerciseData.duration=req.body.duration;
@@ -13,14 +12,13 @@ controller.createExercise =  function(req,res){
     exerciseData.user_id=req.body.id;
     exerciseData.date_created=new Date();
 
-
-     knex('exercise').insert(exerciseData).then(function(value){
-         res.status(201).json({message:'success'});
-       })
-       .catch(function(err){
-         console.log(err);
-         res.status(500).json({message:'unsuccessful'});
-       });
+   knex('exercise').insert(exerciseData).then(function(value){
+       res.status(201).json({message:'success'});
+     })
+     .catch(function(err){
+       console.log(err);
+       res.status(500).json({message:'unsuccessful'});
+     });
 };
 
 controller.editExercise =  function(req,res){
@@ -28,7 +26,6 @@ controller.editExercise =  function(req,res){
     var exerciseData={};
     exerciseData=req.body;
     exerciseData.utc_last_updated=new Date();
-
 
      knex('exercise').where('id','=',req.body.id).update(exerciseData).then(function(value){
          res.status(201).json({message:'success'});
@@ -55,10 +52,8 @@ controller.getExerciseById=function(req,res){
 controller.fetchExercisesByWorkout=function(req,res){
       var exerciseList=[];
       knex('workout_to_exercise').where({'workout_id':req.params.id}).select('exercise_id').then(function(list){
-        if(list.length>0){
-
+        if(list.length>0) {
           var exercises=list.map((data)=>{
-
             return knex('exercise').where({"id":data.exercise_id}).select('*').then(function(single){
               if(single[0])
               exerciseList.push(single[0]);
@@ -67,13 +62,11 @@ controller.fetchExercisesByWorkout=function(req,res){
               console.log(err);
               res.status(500).send('unsuccessful');
             })
-
           })
           Promise.all(exercises).then(function(results){
             res.status(200).json({list:exerciseList})
           })
-        }
-        else {
+        } else {
           res.status(500).json({message:'no data'});
         }
       })
@@ -83,6 +76,16 @@ controller.fetchExercisesByWorkout=function(req,res){
       })
 }
 
-
+controller.deleteexercise = function(req, res) {
+  knex('exercise')
+  .where({id:req.params.id})
+  .del().then(function(value) {
+    knex('workout_to_exercise')
+    .where({exercise_id:req.params.id})
+    .del().then(function(value) {
+      res.json({message:"success"});
+    })
+  })
+}
 
 exports =  module.exports =  controller;

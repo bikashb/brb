@@ -82,36 +82,41 @@ class Dashboard extends Component {
 							</div>
 							<div className="card-body">
 								<div className="table-responsive">
-									<div className="dash_consolidate_mas">
-										<a href="#" className="dash_consolidate disable1"><input type="radio" disabled /> Exercise</a>
-										<a href="#" className="dash_consolidate"><input type="radio" checked  /> Course</a>
+									<div className="dash_consolidate_mas">										 
+										<a href="#" className="dash_consolidate">Ongoing Course List</a>
 										<span>Quick view to Exercise details &amp;  Course assignment</span>
 										<img src="images/preview.png" />
 									</div>
-									<table className="table table-striped">
+									<table className="table table-striped fnt13">
                                         <thead>
                                             <tr>
                                                <th width="25%">Course Name</th>
-												<th width="35%">Start & End Date</th>
-												<th width="10%">Duration</th>
-												<th width="30%">Other Details</th>
+												<th width="25%">Start & End Date</th>
+												<th width="15%">Duration</th>
+												<th width="20%">Other Details</th>
+												<th width="15%">Status</th>
                                             </tr>
                                         </thead>
                                     </table>
                                      <div className="dashTblScroll">
-									<table className="table table-striped">
+									<table className="table table-striped fnt13">
 
 										 <tbody>
 											{AllPlans.map((plans)=>
 											<tr>
 												<td width="25%" className="text-truncate">{plans.title}</td>
-												<td width="35%" className="text-truncate" >
-													<span>10 Oct 2017 - 9 Nov 2017</span>
+												<td width="25%" className="text-truncate" >
+													<span className="stDate">10 Oct 17</span> <span className="enDate"> - 9 Nov 17</span>
 												</td>
-												<td width="10%" className="valign-middle">
+												<td width="15%" className="valign-middle">
 													<span>30</span>
 												</td>
-												<td width="30%" className="text-truncate lstscroll" data-toggle="modal" data-target="#showPlan" ><a href="javascript:void(0)" onClick={()=>this.getAllDetailsUnderPlan(plans)}>Click to view</a></td>
+												<td width="20%" className="text-truncate lstscroll" data-toggle="modal" data-target="#showPlan" ><a href="javascript:void(0)" onClick={()=>this.getAllDetailsUnderPlan(plans)}>Click to view</a></td>
+												<td width="15%" className="valign-middle">
+													<div className="progress">
+														<div className="progress-bar  progress-bar-success" role="progressbar"  style={{width:plans.avg_workout_duration.toString()}} aria-valuenow={plans.avg_workout_duration.toString()} aria-valuemin="0" aria-valuemax="100" title={plans.avg_workout_duration.toString()}>{plans.avg_workout_duration.toString()}</div>
+													</div>
+												</td>
 											</tr>
 											)}
 										 </tbody>

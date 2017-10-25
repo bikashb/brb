@@ -492,10 +492,12 @@
  .createItems1 {
      font-family: "HelveticaNeueLT Com 35 Th";
      font-size: 34px;
-     color: #419dc7;
+     color: #0067b8;
      margin: 0 30px 30px 0;
      padding: 0 0 0 0;
      display: inline-block;
+     width: 30%;
+    border-bottom: #0067b8 1px solid; cursor: pointer;
  }
  
  .profil_align .list-group-item img {
@@ -1015,8 +1017,15 @@
      float: left;
      width: 24%;
  }
+ .tab-pane .list-group-item div.videoAlign1a {
+     float: left;
+     width: 44%;
+ }
  
  .tab-pane .list-group-item div.videoAlign1 video {
+     width: 100%;
+ }
+ .tab-pane .list-group-item div.videoAlign1a video {
      width: 100%;
  }
  
@@ -1052,6 +1061,12 @@
  .card-text:last-child {
      margin-bottom: 0;
  }
+ .card-text{
+     clear: both;
+ }
+ .editBtnMas1{float: right;margin: 5px 0px 0 0;}
+ .editBtnMas1 a {text-decoration: none; margin-right: 10px; border: 1px solid #fff; padding:5px; cursor: pointer;}
+  .editBtnMas1 a:hover{text-decoration: none; margin-right: 10px; border: 1px solid #efefef; padding:5px;cursor: pointer;}
  
  .card-block .list-group {
      padding-left: 0;
@@ -1339,7 +1354,7 @@
  }
  
  .createCourse label {
-     color: #338dd0;
+     color: #0067B8;
      font-size: 16px;
      font-weight: 100;
  }
@@ -1859,13 +1874,13 @@
   a.dash_consolidate{ 
      margin: 0 20px 0 0; 
      font-family: "Helvetica LT Std";
-     font-size: 22px;
+     font-size: 26px;
      color: #ed8c4a; text-decoration:none;
   }
   a.dash_consolidate:hover{ 
      margin: 0 20px 0 0; 
      font-family: "Helvetica LT Std";
-     font-size: 22px;
+     font-size: 26px;
      color: #ed8c4a;
      text-decoration:none;
   }
@@ -1912,6 +1927,12 @@ color: #f22c38;
 .wid_70Per{
 width: 70%;
 }
+.wid_60Per{
+width: 60%;
+}
+.wid_50Per{
+width: 50%;
+}
  .cls_btn{
      position: absolute;
 right: -10px;
@@ -1956,6 +1977,68 @@ border: #262626 1px solid;
 padding: 6px 16px 6px 16px;
 margin: 0 20px 0 0;
  }
+  .fnt13{
+     font-size: 13px;
+ }
+ .fnt13 span{padding: 0 0 0 5px;}
+ .stDate{ float: left;color: #ed8c4a; }
+ .enDate{ float: left;color: #262626; }
+ .description1{
+     position: absolute;
+     top: 3px;
+     left: 22%;
+     color:#262626;
+     font-size: 14px;
+     border-left: #d6d5d5 1px solid;
+    padding: 0 50px 0 10px;
+ }
+ .description1 span{ font-size: 18px;}
+ .greyTxt{
+     color: #f2f2f2;
+     border-bottom: #f2f2f2 1px solid !important;
+ }
+ .create-workout, .create-plan{
+     padding:0;
+     margin: 0 0 0 6px;
+ }
+  .create-exercise{
+     padding:0;
+     margin: 0 0 0 12px;
+ }
+ .createExerBtn{
+    font-size: 16px;
+    background: #efefef;
+    padding: 5px 15px 5px 15px;
+    border-bottom: #0067b8 1px solid;
+    margin: 0 15px 0 0;       
+ }
+ .create_up_btnMas{
+     padding: 0px 0px 30px 0;
+ }
+  
+ .modal-dialog{
+     width: 70%;
+ }
+.pagination{
+     width:100%;
+     cursor:pointer;
+}
+.naivga1{
+     width: 50%;
+     float: left;
+}
+.naivga1a{
+   width: 50%;
+    float: left;
+    margin: 17px 0 0 0;
+    position: relative;
+}
+.naivga1a a{
+    position: absolute;
+    top: 14px;
+    left: 10px;
+    color: #c30707;
+}
  /**/
  /*====================================================*/
  /*====================================================*/

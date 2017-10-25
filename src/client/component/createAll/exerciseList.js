@@ -10,24 +10,29 @@ export default class ExerciseList extends Component {
 						this.props.AllExercises.map((exercise, i) =>
 						<li className="list-group-item  videomainLi odd temp2" key={i}>
 							<div className="indiviVideo">
-								<div className="videoAlign1">
+								<div className="videoAlign1a">
 									<video controls>
 										<source src={exercise.streaming_uri} type="video/mp4"/>
 									</video>
 								</div>
-								<button data-dismiss='modal'
-									onClick={(e)=>{this.props.setupEditExercise(exercise, i)}}>
-									Edit
-								</button>
-								<button
-									onClick={(e)=>{this.props.deleteExercise(i)}}>
-									Delete
-								</button>
+								
 							</div>
-							<div className="card wid_70Per">
+							<div className="card wid_50Per">
 								<div className="card-body">
 									<div className="card-block">
-										<h4 className="card-title">Video {i+1} [ <span>{exercise.title}</span> ]</h4><br/>
+									
+										<h4 className="card-title">Video {i+1} [ <span>{exercise.title}</span> ]</h4>
+										<div className="editBtnMas1">
+											<a data-dismiss='modal' className="glyphicon glyphicon-pencil"
+													onClick={(e)=>{this.props.setupEditExercise(exercise, i)}}>
+													
+												</a>&nbsp;
+												<a  className="glyphicon glyphicon-trash"
+													onClick={(e)=>{this.props.deleteExercise(i)}}>
+													
+												</a>
+										</div>	
+										<br/>
 										<p className="card-text">
 											{exercise.description}
 										</p>
