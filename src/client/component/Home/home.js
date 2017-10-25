@@ -306,13 +306,12 @@ class  Home extends Component {
                       <CourseAndWorkoutTab />
                             <div className="tab-content">
                                 <div className="tab-pane studentsTab" id="b">
-                                  <ReactScrollbar style={myScrollbar}>
-                                    <ShowStudentList
-                                      AllStudents={this.state.allStudents}
-                                      selectedStudent={this.state.selectedStudent}
-                                      selectStudentChanged={this.selectStudentChanged}
-                                    />
-                                  </ReactScrollbar>
+                                  <ShowStudentList
+                                    AllStudents={this.state.allStudents}
+                                    selectedStudent={this.state.selectedStudent}
+                                    selectStudentChanged={this.selectStudentChanged}
+                                    dataPerPage={5}
+                                  />
                                   <div className="csv_mas">
                                     <form className="csvClass">
                                       <label>Upload CSV File</label>
