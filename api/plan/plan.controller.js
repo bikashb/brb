@@ -47,4 +47,20 @@ controller.assignStudents = function(req, res) {
     }
 };
 
+controller.deleteplan = function(req, res) {
+  knex('course')
+  .where({id: req.params.id})
+  .del().then(function(value) {
+    knex('course_to_workout')
+    .where({course_id: req.params.id})
+    .del().then(function(value) {
+      knex('course_to_user')
+      .where({course_id:req.params.id})
+      .del().then(function(value) {
+        res.json({message: 'success'});
+      })
+    })
+  })
+}
+
 exports = module.exports = controller;

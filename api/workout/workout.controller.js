@@ -83,8 +83,7 @@ controller.editWorkout =  function(req,res){
     workoutData.utc_last_updated=new Date();
 
 
-     knex('workout').where('id','=',req.body.workout.id).update(workoutData).then(function(value){
-
+     knex('workout').where('id','=',req.body.workout.id).update(workoutData).then(function(value) {
         if(req.body.list.length>0&&value==1){
           var finalList=req.body.list.map((data)=>{
             var obj={};
@@ -107,8 +106,7 @@ controller.editWorkout =  function(req,res){
               console.log(err);
               res.status(500).json({message:'unsuccessful'});
             });
-        }
-        else {
+        } else {
           res.status(500).json({message:'Exercise List Empty'});
         }
        })
@@ -117,5 +115,21 @@ controller.editWorkout =  function(req,res){
          res.status(500).json({message:'unsuccessful'});
        });
 };
+
+controller.deleteworkout = function(req, res) {
+  knex('workout')
+  .where({id:req.params.id})
+  .del().then(function(value) {
+    knex('workout_to_exercise')
+    .where({workout_id: req.params.id})
+    .del().then(function(value) {
+      knex('course_to_workout')
+      .where({workout_id: req.params.id})
+      .del().then(function(value) {
+        res.json({message: 'success'});
+      })
+    })
+  })
+}
 
 exports = module.exports = controller;
