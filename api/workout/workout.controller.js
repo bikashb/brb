@@ -75,5 +75,47 @@ controller.createWorkout =  function(req,res){
        });
 };
 
+controller.editWorkout =  function(req,res){
+
+    var workoutData={};
+    workoutData=req.body.workout;
+    console.log(workoutData);
+    workoutData.utc_last_updated=new Date();
+
+
+     knex('workout').where('id','=',req.body.workout.id).update(workoutData).then(function(value){
+
+        if(req.body.list.length>0&&value==1){
+          var finalList=req.body.list.map((data)=>{
+            var obj={};
+            obj.workout_id=req.body.workout.id;
+            obj.exercise_id=data;
+            return obj;
+          })
+          knex('workout_to_exercise').where('workout_id','=',req.body.workout.id).del().then(function(value){
+            console.log(value);
+          })
+          .catch(function(err){
+            console.log(err);
+            res.status(500).json({message:'unsuccessful'});
+          });
+          knex.batchInsert('workout_to_exercise',finalList,req.body.list.length).then(function(value){
+             console.log(value);
+             res.status(201).json({message:'success'});
+            })
+            .catch(function(err){
+              console.log(err);
+              res.status(500).json({message:'unsuccessful'});
+            });
+        }
+        else {
+          res.status(500).json({message:'Exercise List Empty'});
+        }
+       })
+       .catch(function(err){
+         console.log(err);
+         res.status(500).json({message:'unsuccessful'});
+       });
+};
 
 exports = module.exports = controller;
