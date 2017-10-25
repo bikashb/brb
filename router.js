@@ -3,6 +3,7 @@ router.use('/signin', require('./api/signin/signin.router'));
 router.use('/signup', require('./api/signup/signup.router'));
 router.use('/exercise',require('./api/exercise/exercise.router'));
 router.use('/plan',require('./api/plan/plan.router'));
+router.use('/course',require('./api/course/course.router'));
 router.use('/workout',require('./api/workout/workout.router'));
 router.use('/video',require('./api/videoservice/video.router'));
 router.use('/subscribe',require('./api/subscribe/subscription.router'));
