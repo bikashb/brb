@@ -73,25 +73,19 @@ export default class CreateAll extends Component {
 		return (
 			<div>
 				<div className="col-md-8 col-lg-12">
-	        <h4 className="createItems1">
-						<input type="radio" name="create-show"
-							checked={this.state.currentTab === 'create-exercise'}
-							onChange={(e) => this.setState({currentTab: 'create-exercise'})} />
-						 Exercise
-					</h4>&nbsp;&nbsp;
-	        <h4 className="createItems1">
-						<input type="radio" name="create-show"
-							checked={this.state.currentTab === 'create-workout'}
-							onChange={(e) => this.setState({currentTab: 'create-workout'})} />
-							Workout
-					</h4>&nbsp;&nbsp;
-	        <h4 className="createItems1">
-						<input type="radio" name="create-show"
-							checked={this.state.currentTab === 'create-plan'}
-							onChange={(e) => this.setState({currentTab: 'create-plan'})} />
-						  Course
-					</h4>&nbsp;
-      	</div>
+			        <h4 className={this.state.currentTab === 'create-exercise' ? "createItems1" : "createItems1 greyTxt"}
+			        	onClick={(e) => this.setState({currentTab: 'create-exercise'})}>
+						&nbsp; Exercise
+					</h4> 
+			        <h4 className={this.state.currentTab === 'create-workout' ? "createItems1" : "createItems1 greyTxt"}
+			        	onClick={(e) => this.setState({currentTab: 'create-workout'})}>
+						&nbsp; Workout
+					</h4>
+			        <h4 className={this.state.currentTab === 'create-plan' ? "createItems1" : "createItems1 greyTxt"}
+			        	onClick={(e) => this.setState({currentTab: 'create-plan'})}>
+						&nbsp; Course
+					</h4> 
+		      	</div>
 				{this.getCurrentTab()}
 			</div>
 		)

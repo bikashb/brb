@@ -42,8 +42,9 @@ class ShowStudentList extends Component {
 											<h3 className="stu_name">{student.first_name}</h3>
 											<ul>
 												<li>Age :<span>{student.age}</span></li>
-												{/*<li>Weight : <span>{student.current_weight}</span></li>*/}
+												<li>Weight : <span>{student.current_weight}</span></li>
 											</ul>
+											<div className="description1"><span>Description</span> :  Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ulLorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ul</div>
 										</div>
 									</div>
 
