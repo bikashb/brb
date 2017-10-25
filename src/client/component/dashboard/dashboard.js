@@ -84,14 +84,14 @@ class Dashboard extends Component {
 								<div className="table-responsive">
 									<div className="dash_consolidate_mas">
 										<a href="#" className="dash_consolidate disable1"><input type="radio" disabled /> Exercise</a>
-										<a href="#" className="dash_consolidate"><input type="radio" checked  /> Plan</a>
-										<span>Quick view to the  Individual  Exercise assignment &amp;  Plan assignment</span>
+										<a href="#" className="dash_consolidate"><input type="radio" checked  /> Course</a>
+										<span>Quick view to Exercise details &amp;  Course assignment</span>
 										<img src="images/preview.png" />
 									</div>
 									<table className="table table-striped">
                                         <thead>
                                             <tr>
-                                               <th width="25%">Plan Name</th>
+                                               <th width="25%">Course Name</th>
 												<th width="35%">Start & End Date</th>
 												<th width="10%">Duration</th>
 												<th width="30%">Other Details</th>
@@ -119,7 +119,7 @@ class Dashboard extends Component {
 									</table> </div>
 								</div>
 							</div>
-						</div>:<h2 className="nocsv">Currently no plans available please create plan !</h2>}
+						</div>:<h2 className="nocsv">Currently no courses available please create course !</h2>}
 					</div>
 					<div className="col-md-4 col-lg-4">
 						<div className="card-body myDash1">

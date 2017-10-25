@@ -17,7 +17,7 @@ class CourseAndWorkoutTab extends Component {
 					<ul className="nav nav-tabs">
 						<li className="creationTab">
 							<a href="#e" data-toggle="tab" className="create_tab">
-								<span>Create/View</span>
+								<span>Create / View / Edit</span>
 							</a>
 						</li>
 						<li className="studentsTab">
@@ -27,7 +27,7 @@ class CourseAndWorkoutTab extends Component {
 						</li>
 						<li className="plansTab">
 							<a href="#d" data-toggle="tab" className="plan_tab">
-								<span>Assign Plan</span>
+								<span>Assign Course</span>
 							</a>
 						</li>
 						<li className="viewAssignedTab">

@@ -91,7 +91,7 @@ class ShowStudentListMini extends Component {
 						disabled={selectedStudent.length == 0}
 						data-dismiss="modal"
 						>
-						Assign to Plan
+						Assign to this course
 					</button> :
 					<button className="btn btn-info"
 						onClick={this.selectStudents.bind(this)}
