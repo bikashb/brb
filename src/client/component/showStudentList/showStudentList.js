@@ -53,41 +53,55 @@ export default class ShowStudentList extends Component {
 									</blockquote>
 								)
 							}
-							<ReactPaginate
-								 previousLabel={'previous'}
-								 nextLabel={'next'}
-								 breakLabel={<a>...</a>}
-								 breakClassName={'break-me'}
-								 pageCount={StudentsCopy.length/offset}
-								 pageRangeDisplayed={5}
-								 onPageChange={(page)=>this.setState({currentPage: page.selected-1})}
-								 containerClassName={'pagination'}
-								 subContainerClassName={'pages pagination'}
-								 activeClassName={'active'} />
-							 <form>
-	 							<input type="text" placeholder="name" value={searchText}
-	 								onChange={(e)=>this.setState({searchText: e.target.value})} />
-	 							<button
-	 								onClick={(e)=> {
-	 									e.preventDefault();
-	 									this.setState({searchText: ''});
-	 								}}>
-	 								Cancel
-	 							</button>
-	 						</form>
+							<div>
+								<div className="naivga1">
+									<ReactPaginate
+									 previousLabel={'previous'}
+									 nextLabel={'next'}
+									 breakLabel={<a>...</a>}
+									 breakClassName={'break-me'}
+									 pageCount={StudentsCopy.length/offset}
+									 pageRangeDisplayed={5}
+									 onPageChange={(page)=>this.setState({currentPage: page.selected-1})}
+									 containerClassName={'pagination'}
+									 subContainerClassName={'pages pagination'}
+									 activeClassName={'active'} />
+								</div>
+								<div className="naivga1a">
+									<form>
+			 							<input type="text" placeholder="name" value={searchText}
+			 								onChange={(e)=>this.setState({searchText: e.target.value})} />
+			 							<a className="glyphicon glyphicon-remove-circle"
+			 								onClick={(e)=> {
+			 									e.preventDefault();
+			 									this.setState({searchText: ''});
+			 								}}>
+			 								 
+			 							</a>
+			 						</form>
+								</div>
+							</div>
+
+
+							 
 						</div> :
 						<div id="testDiv1">
-							<form>
-							 <input type="text" placeholder="name" value={searchText}
-								 onChange={(e)=>this.setState({searchText: e.target.value})} />
-							 <button
-								 onClick={(e)=> {
-									 e.preventDefault();
-									 this.setState({searchText: ''});
-								 }}>
-								 Cancel
-							 </button>
-						 </form>
+							 <div>
+								 
+								<div className="naivga1a">
+									<form>
+			 							<input type="text" placeholder="name" value={searchText}
+			 								onChange={(e)=>this.setState({searchText: e.target.value})} />
+			 							<a className="glyphicon glyphicon-remove-circle"
+			 								onClick={(e)=> {
+			 									e.preventDefault();
+			 									this.setState({searchText: ''});
+			 								}}>
+			 								 
+			 							</a>
+			 						</form>
+								</div>
+							</div>
 							<h2 className="nocsv">
 								No results found.
 							</h2>
