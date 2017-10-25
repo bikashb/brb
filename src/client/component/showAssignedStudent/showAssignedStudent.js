@@ -31,10 +31,10 @@ class ShowAssignedStudent extends Component {
 			<div>
             {this.state.AllExercise.length?
                 <div>
-                    <div className="ex_plan_link_mas">
+                    {/*<div className="ex_plan_link_mas">
                         <a href="javascript:void(0);" className="ex_plan_link">Students under Exercise &gt;</a>
                         <a href="javascript:void(0);" onClick={(e)=>{this.props.show(e, '#myDashboard')}} className="ex_plan_link">Students under Plan &gt;</a>
-                    </div>
+                    </div>*/}
 				<div>
                     <ul className="legends4Tbl">
                         <li><span className="lNew"></span>New</li>

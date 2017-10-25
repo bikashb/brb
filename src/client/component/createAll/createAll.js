@@ -89,7 +89,7 @@ export default class CreateAll extends Component {
 						<input type="radio" name="create-show"
 							checked={this.state.currentTab === 'create-plan'}
 							onChange={(e) => this.setState({currentTab: 'create-plan'})} />
-						  Plan
+						  Course
 					</h4>&nbsp;
       	</div>
 				{this.getCurrentTab()}

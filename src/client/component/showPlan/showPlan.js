@@ -38,11 +38,11 @@ class ShowPlan extends Component {
 						AllPlans.map((plan, i)=>
 							<li className="active" key={i} data-toggle="modal" data-target="#myPlan" onClick={()=>this.planID(plan.id, plan.title)}>
 								<div className="plan_mas">
-									<h1>{plan.avg_workout_duration} Days Plan</h1>
+									<h1>{plan.avg_workout_duration} Days Course</h1>
 									<p>{plan.description}</p>
 								</div>
 								<ul className="wrkDetails1">
-									<li><span className="blue">Name of the Plan :</span>{plan.title}</li>
+									<li><span className="blue">Name of the Course :</span>{plan.title}</li>
 									<li><span className="blue">No of Videos :</span>{plan.schedule.length}</li>
 								</ul>
 
@@ -68,7 +68,7 @@ class ShowPlan extends Component {
 							</div>
 						</div>
 					</div>
-				</div>:<h2 className="nocsv">Currently no plans available please create workout with exercise and then plan !</h2>}
+				</div>:<h2 className="nocsv">Currently no courses available please create workout with exercise and then course !</h2>}
 			</div>
 		)
 	}
