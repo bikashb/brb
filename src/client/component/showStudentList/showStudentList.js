@@ -1,60 +1,67 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
+import ReactPaginate from 'react-paginate';
 
-class ShowStudentList extends Component {
+export default class ShowStudentList extends Component {
 	constructor() {
 		super();
 		this.state = {
-			AllStudents:[],
-			selectedStudent:[]
+			offset: 4,
+			currentPage: 0,
+			AllStudents: []
 		};
 	}
+
 	componentWillMount(){
-		this.setState({AllStudents:this.props.AllStudents, selectedStudent:this.props.selectedStudent})
+		this.setState({AllStudents: this.props.AllStudents})
 	}
+
 	componentWillReceiveProps(nextProps) {
-		this.setState({AllStudents: nextProps.AllStudents, selectedStudent:nextProps.selectedStudent})
+		this.setState({AllStudents: nextProps.AllStudents})
 	}
-	selectStudentChanged = (newStudent) =>{
-		this.props.selectStudentChanged(newStudent);
-	}
+
 	render () {
-		const { AllStudents } = this.state;
+		let { AllStudents, currentPage, offset } = this.state;
+		let StudentsCopy = [...AllStudents];
 		return (
 			<div>
-			{this.state.AllStudents.length?
-				<div id="testDiv1">
-					<CheckboxGroup
-				        name="students"
-				        value={this.state.selectedStudent}
-				        onChange={this.selectStudentChanged}
-				    >
+				{
+					this.state.AllStudents.length ?
+					<div id="testDiv1">
 						{
-							AllStudents.map((student, i)=>
+							StudentsCopy.splice(currentPage*offset, offset).map((student, i) =>
 								<blockquote className="blockquote odd border-left-red  mt-1" key={i}>
 									<div className="media">
 										<div className="media-left">
 											<div className="rounded-circle">{student.first_name[0].toUpperCase()}</div>
 										</div>
 										<div className="media-body">
-											{/*<Checkbox value={student} className="inputchk4wrkout" />*/}
 											<h3 className="stu_name">{student.first_name}</h3>
 											<ul>
 												<li>Age :<span>{student.age}</span></li>
-												{/*<li>Weight : <span>{student.current_weight}</span></li>*/}
 											</ul>
 										</div>
 									</div>
-
 								</blockquote>
 							)
 						}
-					</CheckboxGroup>
-				</div>:<h2 className="nocsv">Currently students list not available please upload the data file below !</h2>}
+						<ReactPaginate
+							 previousLabel={'previous'}
+	             nextLabel={'next'}
+	             breakLabel={<a>...</a>}
+	             breakClassName={'break-me'}
+	             pageCount={StudentsCopy.length/offset}
+	             pageRangeDisplayed={5}
+	             onPageChange={(page)=>this.setState({currentPage: page.selected-1})}
+	             containerClassName={'pagination'}
+	             subContainerClassName={'pages pagination'}
+	             activeClassName={'active'} />
+					</div> :
+					<h2 className="nocsv">
+						Currently students list is not available. Please upload the data file below !
+					</h2>
+				}
 			</div>
 		)
 	}
 }
-
-export default ShowStudentList;
