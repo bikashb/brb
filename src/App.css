@@ -2015,12 +2015,14 @@ margin: 0 20px 0 0;
  .create_up_btnMas{
      padding: 0px 0px 30px 0;
  }
- .modal-content{
-   float: left;  
- }
+  
  .modal-dialog{
      width: 70%;
  }
+.pagination{
+     width:100%;
+     cursor:pointer;
+}
  /**/
  /*====================================================*/
  /*====================================================*/

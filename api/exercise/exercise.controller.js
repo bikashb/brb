@@ -23,6 +23,22 @@ controller.createExercise =  function(req,res){
        });
 };
 
+controller.editExercise =  function(req,res){
+
+    var exerciseData={};
+    exerciseData=req.body;
+    exerciseData.utc_last_updated=new Date();
+
+
+     knex('exercise').where('id','=',req.body.id).update(exerciseData).then(function(value){
+         res.status(201).json({message:'success'});
+       })
+       .catch(function(err){
+         console.log(err);
+         res.status(500).json({message:'unsuccessful'});
+       });
+};
+
 controller.getExerciseById=function(req,res){
   knex('exercise').where({"user_id":req.params.id}).select('*').then(function(data){
     console.log(data);

@@ -4,16 +4,20 @@ export default class PlanList extends Component {
 	render () {
 		return (
       this.props.AllPlans.length > 0 ?
-      <table>
+      <table className="table table-striped">
+       <thead>
         <tr>
           <th>Title</th>
           <th>Available Workouts</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
+        </thead>
+        <tbody>
         {
           this.props.AllPlans.map((course, i) => {
             return (
+
               <tr key={i}>
                 <td>{course.title}</td>
                 <td>5</td>
@@ -37,6 +41,7 @@ export default class PlanList extends Component {
             )
           })
         }
+        </tbody>
       </table> :
       <div>No Plans Available</div>
 		);

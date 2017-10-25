@@ -7,13 +7,13 @@ export default class WorkoutList extends Component {
 	render () {
 		return (
       this.props.AllWorkouts.length > 0 ?
-      <table>
+      <table className="table table-striped"><thead>
         <tr>
           <th>Title</th>
           <th>Available Exercises</th>
           <th>Edit</th>
           <th>Delete</th>
-        </tr>
+        </tr></thead><tbody>
         {
           this.props.AllWorkouts.map((workout, i) => {
             return (
@@ -38,7 +38,7 @@ export default class WorkoutList extends Component {
               </tr>
             )
           })
-        }
+        }</tbody>
       </table> :
       <div>No Workouts Available</div>
 		);
