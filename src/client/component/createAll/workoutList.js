@@ -31,7 +31,7 @@ export default class WorkoutList extends Component {
                 </td>
                 <td>
                   <button
-                    onClick={(e)=>{this.props.deleteWorkout(i)}}>
+                    onClick={(e)=>{this.props.deleteWorkout(workout.id, i)}}>
   									Delete
   								</button>
                 </td>

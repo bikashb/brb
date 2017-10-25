@@ -17,7 +17,6 @@ export default class PlanList extends Component {
         {
           this.props.AllPlans.map((course, i) => {
             return (
-
               <tr key={i}>
                 <td>{course.title}</td>
                 <td>5</td>
@@ -32,7 +31,7 @@ export default class PlanList extends Component {
                 </td>
                 <td>
                   <button
-										onClick={(e)=>{this.props.deleteCourse(i)}}
+										onClick={(e)=>{this.props.deleteCourse(course.id, i)}}
 										>
   									Delete
   								</button>

@@ -4,7 +4,7 @@ import validator from 'validator';
 import axios from 'axios';
 import ReactScrollbar from 'react-scrollbar-js';
 import $ from 'jquery';
-/*custom components*/
+/* custom components */
 import Sidebar from '../sidebar/sidebar.js';
 import CourseAndWorkoutTab from '../courseAndWorkoutTab/courseAndWorkoutTab.js'
 import ShowPlan from '../showPlan/showPlan.js';
@@ -102,11 +102,15 @@ class  Home extends Component {
     });
   }
 
-  deleteExercise(index) {
-    let { allVideos } = this.state;
-    allVideos.splice(index, 1);
-    this.setState({
-      allVideos: allVideos
+  deleteExercise(exerciseID, index) {
+    axios.delete(APIs.DeleteExercise + exerciseID)
+    .then((response) => {
+      console.log('delete exercise response: ', response);
+      let { allVideos } = this.state;
+      allVideos.splice(index, 1);
+      this.setState({
+        allVideos: allVideos
+      });
     });
   }
 
@@ -118,11 +122,15 @@ class  Home extends Component {
     });
   }
 
-  deleteWorkout(index) {
-    let { listOfWorkouts } = this.state;
-    listOfWorkouts.splice(index, 1);
-    this.setState({
-      listOfWorkouts: listOfWorkouts
+  deleteWorkout(workoutID, index) {
+    axios.delete(APIs.DeleteWorkout + workoutID)
+    .then((response) => {
+      console.log('delete workout response: ', response);
+      let { listOfWorkouts } = this.state;
+      listOfWorkouts.splice(index, 1);
+      this.setState({
+        listOfWorkouts: listOfWorkouts
+      });
     });
   }
 
@@ -134,11 +142,15 @@ class  Home extends Component {
     });
   }
 
-  deleteCourse(index) {
-    let { listOfplans } = this.state;
-    listOfplans.splice(index, 1);
-    this.setState({
-      listOfplans: listOfplans
+  deleteCourse(courseID, index) {
+    axios.delete(APIs.DeleteCourse + courseID)
+    .then((response) => {
+      console.log('delete course response: ', response);
+      let { listOfplans } = this.state;
+      listOfplans.splice(index, 1);
+      this.setState({
+        listOfplans: listOfplans
+      });
     });
   }
 

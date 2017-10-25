@@ -15,23 +15,21 @@ export default class ExerciseList extends Component {
 										<source src={exercise.streaming_uri} type="video/mp4"/>
 									</video>
 								</div>
-								
+
 							</div>
 							<div className="card wid_50Per">
 								<div className="card-body">
 									<div className="card-block">
-									
+
 										<h4 className="card-title">Video {i+1} [ <span>{exercise.title}</span> ]</h4>
 										<div className="editBtnMas1">
 											<a data-dismiss='modal' className="glyphicon glyphicon-pencil"
 													onClick={(e)=>{this.props.setupEditExercise(exercise, i)}}>
-													
 												</a>&nbsp;
 												<a  className="glyphicon glyphicon-trash"
-													onClick={(e)=>{this.props.deleteExercise(i)}}>
-													
+													onClick={(e)=>{this.props.deleteExercise(exercise.id, i)}}>
 												</a>
-										</div>	
+										</div>
 										<br/>
 										<p className="card-text">
 											{exercise.description}
