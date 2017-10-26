@@ -4,20 +4,23 @@ import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 import ShowWorkout from '../showWorkout/showWorkout.js';
 import PlanList from './planList.js'
 import APIs from '../template/constants.js';
+import sweetalert from 'sweetalert';
 
 export default class Plan extends Component {
   constructor() {
     super();
     this.state = {
       mode: 'create',
-      title: '',
-      duration: '',
-      description: '',
-      intensity: '',
+      title: '', titleError: '',
+      duration: '', durationError: '',
+      description: '', descriptionError: '',
+      intensity: '', intensityError: '',
       selectedWorkout: [],
       currentCourse: {},
       currentIndex: -1
     };
+    this.resetFields = this.resetFields.bind(this);
+    this.validationSuccess = this.validationSuccess.bind(this);
   }
 
   setupEditCourse(course, index) {
@@ -45,14 +48,38 @@ export default class Plan extends Component {
   resetFields() {
     this.setState({
       mode: 'create',
-      title: '',
-      duration: '',
-      description: '',
-      intensity: '',
+      title: '', titleError: '',
+      duration: '', durationError: '',
+      description: '', descriptionError: '',
+      intensity: '', intensityError: '',
       selectedWorkout: [],
       currentCourse: {},
       currentIndex: -1
     });
+  }
+
+  validationSuccess() {
+    let { title, duration, intensity, description } = this.state;
+    if (title === '') {
+      this.setState({titleError: 'Please enter Title'});
+      return false;
+    }
+    if(duration === '') {
+     this.setState({durationError: 'Please enter Duration'});
+     return false;
+    }
+    if(description === '') {
+      this.setState({descriptionError: 'Please enter Description'});
+      return false;
+    }
+    if(intensity === '') {
+      this.setState({intensityError: 'Please enter Intensity Numbers'});
+      return false;
+    } else if(isNaN(intensity)) {
+       this.setState({intensityError: 'Please enter only Numbers'});
+       return false;
+    }
+    return true;
   }
 
   /*Create Plan Starts*/
@@ -60,29 +87,25 @@ export default class Plan extends Component {
 		this.setState({selectedWorkout: newWorkout});
 	}
 
-	createPlan = (e) => {
+	createCourse = (e) => {
 		e.preventDefault();
 		let { description, duration, title, intensity, selectedWorkout } = this.state;
-		if(duration==""||description==""||title==""||intensity==""||this.state.selectedWorkout.length==0) {
-			alert("check all fields");
-		} else {
+		if(this.validationSuccess() && this.state.selectedWorkout.length !== 0) {
+      let list = [];
+      selectedWorkout.map(id => list.push({id: id, day: '2'}));
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
 		      "id": localStorage.getItem("id"),
 		      "duration": duration,
 		      "title": title,
 		      "intensity": intensity,
-		      "workouts": selectedWorkout/*list:[1,2,3]*/
+		      "list": list/*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
 		    })
 		    .then((response)=>{
-		    	this.setState({selectedWorkout:[]})
-		    	console.log(response.data);
-		    	description="";
-  				duration="";
-  				title="";
-				  intensity="";
+          console.log('create course response: ', response);
+          sweetalert('New course created.', 'success');
+          this.resetFields();
 		    	this.props.callAllPlans();
-		    	alert("plan created");
 		    });
 		}
 	}
@@ -121,26 +144,30 @@ export default class Plan extends Component {
                   <label>Title</label>
                   <input type="text" placeholder="Title" name="Title"
                     value={this.state.title} className="form-control"
-                    onChange={(e)=>this.setState({title: e.target.value})}
+                    onChange={(e)=>this.setState({title: e.target.value, titleError: ''})}
                   />
+                  <span style={{color:'red'}}>{this.state.titleError}</span>
                 </div>
                 <div className="form-group">
                   <label>Duration</label>
                   <input type="text" placeholder="Duration (In days 1-30)" name="Duration"
                     value={this.state.duration} className="form-control"
-                    onChange={(e)=>this.setState({duration: e.target.value})} />
+                    onChange={(e)=>this.setState({duration: e.target.value, durationError: ''})} />
+                  <span style={{color:'red'}}>{this.state.durationError}</span>
                 </div>
                 <div className="form-group">
                   <label>Description</label>
                   <input type="text" placeholder="Description" name="Description"
                     value={this.state.description} className="form-control"
-                    onChange={(e)=>this.setState({description: e.target.value})} />
+                    onChange={(e)=>this.setState({description: e.target.value, descriptionError: ''})} />
+                  <span style={{color:'red'}}>{this.state.descriptionError}</span>
                 </div>
                 <div className="form-group">
                   <label>Intensity</label>
                   <input type="text" placeholder="Intensity (1-10)" name="Intensity"
                     value={this.state.intensity} className="form-control"
-                    onChange={(e)=>this.setState({intensity: e.target.value})} />
+                    onChange={(e)=>this.setState({intensity: e.target.value, intensityError: ''})} />
+                  <span style={{color:'red'}}>{this.state.intensityError}</span>
                 </div>
                 {
                   this.state.mode === 'create' ?

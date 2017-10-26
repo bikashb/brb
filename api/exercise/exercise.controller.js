@@ -10,7 +10,7 @@ controller.createExercise =  function(req,res){
     exerciseData.title=req.body.title;
     exerciseData.intensity=req.body.intensity;
     exerciseData.user_id=req.body.id;
-    exerciseData.weigth=req.body.weight;
+    exerciseData.weight=req.body.weight;
     exerciseData.reps=req.body.reps;
     exerciseData.date_created=new Date();
 

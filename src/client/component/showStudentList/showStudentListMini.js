@@ -9,27 +9,27 @@ class ShowStudentListMini extends Component {
 		this.state = {
 			AllStudents: [],
 			selectedStudent: [],
-			planID: null
+			courseID: null
 		};
 	}
 
 	componentWillMount(){
-		this.setState({AllStudents:this.props.AllStudents, planID:this.props.plan})
+		this.setState({AllStudents:this.props.AllStudents, courseID:this.props.plan})
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({AllStudents: nextProps.AllStudents, planID:nextProps.plan})
+		this.setState({AllStudents: nextProps.AllStudents, courseID:nextProps.plan})
 	}
 
 	selectStudentChanged(newStudent) {
 		this.setState({selectedStudent: newStudent});
 	}
 
-	assignStudentToPlan() {
+	assignStudentToCourse() {
 		let array = this.state.selectedStudent.toString().replace(/,/g , "").trim().split(" ");
     let temp = [];
     for(let i=0; i<array.length; i+=2)
-			temp.push({plan_id: array[i+1], 'user_id': array[i]});
+			temp.push({course_id: array[i+1], 'user_id': array[i]});
 		axios.post(APIs.AssignStudentsToCourse, {list: temp})
 	    .then((response) => {
 	    	console.log(response)
@@ -52,7 +52,7 @@ class ShowStudentListMini extends Component {
 	}
 
 	render () {
-		const { AllStudents, planID, selectedStudent } = this.state;
+		const { AllStudents, courseID, selectedStudent } = this.state;
 		return (
 			<div>
 			{AllStudents.length?
@@ -70,7 +70,7 @@ class ShowStudentListMini extends Component {
 											<div className="rounded-circle">{student.first_name[0].toUpperCase()}</div>
 										</div>
 										<div className="media-body">
-											<Checkbox value={student.id+" "+planID+" "} className="inputchk4wrkout" />
+											<Checkbox value={student.id+" "+courseID+" "} className="inputchk4wrkout" />
 											<h3 className="stu_name">{student.first_name}</h3>
 											<ul>
 												<li>Age :<span>{student.age}</span></li>
@@ -85,9 +85,9 @@ class ShowStudentListMini extends Component {
 				</div>:<h2 className="nocsv">Currently students list not available please upload the data file below !</h2>}
 
 				{
-					planID ?
+					courseID ?
 					<button className="btn btn-info"
-						onClick={this.assignStudentToPlan.bind(this)}
+						onClick={this.assignStudentToCourse.bind(this)}
 						disabled={selectedStudent.length == 0}
 						data-dismiss="modal"
 						>

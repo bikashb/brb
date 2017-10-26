@@ -22,7 +22,8 @@
     "react-paginate": "^5.0.0",
     "react-scripts": "^1.0.14",
     "react-scrollbar": "^0.5.1",
-    "react-scrollbar-js": "^1.0.1"
+    "react-scrollbar-js": "^1.0.1",
+    "sweetalert": "^2.0.8"
   },
   "devDependencies": {
     "axios": "^0.16.2",

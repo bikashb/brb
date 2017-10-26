@@ -11,8 +11,11 @@ class Dashboard extends Component {
 			AllPlans:[],
 			AllWorkouts:[],
 			AllExercises:[],
-			selectedPlan:""
+			selectedPlan:"",
+			students: [],
+			selectedPlanID: '-1'
 		};
+		this.getStudentsUnderCourse = this.getStudentsUnderCourse.bind(this);
 	}
 	componentWillMount(){
 		this.setState({AllPlans:this.props.AllPlans})
@@ -20,8 +23,26 @@ class Dashboard extends Component {
 	componentWillReceiveProps(nextProps) {
 		this.setState({AllPlans: nextProps.AllPlans})
 	}
+
+	getStudentsUnderCourse() {
+		let self = this;
+		$(document).ready(function() {
+			if($('#studentsDashboard').hasClass('hidden')) {
+				$('#studentsDashboard').removeClass('hidden');
+				axios.get(APIs.GetStudentsUnderCourse + self.state.selectedPlanID)
+			    .then((response) => {
+						self.setState({students: response.data});
+			      console.log('students under course: ', response);
+			    });
+			} else {
+				$('#studentsDashboard').addClass('hidden');
+			}
+		});
+	}
+
 	getAllDetailsUnderPlan=(plan)=>{
 		this.setState({selectedPlan: plan.title});
+		this.setState({selectedPlanID: plan.id});
 		axios.get(APIs.GetAllDetailsOfPlan+plan.id)
 	    .then((response)=>{
 	      if (response.status == 500) {
@@ -48,6 +69,7 @@ class Dashboard extends Component {
 	      }
 	    });
 	}
+
 	showNoOfStudents(planID){
 		axios.post(APIs.GetStudentsUnderPlan+planID)/*Get list of students*/
 	    .then((response)=>{
@@ -60,14 +82,13 @@ class Dashboard extends Component {
 		const myScrollbar_dash1 = {
           height: 500
         };
-
+		const myScrollbar = {height: 440};
 		return (
 			<div>
 				<div className="rgt_panel_heading" id="myDashboard">
 					<h2>My Dashboard</h2>
 				</div>
 				<div className="col-xl-8 col-lg-12 myDash">
-
 					<div className="col-md-8 col-lg-8">
 					{AllPlans.length?
 						<div className="card">
@@ -82,7 +103,7 @@ class Dashboard extends Component {
 							</div>
 							<div className="card-body">
 								<div className="table-responsive">
-									<div className="dash_consolidate_mas">										 
+									<div className="dash_consolidate_mas">
 										<a href="#" className="dash_consolidate">Ongoing Course List</a>
 										<span>Quick view to Exercise details &amp;  Course assignment</span>
 										<img src="images/preview.png" />
@@ -120,7 +141,6 @@ class Dashboard extends Component {
 											</tr>
 											)}
 										 </tbody>
-
 									</table> </div>
 								</div>
 							</div>
@@ -166,8 +186,45 @@ class Dashboard extends Component {
 								<span aria-hidden="true">&times;</span>
         					</button>
 								<h4 className="modal-title" id="myModalLabel">{this.state.selectedPlan}</h4>
+								<a onClick={this.getStudentsUnderCourse}>Student List</a>
 							</div>
 							<div className="modal-body createCourse">
+							<div id='studentsDashboard' className='hidden'>
+								<table className="table headr">
+									<thead>
+										<tr>
+											<th width="20%">Name</th>
+											<th width="15%">Age</th>
+											<th width="20%">Weight</th>
+											<th width="25%">Email</th>
+											<th width="20">Workout Progress</th>
+										</tr>
+									</thead>
+								</table>
+								<ReactScrollbar style={myScrollbar}>
+									<div id="testDiv55" >
+										{
+											this.state.students.map((student, j) =>
+												<table className="table" key={j}>
+													<tbody>
+														<tr className="success">
+															<td width="20%">{student.first_name}</td>
+															<td width="15%">{student.age}</td>
+															<td width="20%">{student.current_weight}</td>
+															<td width="25%">{student.email}</td>
+															<td width="20%">
+																<div className="progress">
+																	<div className="progress-bar  progress-bar-success" role="progressbar"  style={{width: '20'}} aria-valuenow='20' aria-valuemin="0" aria-valuemax="100" title='20'>20</div>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											)
+										}
+									</div>
+								</ReactScrollbar>
+							</div>
 							<div className="planAssignment">
 								{AllWorkouts.map((workout)=>
 									(<div>

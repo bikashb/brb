@@ -3,20 +3,22 @@ import axios from 'axios';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 import WorkoutList from './workoutList.js';
 import APIs from '../template/constants.js';
+import sweetalert from 'sweetalert';
 
 export default class Workout extends Component {
   constructor() {
     super();
     this.state = {
       mode: 'create',
-      title: '',
-      description: '',
-      intensity: '',
+      title: '', titleError: '',
+      description: '', descriptionError: '',
+      intensity: '', intensityError: '',
       selectedExercise: [],
       currentWorkout: {},
       currentIndex: -1
     };
     this.resetFields = this.resetFields.bind(this);
+    this.validationSuccess = this.validationSuccess.bind(this);
   }
 
   setupEditWorkout(workout, index) {
@@ -42,9 +44,9 @@ export default class Workout extends Component {
   resetFields() {
     this.setState({
       mode: 'create',
-      title: '',
-      description: '',
-      intensity: '',
+      title: '', titleError: '',
+      description: '', descriptionError: '',
+      intensity: '', intensityError: '',
       selectedExercise: [],
       currentWorkout: {},
       currentIndex: -1
@@ -59,9 +61,7 @@ export default class Workout extends Component {
   createWorkout = (e) => {
     let { title, intensity, description, selectedExercise } = this.state;
     e.preventDefault();
-    if(description==""||title==""||intensity==""||this.state.selectedExercise.length==0) {
-      alert("check all fields");
-    } else {
+    if( this.validationSuccess() && this.state.selectedExercise.length !== 0 ) {
       axios.post(APIs.CreateWorkout, {
           "description": description,
           "id": localStorage.getItem("id"),
@@ -71,17 +71,34 @@ export default class Workout extends Component {
 		      "list": selectedExercise/*list:[1,2,3]*/
         })
         .then((response) => {
-          this.setState({selectedExercise: []})
-          console.log(response.data);
-          description="";
-          title="";
-          intensity="";
+          console.log('create workout response: ', response);
+          sweetalert('New workout created.', 'success');
+          this.resetFields();
           this.props.callAllWorkouts();
-          alert("workout created")
         });
     }
   }
   /*Create Workout Ends*/
+
+  validationSuccess() {
+    let { title, intensity, description } = this.state;
+    if (title === '') {
+      this.setState({titleError: 'Please enter Title'});
+      return false;
+    }
+    if(intensity === '') {
+      this.setState({intensityError: 'Please enter Intensity Numbers'});
+      return false;
+    } else if(isNaN(intensity)) {
+       this.setState({intensityError: 'Please enter only Numbers'});
+       return false;
+    }
+    if(description === ''){
+      this.setState({descriptionError: 'Please enter Description'});
+      return false;
+    }
+    return true;
+  }
 
   render() {
     let { selectedExercise } = this.state;
@@ -117,19 +134,22 @@ export default class Workout extends Component {
                   <label>Title</label>
                   <input type="text" placeholder="Title" name="Title"
                     value={this.state.title} className="form-control"
-                    onChange={(e)=>this.setState({title: e.target.value})} />
+                    onChange={(e)=>this.setState({title: e.target.value, titleError: ''})} />
+                  <span style={{color:'red'}}>{this.state.titleError}</span>
                 </div>
                 <div className="form-group">
                   <label>Description</label>
                   <input type="text" placeholder="Description" name="Description"
                     value={this.state.description} className="form-control"
-                    onChange={(e)=>this.setState({description: e.target.value})} />
+                    onChange={(e)=>this.setState({description: e.target.value, descriptionError: ''})} />
+                  <span style={{color:'red'}}>{this.state.descriptionError}</span>
                 </div>
                 <div className="form-group">
                   <label>Intensity</label>
                   <input type="text" placeholder="Intensity (1-10)" name="Intensity"
                     value={this.state.intensity} className="form-control"
-                    onChange={(e)=>this.setState({intensity: e.target.value})} />
+                    onChange={(e)=>this.setState({intensity: e.target.value, intensityError: ''})} />
+                  <span style={{color:'red'}}>{this.state.intensityError}</span>
                 </div>
                 {
                   this.state.mode === 'create' ?

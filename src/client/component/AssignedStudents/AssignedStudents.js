@@ -13,18 +13,14 @@ export default class AssignedStudents extends Component {
 		this.getStudentsUnderCourse = this.getStudentsUnderCourse.bind(this);
 	}
 
-	componentWillMount() {
-		console.log('co: ', this.props.courses);
-	}
-
 	getStudentsUnderCourse(id) {
 		let { selectedCourseID } = this.state;
 		if(selectedCourseID !== id) {
 			this.setState({selectedCourseID: id});
 			let { courses } = this.props;
-			axios.get(APIs.GetStudentsUnderPlan + id)
+			axios.get(APIs.GetStudentsUnderCourse + id)
 		    .then((response) => {
-					// this.setState({students: response.data});
+					this.setState({students: response.data});
 		      console.log('students under course: ', response);
 		    });
 		} else {

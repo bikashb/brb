@@ -2,21 +2,24 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import APIs from '../template/constants.js';
 import ExerciseList from './exerciseList.js';
+import sweetalert from 'sweetalert';
 
 export default class Exercise extends Component {
   constructor() {
     super();
     this.state = {
       mode: 'create',
-      title: '',
-      type: '',
-      intensity: '',
-      description: '',
+      title: '', titleError: '',
+      type: '', typeError: '',
+      intensity: '', intensityError: '',
+      description: '', descriptionError: '',
       video_url: '',
+      fileError: '',
       currentExercise: {},
       currentIndex: -1
     };
     this.resetFields = this.resetFields.bind(this);
+    this.validationSuccess = this.validationSuccess.bind(this);
   }
 
 	/*Create Exercise Starts*/
@@ -24,9 +27,8 @@ export default class Exercise extends Component {
 		exerciseDetails.preventDefault();
 		let fileSelect = document.getElementById('myfile');
 		let { description, title, intensity, type } = this.state;
-		if(type==""||description==""||title==""||intensity==""||fileSelect.files.length==0) {
-			alert("check all fields");
-		} else {
+		//if(type==''||description==''||title==''||intensity==''||fileSelect.files.length==0) {
+    if(this.validationSuccess() && fileSelect.files.length !== 0) {
 			/* video upload */
 			console.log("video uploading");
 			let files = fileSelect.files;
@@ -48,11 +50,9 @@ export default class Exercise extends Component {
 						"uri": this.state.video_url,
 						"intensity":  intensity
 					}).then((response) => {
-						alert(response.statusText);
-						description="";
-						title="";
-						type="";
-						intensity="";
+            console.log('create exercise response: ', response);
+						sweetalert('New exercise created.', 'success');
+						this.resetFields();
 						this.props.callAllExercises();
 					}).catch(error => {
 						console.log(error);
@@ -62,6 +62,36 @@ export default class Exercise extends Component {
 		}
 	}
 	/*Create Exercise Ends*/
+
+  validationSuccess() {
+    let { title, type, intensity, description } = this.state;
+    if (title === '') {
+      this.setState({titleError: 'Please enter Title'});
+      return false;
+    }
+    if(type === '') {
+     this.setState({typeError: 'Please enter Type'});
+     return false;
+    }
+    if(intensity === '') {
+      this.setState({intensityError: 'Please enter Intensity Numbers'});
+      return false;
+    } else if(isNaN(intensity)) {
+       this.setState({intensityError: 'Please enter only Numbers'});
+       return false;
+    }
+    if(description === ''){
+      this.setState({descriptionError: 'Please enter Description'});
+      return false;
+    }
+      //  if(myfile.value==''){
+      //   document.getElementById('pointDescription').innerHTML='';
+      //  document.getElementById('pointMyfile').innerHTML="Please upload Video";
+      //  myfile.focus();
+      // return false;
+      // }
+    return true;
+  }
 
   setupEditExercise(exercise, index) {
     this.setState({
@@ -89,11 +119,11 @@ export default class Exercise extends Component {
   resetFields() {
     this.setState({
       mode: 'create',
-      title: '',
-      type: '',
-      intensity: '',
-      description: '',
-      video_url: '',
+      title: '', titleError: '',
+      type: '', typeError: '',
+      intensity: '', intensityError: '',
+      description: '', descriptionError: '',
+      video_url: '', fileError: '',
       currentExercise: {},
       currentIndex: -1
     });
@@ -127,26 +157,31 @@ export default class Exercise extends Component {
           <div className="form-group">
             <label>Title</label>
             <input type="text" placeholder="Title" value={this.state.title}
-              onChange={(e) => this.setState({title: e.target.value})} />
+              onChange={(e) => this.setState({title: e.target.value, titleError: ''})} />
+            <span style={{color:'red'}}>{this.state.titleError}</span>
           </div>
           <div className="form-group">
             <label>Type</label>
             <input type="text" placeholder="Type" value={this.state.type}
-              onChange={(e) => this.setState({type: e.target.value})} />
+              onChange={(e) => this.setState({type: e.target.value, typeError: ''})} />
+            <span style={{color:'red'}}>{this.state.typeError}</span>
           </div>
           <div className="form-group">
             <label>Intensity</label>
             <input type="text" placeholder="Intensity (1-10)" value={this.state.intensity}
-            onChange={(e) => this.setState({intensity: e.target.value})} />
+              onChange={(e) => this.setState({intensity: e.target.value, intensityError: ''})} />
+            <span style={{color:'red'}}>{this.state.intensityError}</span>
           </div>
           <div className="form-group">
             <label>Description</label>
             <input type="text" placeholder="Description" value={this.state.description}
-            onChange={(e) => this.setState({description: e.target.value})} />
+              onChange={(e) => this.setState({description: e.target.value, descriptionError: ''})} />
+            <span style={{color:'red'}}>{this.state.descriptionError}</span>
           </div>
           <div className="form-group">
             <label>File input</label>
-            <input id="myfile" name="myFile" encType="multipart/form-data" type="file"/>
+            <input id="myfile" name="myFile" encType="multipart/form-data" type="file" />
+            <span style={{color:'red'}}>{this.state.fileError}</span>
           </div>
           <ul id="fileList"></ul>
           {

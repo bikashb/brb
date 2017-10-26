@@ -23,7 +23,7 @@ module.exports = {
 	CreatePlan: url + '/api/v1/course/create',
 	GetExercisesUnderWorkout: url + '/api/v1/exercise/workout/',
 	GetWorkoutsUnderPlan: url + '/api/v1/workout/plan',
-	GetStudentsUnderPlan: url + '/api/v1/userdetails/plan/',
+	GetStudentsUnderCourse: url + '/api/v1/userdetails/course/',
 	DeleteExercise: url + '/api/v1/exercise/delete/',
 	DeleteWorkout: url + '/api/v1/workout/delete/',
 	DeleteCourse: url + '/api/v1/course/delete/',
