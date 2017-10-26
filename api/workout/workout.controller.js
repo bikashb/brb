@@ -14,27 +14,40 @@ controller.fetchWorkoutsById=function(req,res){
 
 }
 
-controller.fetchWorkoutsByPlan=function(req,res){
+controller.fetchWorkoutsByCourse=function(req,res){
   var workoutList=[];
-  if(req.body.schedule.length>0){
-    var workouts=req.body.schedule.map((data)=>{
-          return knex('workout').where({"id":data}).select('*').then(function(workoutData){
-            if(workoutData[0])
-          workoutList.push(workoutData[0]);
-        })
-        .catch(function(err){
-          console.log(err);
-          res.status(500).json({message:'unsuccessful'});
-        })
-    });
-    Promise.all(workouts).then(function(results) {
-         res.status(200).json({"list":workoutList});
-     });
-  }
-  else {
-    res.status(500).json({message:'no data'});
-  }
+    knex('course_to_workout').where({"course_id":req.params.id}).select('*').then(function(list){
 
+      if(list.length>0){
+        var data=[];
+        list.map((e)=>{
+            if(data.indexOf(e.workout_id)==-1){
+              data.push(e.workout_id);
+            }
+        })
+        var wList=data.map((workoutId)=>{
+          return knex('workout').where({"id":workoutId}).select('*').then(function(workoutData){
+              if(workoutData[0])
+              workoutList.push(workoutData[0]);
+
+          })
+          .catch(function(err){
+            console.log(err);
+            res.status(500).json({message:'unsuccessful'});
+          })
+        })
+        Promise.all(wList).then(function(result){
+            res.status(200).send({'workouts':workoutList});
+        })
+      }
+      else {
+        res.status(500).json({message:'No Workouts'});
+      }
+    })
+    .catch(function(err){
+      console.log(err);
+      res.status(500).json({message:'unsuccessful'});
+    })
 }
 
 controller.createWorkout =  function(req,res){
@@ -44,7 +57,7 @@ controller.createWorkout =  function(req,res){
     workoutData.duration=req.body.duration;
     workoutData.instructor_id=req.body.id;
     workoutData.title=req.body.title;
-    workoutData.intesity=req.body.intensity;
+    workoutData.intensity=req.body.intensity;
     workoutData.date_created=new Date();
 
 
@@ -93,19 +106,20 @@ controller.editWorkout =  function(req,res){
           })
           knex('workout_to_exercise').where('workout_id','=',req.body.workout.id).del().then(function(value){
             console.log(value);
+            knex.batchInsert('workout_to_exercise',finalList,req.body.list.length).then(function(value){
+               console.log(value);
+               res.status(201).json({message:'success'});
+              })
+              .catch(function(err){
+                console.log(err);
+                res.status(500).json({message:'unsuccessful'});
+              });
           })
           .catch(function(err){
             console.log(err);
             res.status(500).json({message:'unsuccessful'});
           });
-          knex.batchInsert('workout_to_exercise',finalList,req.body.list.length).then(function(value){
-             console.log(value);
-             res.status(201).json({message:'success'});
-            })
-            .catch(function(err){
-              console.log(err);
-              res.status(500).json({message:'unsuccessful'});
-            });
+
         } else {
           res.status(500).json({message:'Exercise List Empty'});
         }
