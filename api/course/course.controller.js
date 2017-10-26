@@ -40,6 +40,46 @@ controller.createCourse =  function(req,res){
        });
 };
 
+controller.editCourse= function(req,res){
+  var courseData={};
+  courseData=req.body.course;
+  courseData.utc_last_updated= new Date();
+
+  knex('course').where("id",'=',req.body.course.id).update(courseData).then(function(value){
+
+    if(req.body.list.length>0&&value==1){
+      var finalList=req.body.list.map((data)=>{
+        var obj={};
+        obj.course_id=req.body.course.id;
+        obj.workout_id=data.id;
+        obj.workout_day=data.day;
+        return obj;
+      })
+      knex('course_to_workout').where('course_id','=',req.body.course.id).del().then(function(value){
+
+        knex.batchInsert('course_to_workout',finalList,req.body.list.length).then(function(value){
+           console.log(value);
+           res.status(201).json({message:'success'});
+          })
+          .catch(function(err){
+            console.log(err);
+            res.status(500).json({message:'unsuccessful'});
+          });
+      })
+      .catch(function(err){
+        console.log(err);
+        res.status(500).json({message:'unsuccessful'});
+      });
+    } else {
+      res.status(500).json({message:'workout List Empty'});
+    }
+  })
+  .catch(function(err){
+    console.log(err);
+    res.status(500).json({message:'unsuccessful'});
+  });
+}
+
 controller.fetchCoursesById=function (req,res){
   knex('course').where({"user_id":req.params.id}).select('*').then(function(data){
     console.log(data);

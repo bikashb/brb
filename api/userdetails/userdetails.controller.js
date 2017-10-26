@@ -72,8 +72,8 @@ controller.getByExercise =  function(req, res) {
     });
 };
 
-controller.userdetailsbyusername=function(req, res) {
-  knex('user_detail').where({user_name:req.params.user_name}).select('*').then(function(value) {
+controller.userdetailsbyId=function(req, res) {
+  knex('user_detail').where({user_name:req.params.id}).select('*').then(function(value) {
    res.status(200).json({data : value[0]});
   }).catch(function(err){
    res.status(204).json({message:"no content"});
@@ -89,7 +89,7 @@ controller.updateprofile=function(req, res) {
       profile_img_url : req.body.image_url,
 
   }
-  knex('user_detail').where({user_name:req.body.user_name}).update(details).then(function(val) {
+  knex('user_detail').where({id:req.body.id}).update(details).then(function(val) {
     res.status(200).json({message:"successfully updated"});
   }).catch(function(err) {
     console.log(err);
@@ -97,13 +97,13 @@ controller.updateprofile=function(req, res) {
   });
 }
 
-controller.getByPlan = function(req, res) {
-  let query = "select * from user_detail, plan_to_user where plan_to_user.plan_id = " +
-    req.params.id + " and user_detail.id = plan_to_user.user_id";
+controller.getByCourse = function(req, res) {
+  let query = "select * from user_detail, course_to_user where course_to_user.course_id = " +
+    req.params.id + " and user_detail.id = course_to_user.user_id";
   knex.raw(query).then(function(data) {
     res.status(200).json(data.rows);
   }).catch(function(err) {
-    console.log("getByPlan Error: ", err);
+    console.log("getByCourse Error: ", err);
     res.status(204).json({message: "error"});
   });
 }
