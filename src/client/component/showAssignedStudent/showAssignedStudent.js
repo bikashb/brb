@@ -8,22 +8,33 @@ class ShowAssignedStudent extends Component {
 	constructor() {
 		super();
 		this.state = {
-			AllExercise:[],
-			studentUnderExercise:[]
+			AllExercise: [],
+			studentUnderExercise: []
 		};
 	}
-	componentWillMount(){
+
+	componentWillMount() {
 		this.setState({AllExercise:this.props.AllExercise})
 	}
-	userUnderExercise= (exercise)=>
-	{
+
+	userUnderExercise= (exercise) => {
+		axios.get(APIs.GetStudentUnderExercise + exercise)
+	    .then((response) => {
+	      console.log(response.data);
+	      this.setState({studentUnderExercise:response.data});
+	      console.log('students under exercise: ', this.state.studentUnderExercise);
+	    });
+	}
+
+	userUnderCourse= (exercise) => {
 		axios.get(APIs.GetStudentUnderExercise+exercise)
 	    .then((response)=>{
 	      console.log(response.data);
 	      this.setState({studentUnderExercise:response.data});
-	      console.log(this.state.studentUnderExercise);
+	      console.log('students under course: ', this.state.studentUnderExercise);
 	    });
 	}
+
 	render () {
 		const { AllExercise, studentUnderExercise } = this.state;
 		const myScrollbar = {height: 440 };
@@ -31,11 +42,7 @@ class ShowAssignedStudent extends Component {
 			<div>
             {this.state.AllExercise.length?
                 <div>
-                    {/*<div className="ex_plan_link_mas">
-                        <a href="javascript:void(0);" className="ex_plan_link">Students under Exercise &gt;</a>
-                        <a href="javascript:void(0);" onClick={(e)=>{this.props.show(e, '#myDashboard')}} className="ex_plan_link">Students under Plan &gt;</a>
-                    </div>*/}
-				<div>
+									<div>
                     <ul className="legends4Tbl">
                         <li><span className="lNew"></span>New</li>
                         <li><span className="lCompleted"></span>Completed</li>
@@ -43,9 +50,9 @@ class ShowAssignedStudent extends Component {
                         <li><span className="lImprove"></span>Need to Improve</li>
                         <li><span className="lGood"></span>Good</li>
                     </ul>
-                </div>
-				<div className="panel-group" id="accordion">
-                {
+                	</div>
+									<div className="panel-group" id="accordion">
+                	{
                 	AllExercise.map((video, i)=>
                         <div className="panel panel-default" key={i}>
                             <div className="panel-heading">
@@ -89,11 +96,10 @@ class ShowAssignedStudent extends Component {
                     )
                 }
                 </div>
-                </div>:<h2 className="nocsv">Currently no exercises available please create exercise !</h2>}			
+                </div>:<h2 className="nocsv">Currently no exercises available please create exercise !</h2>}
 			</div>
 		)
 	}
 }
 
 export default ShowAssignedStudent;
-

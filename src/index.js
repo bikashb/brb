@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
@@ -15,16 +14,15 @@ import './App.css';
 import './fnt.css';
 import './default.css';
 
-ReactDOM.render
-	(
-		<HashRouter>
-			  <Switch>
-				<Route path="/signup" component={Signup}/>
-				<Route exact path="/" component={Login}/>
-				<Route path="/passwordreset" component={PasswordReset}/>
-				<Route path="/forgotpassword" component={forgotPassword}/>
-				<Route path="/home" component={Home} />
-			  </Switch>
-		</HashRouter>,
-		document.getElementById('root')
-	);
+ReactDOM.render (
+	<HashRouter>
+	  <Switch>
+			<Route path='/signup' component={Signup} />
+			<Route exact path='/' component={Login} />
+			<Route path='/passwordreset' component={PasswordReset} />
+			<Route path='/forgotpassword' component={forgotPassword} />
+			<Route path='/home' component={Home} />
+	  </Switch>
+	</HashRouter>,
+	document.getElementById('root')
+);

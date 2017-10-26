@@ -21,20 +21,19 @@ class  Home extends Component {
   constructor() {
     super();
     this.state = {
-      checkStateSelectExercise:false,
-      instructor :[],
-      asignTask: {inst:'', task:''},
-      instrTask:[],
-      allVideos: [],
-      allStudents:[],
-      selectedStudent:[],
-      selectedStudentsVideo:[],
-      SelectedStudentsUnderExercise:[],
-      listOfplans: [],
-      listOfWorkouts:[],
-      exerciseInPlans:[],
-      showView:false,
-      createWorkoutExercise:[],
+      checkStateSelectExercise: false,
+      instructor: [],
+      asignTask: {inst: '', task: ''},
+      instrTask: [],
+      exercises: [],
+      allStudents: [],
+      selectedStudent: [],
+      selectedStudentsVideo: [],
+      courses: [],
+      workouts: [],
+      exerciseInPlans: [],
+      showView: false,
+      createWorkoutExercise: [],
       instructorDetails: {
         imagePath: 'images/profile_img.jpg',
         description: 'Your description goes here'
@@ -42,7 +41,7 @@ class  Home extends Component {
     };
   }
 
-  show=(e, value)=>{
+  show = (e, value)=>{
     console.log(e, value)
     this.setState({showView: true});
       $(document).ready(function() {
@@ -54,18 +53,15 @@ class  Home extends Component {
       });
   }
 
- updateInstructorDetails(instructor) {
+  updateInstructorDetails(instructor) {
     console.log('updating instructorDetails in home: ', instructor);
     this.setState({instructorDetails: instructor});
   }
 
-  componentWillMount = () =>{
-    console.log(APIs)
-    if(localStorage.getItem('username')=== null)/*Check user*/
-    {
+  componentWillMount() {
+    if(localStorage.getItem('username') === null)/*Check user*/ {
       this.props.history.push('/');
     }
-
     this.getStudentDetails();/*Get list of students*/
     this.getAllExercise();
     this.getAllPlans();
@@ -83,89 +79,99 @@ class  Home extends Component {
   getAllExercise=()=>{
     axios.get(APIs.GetAllExercise+localStorage.getItem('id'))/*Get list of videos specific to instructor*/
     .then((response)=>{
-      this.setState({allVideos:response.data});
-      console.log(this.state.allVideos);
+      this.setState({exercises:response.data});
+      console.log(this.state.exercises);
     });
   }
 
   getAllPlans=()=>{
      axios.get(APIs.GetAllPlans+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({listOfplans:response.data.plans});
+      this.setState({courses:response.data.plans});
     });
   }
 
   getAllWorkouts=()=>{
     axios.get(APIs.GetAllWorkout+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({listOfWorkouts: response.data.workouts});
+      this.setState({workouts: response.data.workouts});
     });
   }
 
-  deleteExercise(exerciseID, index) {
-    axios.delete(APIs.DeleteExercise + exerciseID)
-    .then((response) => {
-      console.log('delete exercise response: ', response);
-      let { allVideos } = this.state;
-      allVideos.splice(index, 1);
-      this.setState({
-        allVideos: allVideos
-      });
-    });
+  deleteItem(type, id, index) {
+    console.log('inside delete item: ', type, id, index);
+    switch(type) {
+      case 'exercise':
+        axios.delete(APIs.DeleteExercise + id)
+        .then((response) => {
+          console.log('delete exercise response: ', response);
+          let { exercises } = this.state;
+          exercises.splice(index, 1);
+          this.setState({exercises: exercises});
+        });
+        break;
+      case 'workout':
+        axios.delete(APIs.DeleteWorkout + id)
+        .then((response) => {
+          console.log('delete workout response: ', response);
+          let { workouts } = this.state;
+          workouts.splice(index, 1);
+          this.setState({workouts: workouts});
+        });
+        break;
+      case 'course':
+        axios.delete(APIs.DeleteCourse + id)
+        .then((response) => {
+          console.log('delete course response: ', response);
+          let { courses } = this.state;
+          courses.splice(index, 1);
+          this.setState({courses: courses});
+        });
+        break;
+      default:
+        console.log('invalid deletion request');
+        break;
+    }
   }
 
-  editExercise(exercise, index) {
-    let { allVideos } = this.state;
-    allVideos.splice(index, 1, exercise);
-    this.setState({
-      allVideos: allVideos
-    });
+  updateItem(type, item, index) {
+    console.log('inside update item: ', type, item, index);
+    switch(type) {
+      case 'exercise':
+        let exercise = item;
+        axios.put(APIs.UpdateExercise, exercise)
+        .then((response) => {
+          console.log('update exercise response: ', response);
+          let { exercises } = this.state;
+          exercises.splice(index, 1, exercise);
+          this.setState({exercises: exercises});
+        });
+        break;
+      case 'workout':
+        let workout = item;
+        axios.put(APIs.UpdateWorkout, workout)
+        .then((response) => {
+          console.log('update workout response: ', response);
+          let { workouts } = this.state;
+          workouts.splice(index, 1, workout);
+          this.setState({workouts: workouts});
+        });
+        break;
+      case 'course':
+        let course = item;
+        let { courses } = this.state;
+        courses.splice(index, 1, course);
+        this.setState({courses: courses});
+        break;
+      default:
+        console.log('invalid updation request');
+        break;
+    }
   }
 
-  deleteWorkout(workoutID, index) {
-    axios.delete(APIs.DeleteWorkout + workoutID)
-    .then((response) => {
-      console.log('delete workout response: ', response);
-      let { listOfWorkouts } = this.state;
-      listOfWorkouts.splice(index, 1);
-      this.setState({
-        listOfWorkouts: listOfWorkouts
-      });
-    });
-  }
-
-  editWorkout(workout, index) {
-    let { listOfWorkouts } = this.state;
-    listOfWorkouts.splice(index, 1, workout);
-    this.setState({
-      listOfWorkouts: listOfWorkouts
-    });
-  }
-
-  deleteCourse(courseID, index) {
-    axios.delete(APIs.DeleteCourse + courseID)
-    .then((response) => {
-      console.log('delete course response: ', response);
-      let { listOfplans } = this.state;
-      listOfplans.splice(index, 1);
-      this.setState({
-        listOfplans: listOfplans
-      });
-    });
-  }
-
-  editCourse(course, index) {
-    let { listOfplans } = this.state;
-    listOfplans.splice(index, 1, course);
-    this.setState({
-      listOfplans: listOfplans
-    });
-  }
-
-  logout = ()=>/*Log out*/
-  {
-    localStorage.removeItem("username")
-    localStorage.removeItem("id")
+  logout = ()=>/*Log out*/ {
+    localStorage.removeItem("username");
+    localStorage.removeItem("id");
     this.props.history.push('/');
   }
 
@@ -181,11 +187,6 @@ class  Home extends Component {
 
   selectStudentChanged = (newStudent) =>{
     this.setState({selectedStudent:newStudent})
-  }
-
-  selectStudentUnderExerciseChanged = (newData) =>{
-    console.log(newData)
-    this.setState({SelectedStudentsUnderExercise:newData})
   }
 
   csvFile = (e) =>{
@@ -225,25 +226,6 @@ class  Home extends Component {
     array.push(obj);
     this.setState({selectedStudentsVideo:array})
     console.log(this.state.selectedStudentsVideo);
-  }
-
-  AssignStudents(){
-    let array = this.state.SelectedStudentsUnderExercise.toString().replace(/,/g , "").trim().split(" ");
-    if(array.length>1) {
-      let temp = [];
-      for(let i=0; i<array.length; i+=2)
-        temp.push({'user_id': array[i], exercise_id: array[i+1]});
-      axios.post(APIs.AssignExerciseToStudent, {list:temp})
-      .then((response) => {
-          console.log(response)
-          if(response.status == 201) {
-              alert(response.data.message);
-              this.setState({SelectedStudentsUnderExercise:[],selectedStudent:[]})
-          }
-      });
-    } else {
-        alert('Select Some students');
-    }
   }
 
   render() {
@@ -311,7 +293,7 @@ class  Home extends Component {
                     </div>
                 </div>
                 <div className=" col-md-9">
-                  <Dashboard show={this.show} AllPlans={this.state.listOfplans}/>
+                  <Dashboard show={this.show} AllPlans={this.state.courses}/>
                 </div>
                 {this.state.showView?
                     <div className="col-md-12" id="course-block">
@@ -331,37 +313,31 @@ class  Home extends Component {
                                 </div>
                                 <div className="tab-pane viewAssignedTab" id="c">
                                   <ShowAssignedStudent
-                                    AllExercise={this.state.allVideos}
+                                    AllExercise={this.state.exercises}
                                     show={this.show}
                                   />
                                 </div>
                                 <div className="tab-pane plansTab" id="d">
                                   <ShowPlan
-                                      AllPlans={this.state.listOfplans}
+                                      AllPlans={this.state.courses}
                                       AllStudents={this.state.allStudents}
                                   />
                                 </div>
                                 <div className="tab-pane creationTab" id="e">
                                   <CreateALL
-                                    AllExercises={this.state.allVideos}
-                                    AllWorkouts={this.state.listOfWorkouts}
-                                    AllPlans={this.state.listOfplans}
+                                    AllExercises={this.state.exercises}
+                                    AllWorkouts={this.state.workouts}
+                                    AllPlans={this.state.courses}
                                     callAllExercises={this.getAllExercise}
                                     callAllWorkouts={this.getAllWorkouts}
                                     callAllPlans={this.getAllPlans}
-                                    deleteExercise={this.deleteExercise.bind(this)}
-                                    editExercise={this.editExercise.bind(this)}
-                                    deleteWorkout={this.deleteWorkout.bind(this)}
-                                    editWorkout={this.editWorkout.bind(this)}
-                                    deleteCourse={this.deleteCourse.bind(this)}
-                                    editCourse={this.editCourse.bind(this)}
+                                    editItem={this.updateItem.bind(this)}
+                                    deleteItem={this.deleteItem.bind(this)}
                                   />
                                 </div>
                             </div>
                         </div>:null}
-
             </div>
-
         </div>
     </section>
     <Footer />

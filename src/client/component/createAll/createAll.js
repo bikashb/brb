@@ -38,24 +38,24 @@ export default class CreateAll extends Component {
 				return (
 					<Exercise
 						AllExercises={AllExercises}
-						editExercise={this.props.editExercise}
-						deleteExercise={this.props.deleteExercise}
+						editExercise={(exercise, index)=>this.props.editItem('exercise', exercise, index)}
+						deleteExercise={(id, index)=>this.props.deleteItem('exercise', id, index)}
 						callAllExercises={this.props.callAllExercises} />
 				);
 			case 'create-plan':
 				return (
 					<Plan AllWorkouts={AllWorkouts}
 						AllPlans={AllPlans}
-						editCourse={this.props.editCourse}
-						deleteCourse={this.props.deleteCourse}
+						editCourse={(course, index)=>this.props.editItem('course', course, index)}
+						deleteCourse={(id, index)=>this.props.deleteItem('course', id, index)}
 						callAllPlans={this.props.callAllPlans} />
 				);
 			case 'create-workout':
 				return (
 					<Workout AllExercises={AllExercises}
 						AllWorkouts={AllWorkouts}
-						editWorkout={this.props.editWorkout}
-						deleteWorkout={this.props.deleteWorkout}
+						editWorkout={(course, index)=>this.props.editItem('workout', course, index)}
+						deleteWorkout={(id, index)=>this.props.deleteItem('workout', id, index)}
 						callAllWorkouts={this.props.callAllWorkouts} />
 				);
 			default:
@@ -63,7 +63,7 @@ export default class CreateAll extends Component {
 					<Exercise
 						AllExercises={AllExercises}
 						editExercise={this.props.editExercise}
-						deleteExercise={this.props.deleteExercise}
+						deleteExercise={(id, index)=>this.props.deleteItem('exercise', id, index)}
 						callAllExercises={this.props.callAllExercises} />
 				);
 		}
@@ -73,19 +73,19 @@ export default class CreateAll extends Component {
 		return (
 			<div>
 				<div className="col-md-8 col-lg-12">
-			        <h4 className={this.state.currentTab === 'create-exercise' ? "createItems1" : "createItems1 greyTxt"}
+			      <h4 className={this.state.currentTab === 'create-exercise' ? "createItems1" : "createItems1 greyTxt"}
 			        	onClick={(e) => this.setState({currentTab: 'create-exercise'})}>
 						&nbsp; Exercise
-					</h4> 
-			        <h4 className={this.state.currentTab === 'create-workout' ? "createItems1" : "createItems1 greyTxt"}
-			        	onClick={(e) => this.setState({currentTab: 'create-workout'})}>
-						&nbsp; Workout
-					</h4>
-			        <h4 className={this.state.currentTab === 'create-plan' ? "createItems1" : "createItems1 greyTxt"}
+						</h4>
+				    <h4 className={this.state.currentTab === 'create-workout' ? "createItems1" : "createItems1 greyTxt"}
+				        	onClick={(e) => this.setState({currentTab: 'create-workout'})}>
+							&nbsp; Workout
+						</h4>
+			      <h4 className={this.state.currentTab === 'create-plan' ? "createItems1" : "createItems1 greyTxt"}
 			        	onClick={(e) => this.setState({currentTab: 'create-plan'})}>
 						&nbsp; Course
-					</h4> 
-		      	</div>
+						</h4>
+		      </div>
 				{this.getCurrentTab()}
 			</div>
 		)

@@ -27,5 +27,8 @@ module.exports = {
 	GetStudentsUnderPlan: url + '/api/v1/userdetails/plan/',
 	DeleteExercise: url + '/api/v1/exercise/delete/',
 	DeleteWorkout: url + '/api/v1/workout/delete/',
-	DeleteCourse: url + '/api/v1/plan/delete/'
+	DeleteCourse: url + '/api/v1/plan/delete/',
+	UpdateExercise: url + '/api/v1/exercise/update',
+	UpdateWorkout: url + '/api/v1/workout/update',
+	// UpdateCourse: url + '/api/v1/plan/update'
 }
