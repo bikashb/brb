@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import $ from 'jquery';
 import APIs from '../template/constants.js';
 

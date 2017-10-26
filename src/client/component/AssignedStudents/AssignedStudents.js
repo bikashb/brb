@@ -25,7 +25,7 @@ export default class AssignedStudents extends Component {
 			axios.get(APIs.GetStudentsUnderPlan + id)
 		    .then((response) => {
 					// this.setState({students: response.data});
-		      console.log('students under course: ', response.data);
+		      console.log('students under course: ', response);
 		    });
 		} else {
 			this.setState({selectedCourseID: -1});

@@ -30,7 +30,7 @@ class ShowStudentListMini extends Component {
     let temp = [];
     for(let i=0; i<array.length; i+=2)
 			temp.push({plan_id: array[i+1], 'user_id': array[i]});
-		axios.post(APIs.AssignPlanToStudent, {list: temp})
+		axios.post(APIs.AssignStudentsToCourse, {list: temp})
 	    .then((response) => {
 	    	console.log(response)
 	      if(response.status == 201) {

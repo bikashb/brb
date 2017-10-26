@@ -16,19 +16,18 @@ module.exports = {
 	GetAllWorkout: url + '/api/v1/workout/',
 	GetAllDetailsOfPlan: url + '/api/v1/entireplan/',
 	GetStudentUnderExercise: url + '/api/v1/userdetails/exercise/',
-	AssignExerciseToStudent: url + '/api/v1/subscribe',
-	AssignPlanToStudent: url + '/api/v1/plan/assignstudents',
+	AssignStudentsToCourse: url + '/api/v1/course/assign',
 	UploadVideo: url + '/api/v1/video/upload',
 	CreateExercise: url + '/api/v1/exercise/create',
 	CreateWorkout: url + '/api/v1/workout/create',
-	CreatePlan: url + '/api/v1/plan/create',
+	CreatePlan: url + '/api/v1/course/create',
 	GetExercisesUnderWorkout: url + '/api/v1/exercise/workout/',
 	GetWorkoutsUnderPlan: url + '/api/v1/workout/plan',
 	GetStudentsUnderPlan: url + '/api/v1/userdetails/plan/',
 	DeleteExercise: url + '/api/v1/exercise/delete/',
 	DeleteWorkout: url + '/api/v1/workout/delete/',
-	DeleteCourse: url + '/api/v1/plan/delete/',
+	DeleteCourse: url + '/api/v1/course/delete/',
 	UpdateExercise: url + '/api/v1/exercise/update',
 	UpdateWorkout: url + '/api/v1/workout/update',
-	// UpdateCourse: url + '/api/v1/plan/update'
+	UpdateCourse: url + '/api/v1/course/update'
 }
