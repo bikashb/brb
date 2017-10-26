@@ -81,15 +81,50 @@ controller.editCourse= function(req,res){
 }
 
 controller.fetchCoursesById=function (req,res){
+
+  var course=[];
+
   knex('course').where({"user_id":req.params.id}).select('*').then(function(data){
-    console.log(data);
-    res.status(200).json({"courses":data});
+      var courseList=data.map(single=>{
+      return knex('course_to_workout').where({"course_id":single.id}).select('*').then(function(lists){
+
+          var filteredWorkouts=[];
+          lists.map((e)=>{
+              if(filteredWorkouts.indexOf(e.workout_id)==-1){
+                filteredWorkouts.push(e.workout_id);
+              }
+          })
+          single.workouts=[];
+          var work=filteredWorkouts.map(workout=>{
+            return knex('workout').where({"id":workout}).select('id','title','description').then(function(id){
+              if(id[0])
+              single.workouts.push(id[0]);
+            })
+            .catch(function(err){
+              console.log(err);
+              res.status(500).json({message:'unsuccessful'});
+            })
+          })
+          return Promise.all(work).then(results=>{
+            course.push(single);
+          })
+
+    })
+    .catch(function(err){
+      console.log(err);
+      res.status(500).json({message:'unsuccessful'});
+      })
+    })
+    Promise.all(courseList).then(function(result){
+      res.send({"courses":course});
+    })
   })
   .catch(function(err){
     console.log(err);
     res.status(500).json({message:'unsuccessful'});
   })
 };
+
 
 controller.assign = function(req, res) {
     if(req.body.list.length>0) {

@@ -3,10 +3,53 @@ var controller = {};
 
 controller.fetchWorkoutsById=function(req,res){
 
+  //  knex('workout').where({"instructor_id":req.params.id}).select('*').then(function(data){
+  //    console.log(data);
+  //    res.status(200).json({"workouts":data});
+  //  })
+  //  .catch(function(err){
+  //    console.log(err);
+  //    res.status(500).json({message:'unsuccessful'});
+  //  })
+
+  var exercises = [];
    knex('workout').where({"instructor_id":req.params.id}).select('*').then(function(data){
-     console.log(data);
-     res.status(200).json({"workouts":data});
+    var allexercises=data.map(function(workout)
+   {
+     return knex('workout_to_exercise').where({"workout_id":workout.id}).select('exercise_id').then(
+       function(exercise)
+       {
+         workout.exercises=[];
+
+         var exer=exercise.map(exerciseId=>{
+
+           return knex('exercise').where({"id":exerciseId.exercise_id}).select('id','title','streaming_uri','description').then(
+             function(exercisedata)
+             {
+               if(exercisedata[0])
+               workout.exercises.push(exercisedata[0]);
+
+            })
+            .catch(function(err){
+              console.log(err);
+              res.status(500).json({message:'unsuccessful'});
+            })
+
+         })
+         return Promise.all(exer).then(results=>{
+           exercises.push(workout);
+         })
+
+       })
+       .catch(function(err){
+         console.log(err);
+         res.status(500).json({message:'unsuccessful'});
+       })
    })
+   Promise.all(allexercises).then(results=>{
+     res.send(exercises);
+   })
+  })
    .catch(function(err){
      console.log(err);
      res.status(500).json({message:'unsuccessful'});
