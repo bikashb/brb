@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import Link from 'react-router-dom/Link';
-import validator from 'validator';
 import axios from 'axios';
-import ReactScrollbar from 'react-scrollbar-js';
 import $ from 'jquery';
+
 /* custom components */
 import Sidebar from '../sidebar/sidebar.js';
 import CourseAndWorkoutTab from '../courseAndWorkoutTab/courseAndWorkoutTab.js'
 import ShowPlan from '../showPlan/showPlan.js';
 import Dashboard from '../dashboard/dashboard.js';
 import ShowStudentList from '../showStudentList/showStudentList.js';
-import ShowAssignedStudent from '../showAssignedStudent/showAssignedStudent';
+import AssignedStudents from '../AssignedStudents/AssignedStudents';
 import CreateALL from '../createAll/createAll.js';
 import Footer from '../footer/footer.js';
 import InstructorProfile from '../InstructorProfile/instructorprofile.js';
@@ -203,11 +201,11 @@ class  Home extends Component {
       axios.post(APIs.CSVUpload,formData)
       .then((response)=>{
         console.log(response.status);
-        if (response.status == 201) {
+        if (response.status === 201) {
           alert("file upload successful");
           this.getStudentDetails();
         }
-        if (response.status == 500){
+        if (response.status === 500){
           alert('response error')
         }
       });
@@ -229,9 +227,6 @@ class  Home extends Component {
   }
 
   render() {
-    const myScrollbar = {
-      height: 500
-    };
     return (
         <div>
            <header className="navbar clearfix cus_Hgt" id="header">
@@ -246,7 +241,7 @@ class  Home extends Component {
             </div>
             <ul className="nav navbar-nav usrTop pull-right ">
               <li className="dropdown user" id="header-user">
-                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+                <a className="dropdown-toggle" data-toggle="dropdown">
                   <span className="username">{localStorage.getItem("username")}  </span>
                   <i className="fa fa-angle-down"></i>
                 </a>
@@ -282,9 +277,9 @@ class  Home extends Component {
                             <h3>Instructor</h3>
                         </div>
                         <div className="list-group">
-
-                            <img alt="" className="img-responsive" src={this.state.instructorDetails.imagePath} alt="JenniF"   />
-
+                            <img className="img-responsive"
+                              alt="Profile Picture"
+                              src={this.state.instructorDetails.imagePath} />
                             <div className="list-group-item profile-details">
                                 <p><i className="fa fa-circle text-green"></i> Online</p>
                                 <p>{this.state.instructorDetails.description}</p>
@@ -312,8 +307,8 @@ class  Home extends Component {
                                   </div>
                                 </div>
                                 <div className="tab-pane viewAssignedTab" id="c">
-                                  <ShowAssignedStudent
-                                    AllExercise={this.state.exercises}
+                                  <AssignedStudents
+                                    courses={this.state.courses}
                                     show={this.show}
                                   />
                                 </div>
