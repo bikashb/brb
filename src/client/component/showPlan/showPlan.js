@@ -42,7 +42,7 @@ class ShowPlan extends Component {
 								</div>
 								<ul className="wrkDetails1">
 									<li><span className="blue">Name of the Course :</span>{plan.title}</li>
-									<li><span className="blue">No of Videos :</span>{plan.schedule.length}</li>
+									<li><span className="blue">No of Videos :</span>{plan.workouts.length}</li>
 								</ul>
 
 							</li>

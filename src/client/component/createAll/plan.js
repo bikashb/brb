@@ -12,9 +12,7 @@ export default class Plan extends Component {
     this.state = {
       mode: 'create',
       title: '', titleError: '',
-      duration: '', durationError: '',
       description: '', descriptionError: '',
-      intensity: '', intensityError: '',
       selectedWorkout: [],
       currentCourse: {},
       currentIndex: -1
@@ -33,9 +31,7 @@ export default class Plan extends Component {
       currentCourse: course,
       currentIndex: index,
       title: course.title,
-      duration: course.duration,
       description: course.description,
-      intensity: course.intensity,
       selectedWorkout: course.workouts
     });
   }
@@ -44,10 +40,8 @@ export default class Plan extends Component {
     e.preventDefault();
     let { currentIndex, currentCourse } = this.state;
     currentCourse.title = this.state.title;
-    currentCourse.duration= this.state.duration;
     currentCourse.description= this.state.description;
-    currentCourse.intensity = this.state.intensity;
-    currentCourse.list = this.state.selectedWorkout.map(id => ({id: id, day: '2'}));
+    currentCourse.workouts = this.state.selectedWorkout.map(id => ({id: id, day: '2'}));
     this.props.editCourse(currentCourse, currentIndex);
     this.resetFields();
   }
@@ -56,9 +50,7 @@ export default class Plan extends Component {
     this.setState({
       mode: 'create',
       title: '', titleError: '',
-      duration: '', durationError: '',
       description: '', descriptionError: '',
-      intensity: '', intensityError: '',
       selectedWorkout: [],
       currentCourse: {},
       currentIndex: -1
@@ -66,25 +58,14 @@ export default class Plan extends Component {
   }
 
   validationSuccess() {
-    let { title, duration, intensity, description } = this.state;
+    let { title, description } = this.state;
     if (title === '') {
       this.setState({titleError: 'Please enter Title'});
       return false;
     }
-    if(duration === '') {
-     this.setState({durationError: 'Please enter Duration'});
-     return false;
-    }
     if(description === '') {
       this.setState({descriptionError: 'Please enter Description'});
       return false;
-    }
-    if(intensity === '') {
-      this.setState({intensityError: 'Please enter Intensity Numbers'});
-      return false;
-    } else if(isNaN(intensity)) {
-       this.setState({intensityError: 'Please enter only Numbers'});
-       return false;
     }
     return true;
   }
@@ -96,15 +77,13 @@ export default class Plan extends Component {
 
 	createCourse = (e) => {
 		e.preventDefault();
-		let { description, duration, title, intensity, selectedWorkout } = this.state;
+		let { description, title, selectedWorkout } = this.state;
 		if(this.validationSuccess() && this.state.selectedWorkout.length !== 0) {
-      let list = selectedWorkout.map(id => list.push({id: id, day: '2'}));
+      let list = selectedWorkout.map(id => ({id: id, day: '2'}));
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
 		      "id": localStorage.getItem("id"),
-		      "duration": duration,
 		      "title": title,
-		      "intensity": intensity,
 		      "list": list/*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
 		    })
 		    .then((response)=>{
@@ -155,25 +134,11 @@ export default class Plan extends Component {
                   <span style={{color:'red'}}>{this.state.titleError}</span>
                 </div>
                 <div className="form-group">
-                  <label>Duration</label>
-                  <input type="text" placeholder="Duration (In days 1-30)" name="Duration"
-                    value={this.state.duration} className="form-control"
-                    onChange={(e)=>this.setState({duration: e.target.value, durationError: ''})} />
-                  <span style={{color:'red'}}>{this.state.durationError}</span>
-                </div>
-                <div className="form-group">
                   <label>Description</label>
                   <input type="text" placeholder="Description" name="Description"
                     value={this.state.description} className="form-control"
                     onChange={(e)=>this.setState({description: e.target.value, descriptionError: ''})} />
                   <span style={{color:'red'}}>{this.state.descriptionError}</span>
-                </div>
-                <div className="form-group">
-                  <label>Intensity</label>
-                  <input type="text" placeholder="Intensity (1-10)" name="Intensity"
-                    value={this.state.intensity} className="form-control"
-                    onChange={(e)=>this.setState({intensity: e.target.value, intensityError: ''})} />
-                  <span style={{color:'red'}}>{this.state.intensityError}</span>
                 </div>
                 {
                   this.state.mode === 'create' ?

@@ -166,7 +166,7 @@ export default class InstructorProfile extends Component {
         <div className="modal-content">
           <div className="modal-header">
             <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 className="modal-title" id="myModalLabel">Update My Profile</h4>
+            <h4 className="modal-title" id="myModalLabel">My Profile</h4>
           </div>
           <div className="modal-body createCourse">
             <form >
@@ -197,6 +197,9 @@ export default class InstructorProfile extends Component {
                       id="imagePath"
                     />
                   </label>
+                  {/*<img className="img-responsive"
+                    alt="Profile Picture"
+                    src={this.state.imagePath.value} />*/}
                   <span className="help-block">{state.imagePath.message}</span>
                 </div>
             </form>

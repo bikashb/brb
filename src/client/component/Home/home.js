@@ -86,7 +86,7 @@ class  Home extends Component {
   getAllPlans=()=>{
      axios.get(APIs.GetAllPlans+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({courses: response.data.plans});
+      this.setState({courses: response.data.courses});
       console.log('all plans: ', response);
     });
   }
