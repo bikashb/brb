@@ -135,6 +135,7 @@ controller.editWorkout =  function(req,res){
 
     var workoutData={};
     workoutData=req.body.workout;
+    delete workoutData.exercises;
     console.log(workoutData);
     workoutData.utc_last_updated=new Date();
 

@@ -17,7 +17,12 @@ class Dashboard extends Component {
 	}
 
 	componentWillMount(){
-		this.setState({courses: this.props.AllPlans})
+		if(this.props.AllPlans.length) {
+			this.setState({courses: this.props.AllPlans, selectedCourseID: this.props.AllPlans[0].id});
+			this.getStudentsUnderCourse(this.props.AllPlans[0].id);
+		} else {
+			console.log('no courses to display in the dashboard');
+		}
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -28,6 +33,7 @@ class Dashboard extends Component {
 		axios.get(APIs.GetStudentsUnderCourse + courseID)
 			.then((response) => {
 				this.setState({students: response.data});
+				console.log('selected course: ', this.state.courses[courseID]);
 				console.log('students under course: ', response);
 			});
 	}
@@ -43,7 +49,8 @@ class Dashboard extends Component {
 				</div>
 				<div className="col-xl-8 col-lg-12 myDash">
 					<div className="col-md-8 col-lg-8">
-					{courses.length ?
+					{
+						courses.length ?
 						<div className="card">
 							<div className="card-header">
 								<a className="heading-elements-toggle"><i className="icon-ellipsis font-medium-3"></i></a>
@@ -74,39 +81,45 @@ class Dashboard extends Component {
 											}
 										</select>
 									</div>
-									<table className="table table-striped fnt13">
-                    <thead>
-                        <tr>
-                           <th width="25%">Student Name</th>
-													 <th width="25%">Age</th>
-													 <th width="25%">Other Details</th>
-													 <th width="25%">Workout Status</th>
-                        </tr>
-                    </thead>
-									</table>
-                <div className="dashTblScroll">
-									<table className="table table-striped fnt13">
-										 <tbody>
-											{this.state.students.map((student, si) =>
-											<tr key={si}>
-												<td width="25%" className="text-truncate">{student.first_name}</td>
-												<td width="25%" className="text-truncate" >{student.age}</td>
-												<td width="25%" className="text-truncate lstscroll" data-toggle="modal" data-target="#showPlan" >
-													<a href="javascript:void(0)"
-														onClick={(e)=>this.setState({selectedStudentIndex: si})}>Click to view</a>
-												</td>
-												<td width="25%" className="valign-middle">
-													<div className="progress">
-														<div className="progress-bar  progress-bar-success" role="progressbar"  style={{width: '20'}} aria-valuenow={'20'} aria-valuemin="0" aria-valuemax="100" title={'20'}>{'20'}</div>
-													</div>
-												</td>
-											</tr>
-											)}
-										 </tbody>
-									</table> </div>
+									{
+										this.state.students.length ?
+										<div className="dashTblScroll">
+											<table className="table table-striped fnt13">
+		                    <thead>
+		                        <tr>
+		                           <th width="25%">Student Name</th>
+															 <th width="25%">Age</th>
+															 <th width="25%">Other Details</th>
+															 <th width="25%">Workout Status</th>
+		                        </tr>
+		                    </thead>
+											</table>
+											<table className="table table-striped fnt13">
+												 <tbody>
+													{this.state.students.map((student, si) =>
+													<tr key={si}>
+														<td width="25%" className="text-truncate">{student.first_name}</td>
+														<td width="25%" className="text-truncate" >{student.age}</td>
+														<td width="25%" className="text-truncate lstscroll" data-toggle="modal" data-target="#showPlan" >
+															<a href="javascript:void(0)"
+																onClick={(e)=>this.setState({selectedStudentIndex: si})}>Click to view</a>
+														</td>
+														<td width="25%" className="valign-middle">
+															<div className="progress">
+																<div className="progress-bar  progress-bar-success" role="progressbar"  style={{width: '20'}} aria-valuenow={'20'} aria-valuemin="0" aria-valuemax="100" title={'20'}>{'20'}</div>
+															</div>
+														</td>
+													</tr>
+													)}
+												 </tbody>
+											</table>
+										</div> :
+										<h2 className="nocsv">No students available</h2>
+									}
 								</div>
 							</div>
-						</div>:<h2 className="nocsv">Currently no courses available please create course !</h2>}
+						</div>:<h2 className="nocsv">Currently no courses available please create course !</h2>
+					}
 					</div>
 					<div className="col-md-4 col-lg-4">
 						<div className="card-body myDash1">
@@ -155,6 +168,15 @@ class Dashboard extends Component {
 									<div>
 										Name: {this.state.students[this.state.selectedStudentIndex].first_name}<br/>
 										Age: {this.state.students[this.state.selectedStudentIndex].age}<br/>
+										Workout Name: <h1>Sample Workout</h1>
+										Exercise 1:
+										<video  controls width="100%">
+											<source src="https://mobilioblob.blob.core.windows.net/resoltz-demo/SampleVideo_360x240_1mb.mp4" type="video/mp4"/>
+										</video>
+										Exercise 2:
+										<video  controls width="100%">
+											<source src="https://mobilioblob.blob.core.windows.net/resoltz-demo/SampleVideo_360x240_1mb.mp4" type="video/mp4"/>
+										</video>
 									</div> :
 									<div></div>
 								}
