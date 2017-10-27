@@ -3,11 +3,14 @@ import React, { Component } from 'react';
 export default class ExerciseList extends Component {
 
 	render () {
+		const{AllExercises, deleteExercise, setupEditExercise, searchTextUpdateExercise, offsetUpdateExercise, currentPageUpdateExercise, exerciseCopy } = this.props;
+		
+
 		return (
 			<div>
 				<ul className="list-group pull-left testDive2scrol2" id="testDiv4">
 					{
-						this.props.AllExercises.map((exercise, i) =>
+						exerciseCopy.splice(currentPageUpdateExercise*offsetUpdateExercise, offsetUpdateExercise).map((exercise, i) =>
 						<li className="list-group-item  videomainLi odd temp2" key={i}>
 							<div className="indiviVideo">
 								<div className="videoAlign1a">
@@ -24,10 +27,10 @@ export default class ExerciseList extends Component {
 										<h4 className="card-title">Video {i+1} [ <span>{exercise.title}</span> ]</h4>
 										<div className="editBtnMas1">
 											<a data-dismiss='modal' className="glyphicon glyphicon-pencil"
-													onClick={(e)=>{this.props.setupEditExercise(exercise, i)}}>
+													onClick={(e)=>{setupEditExercise(exercise, i)}}>
 												</a>&nbsp;
 												<a  className="glyphicon glyphicon-trash"
-													onClick={(e)=>{this.props.deleteExercise(exercise.id, i)}}>
+													onClick={(e)=>{deleteExercise(exercise.id, i)}}>
 												</a>
 										</div>
 										<br/>

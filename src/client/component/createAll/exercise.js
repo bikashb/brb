@@ -3,6 +3,7 @@ import axios from 'axios';
 import APIs from '../template/constants.js';
 import ExerciseList from './exerciseList.js';
 import sweetalert from 'sweetalert';
+import ReactPaginate from 'react-paginate';
 
 export default class Exercise extends Component {
   constructor() {
@@ -16,7 +17,10 @@ export default class Exercise extends Component {
       video_url: '',
       fileError: '',
       currentExercise: {},
-      currentIndex: -1
+      currentIndex: -1,
+      currentPageUpdateExercise:0,
+      offsetUpdateExercise:4,
+      searchTextUpdateExercise:''
     };
     this.resetFields = this.resetFields.bind(this);
     this.validationSuccess = this.validationSuccess.bind(this);
@@ -130,6 +134,15 @@ export default class Exercise extends Component {
   }
 
   render() {
+    const { currentPageUpdateExercise, offsetUpdateExercise, searchTextUpdateExercise } = this.state;
+
+    /*exercise update pagination*/
+    let exerciseCopy = searchTextUpdateExercise.length ?
+      this.props.AllExercises.filter(exercise =>
+        exercise.title.toLowerCase()
+        .startsWith(searchTextUpdateExercise.toLowerCase())) :
+      [...this.props.AllExercises];
+
     return (
       <div><div className="col-md-5 col-lg-5 col-xs-12 createCourse create-exercise">
         <div className="create_up_btnMas">
@@ -204,12 +217,44 @@ export default class Exercise extends Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 className="modal-title">All Exercises</h4>
+                <div>
+                  <div className="naivga1">
+                    <ReactPaginate
+                     previousLabel={'previous'}
+                     nextLabel={'next'}
+                     breakLabel={<a>...</a>}
+                     breakClassName={'break-me'}
+                     pageCount={exerciseCopy.length/offsetUpdateExercise}
+                     pageRangeDisplayed={5}
+                     onPageChange={(page)=>this.setState({currentPageUpdateExercise: page.selected})}
+                     containerClassName={'pagination'}
+                     subContainerClassName={'pages pagination'}
+                     activeClassName={'active'} />
+                  </div>
+                  <div className="naivga1a">
+                    <form>
+                      <input type="text" placeholder="name" value={searchTextUpdateExercise}
+                        onChange={(e)=>this.setState({searchTextUpdateExercise: e.target.value})} />
+                      <a className="glyphicon glyphicon-remove-circle"
+                        onClick={(e)=> {
+                          e.preventDefault();
+                          this.setState({searchTextUpdateExercise: ''});
+                        }}>
+                         
+                      </a>
+                    </form>
+                  </div>
+                </div>
               </div>
               <div className="modal-body">
                 <ExerciseList
                   AllExercises={this.props.AllExercises}
+                  exerciseCopy={exerciseCopy}
                   deleteExercise={this.props.deleteExercise}
                   setupEditExercise={this.setupEditExercise.bind(this)}
+                  searchTextUpdateExercise={searchTextUpdateExercise}
+                  offsetUpdateExercise={offsetUpdateExercise}
+                  currentPageUpdateExercise={currentPageUpdateExercise}
                   />
               </div>
             </div>

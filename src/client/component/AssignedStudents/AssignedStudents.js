@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ReactScrollbar from 'react-scrollbar-js';
 import APIs from '../template/constants.js'
+import ReactPaginate from 'react-paginate';
 
 export default class AssignedStudents extends Component {
 	constructor() {
 		super();
 		this.state = {
 			students: [],
-			selectedCourseID: -1
+			selectedCourseID: -1,
+			offsetAssignedStudents: 3,
+			currentPageAssignedStudents: 0,
+			searchTextAssignedStudents: ''
+
 		};
 		this.getStudentsUnderCourse = this.getStudentsUnderCourse.bind(this);
 	}
@@ -29,9 +34,17 @@ export default class AssignedStudents extends Component {
 	}
 
 	render () {
-		const { students } = this.state;
+		const { students, offsetAssignedStudents, currentPageAssignedStudents, searchTextAssignedStudents } = this.state;
 		const { courses } = this.props;
 		const myScrollbar = {height: 440};
+
+		let CourseCopy = searchTextAssignedStudents.length ?
+			courses.filter(course =>
+				course.title.toLowerCase()
+				.startsWith(searchTextAssignedStudents.toLowerCase())) :
+			[...courses];
+
+
 		return (
 			<div>
         {
@@ -45,10 +58,23 @@ export default class AssignedStudents extends Component {
                     <li><span className="lImprove"></span>Need to Improve</li>
                     <li><span className="lGood"></span>Good</li>
                 </ul>
+                <div className="naivga1a">
+					<form>
+							<input type="text" placeholder="name" value={searchTextAssignedStudents}
+								onChange={(e)=>this.setState({searchTextAssignedStudents: e.target.value})} />
+							<a className="glyphicon glyphicon-remove-circle"
+								onClick={(e)=> {
+									e.preventDefault();
+									this.setState({searchTextAssignedStudents: ''});
+								}}>
+								 
+							</a>
+						</form>
+				</div>
             	</div>
 							<div className="panel-group" id="accordion">
 	            	{
-	            		courses.map((course, i)=>
+	            		CourseCopy.splice(currentPageAssignedStudents*offsetAssignedStudents, offsetAssignedStudents).map((course, i)=>
 		                <div className="panel panel-default" key={i}>
 		                  <div className="panel-heading">
 		                    <h4 className="panel-title">
@@ -107,6 +133,19 @@ export default class AssignedStudents extends Component {
 	                )
 	            	}
             	</div>
+            	<div className="naivga1">
+					<ReactPaginate
+					 previousLabel={'previous'}
+					 nextLabel={'next'}
+					 breakLabel={<a>...</a>}
+					 breakClassName={'break-me'}
+					 pageCount={(CourseCopy.length/offsetAssignedStudents)+1}
+					 pageRangeDisplayed={5}
+					 onPageChange={(page)=>this.setState({currentPageAssignedStudents: page.selected})}
+					 containerClassName={'pagination'}
+					 subContainerClassName={'pages pagination'}
+					 activeClassName={'active'} />
+				</div>
             </div> :
 						<h2 className="nocsv">Currently no courses available. Please create a course.</h2>
 					}

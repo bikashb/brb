@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 import APIs from '../template/constants.js';
+import ReactPaginate from 'react-paginate';
 
 import ShowStudentListMini from '../showStudentList/showStudentListMini.js';
 
@@ -13,7 +14,10 @@ class ShowPlan extends Component {
 			AllPlans:[],
 			workoutInPlans:[],
 			exerciseInWorkouts:[],
-			AllStudents:[]
+			AllStudents:[],
+			offsetPlan: 3,
+			currentPagePlan: 0,
+			searchTextPlan: ''
 		};
 	}
 
@@ -27,14 +31,48 @@ class ShowPlan extends Component {
 		this.setState({selectedPlan:planID, selectedPlanName:planName})
 	}
 	render () {
-		const{ AllPlans, workoutInPlans, AllStudents } = this.state;
+		let { AllPlans, workoutInPlans, AllStudents, currentPagePlan, offsetPlan, searchTextPlan } = this.state;
+		let planCopy = searchTextPlan.length ?
+			AllPlans.filter(plan =>
+				plan.title.toLowerCase()
+				.startsWith(searchTextPlan.toLowerCase())) :
+			[...AllPlans];
 		return (
 			<div>
 			{this.state.AllPlans.length?
 				<div className="course_thumb_mas">
+					<div>
+						<div className="naivga1">
+							<ReactPaginate
+							 previousLabel={'previous'}
+							 nextLabel={'next'}
+							 breakLabel={<a>...</a>}
+							 breakClassName={'break-me'}
+							 pageCount={planCopy.length/offsetPlan}
+							 pageRangeDisplayed={5}
+							 onPageChange={(page)=>this.setState({currentPagePlan: page.selected})}
+							 containerClassName={'pagination'}
+							 subContainerClassName={'pages pagination'}
+							 activeClassName={'active'} />
+						</div>
+						<div className="naivga1a">
+							<form>
+	 							<input type="text" placeholder="name" value={searchTextPlan}
+	 								onChange={(e)=>this.setState({searchTextPlan: e.target.value})} />
+	 							<a className="glyphicon glyphicon-remove-circle"
+	 								onClick={(e)=> {
+	 									e.preventDefault();
+	 									this.setState({searchTextPlan: ''});
+	 								}}>
+	 								 
+	 							</a>
+	 						</form>
+						</div>
+					</div>
+					{planCopy.length ?
 					<ul className="thumb_workouts">
 					{
-						AllPlans.map((plan, i)=>
+						planCopy.splice(currentPagePlan*offsetPlan, offsetPlan).map((plan, i)=>
 							<li className="active" key={i} data-toggle="modal" data-target="#myPlan" onClick={()=>this.planID(plan.id, plan.title)}>
 								<div className="plan_mas">
 									<h1>{plan.avg_workout_duration} Days Course</h1>
@@ -48,7 +86,7 @@ class ShowPlan extends Component {
 							</li>
 						)
 					}
-					</ul>
+					</ul>:<h2 className="nocsv">No results found.</h2>}
 
 					<div id="myPlan" className="modal fade" role="dialog">
 						<div className="modal-dialog" role="document">

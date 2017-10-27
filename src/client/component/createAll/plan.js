@@ -5,6 +5,7 @@ import ShowWorkout from '../showWorkout/showWorkout.js';
 import PlanList from './planList.js'
 import APIs from '../template/constants.js';
 import sweetalert from 'sweetalert';
+import ReactPaginate from 'react-paginate';
 
 export default class Plan extends Component {
   constructor() {
@@ -15,7 +16,13 @@ export default class Plan extends Component {
       description: '', descriptionError: '',
       selectedWorkout: [],
       currentCourse: {},
-      currentIndex: -1
+      currentIndex: -1,
+      currentPageUpdatePlan:0,
+      offsetUpdatePlan:4,
+      searchTextUpdatePlan:'',
+      currentPageCreatePlan:0,
+      offsetCreatePlan:3,
+      searchTextCreatePlan:''
     };
     this.resetFields = this.resetFields.bind(this);
     this.validationSuccess = this.validationSuccess.bind(this);
@@ -97,6 +104,27 @@ export default class Plan extends Component {
 	/*Create Plan Ends*/
 
   render() {
+    const { currentPageUpdatePlan, 
+            offsetUpdatePlan, 
+            searchTextUpdatePlan,
+            currentPageCreatePlan,
+            offsetCreatePlan,
+            searchTextCreatePlan, } = this.state;
+
+    /*plan update pagination*/
+    let planCopy = searchTextUpdatePlan.length ?
+      this.props.AllPlans.filter(plan =>
+        plan.title.toLowerCase()
+        .startsWith(searchTextUpdatePlan.toLowerCase())) :
+      [...this.props.AllPlans];
+
+/*plan update pagination*/
+    let workoutCopy = searchTextCreatePlan.length ?
+      this.props.AllWorkouts.filter(workout =>
+        workout.title.toLowerCase()
+        .startsWith(searchTextCreatePlan.toLowerCase())) :
+      [...this.props.AllWorkouts];
+
     return (
       <div  className="col-md-12 col-lg-12 col-xs-12 createCourse create-plan">
         {
@@ -152,6 +180,19 @@ export default class Plan extends Component {
                   </button>
                 }
               </form>
+              <div className="naivga1a">
+                <form>
+                  <input type="text" placeholder="name" value={searchTextCreatePlan}
+                    onChange={(e)=>this.setState({searchTextCreatePlan: e.target.value})} />
+                  <a className="glyphicon glyphicon-remove-circle"
+                    onClick={(e)=> {
+                      e.preventDefault();
+                      this.setState({searchTextCreatePlan: ''});
+                    }}>
+                     
+                  </a>
+                </form>
+              </div>
             </div>
             <ul className="wrkoutulli_1">
               <CheckboxGroup
@@ -159,7 +200,7 @@ export default class Plan extends Component {
                   value={this.state.selectedWorkout}
                   onChange={this.selectWorkoutChanged}
                   >
-                  {this.props.AllWorkouts.map((workout, i)  =>
+                  {workoutCopy.splice(currentPageCreatePlan*offsetCreatePlan, offsetCreatePlan).map((workout, i)  =>
                     <li key={i}>
                       <Checkbox value={workout.id} className="inputchk4wrkout" />
                       <ShowWorkout workout={workout} />
@@ -167,6 +208,19 @@ export default class Plan extends Component {
                   )}
               </CheckboxGroup>
             </ul>
+            <div className="naivga1">
+              <ReactPaginate
+               previousLabel={'previous'}
+               nextLabel={'next'}
+               breakLabel={<a>...</a>}
+               breakClassName={'break-me'}
+               pageCount={(workoutCopy.length/offsetCreatePlan)+1}
+               pageRangeDisplayed={5}
+               onPageChange={(page)=>this.setState({currentPageCreatePlan: page.selected})}
+               containerClassName={'pagination'}
+               subContainerClassName={'pages pagination'}
+               activeClassName={'active'} />
+            </div>
             <div id="plansViewModal" className="modal fade" role="dialog">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
@@ -175,11 +229,43 @@ export default class Plan extends Component {
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 className="modal-title">All Courses</h4>
+                    <div>
+                      <div className="naivga1">
+                        <ReactPaginate
+                         previousLabel={'previous'}
+                         nextLabel={'next'}
+                         breakLabel={<a>...</a>}
+                         breakClassName={'break-me'}
+                         pageCount={planCopy.length/offsetUpdatePlan}
+                         pageRangeDisplayed={5}
+                         onPageChange={(page)=>this.setState({currentPageUpdatePlan: page.selected})}
+                         containerClassName={'pagination'}
+                         subContainerClassName={'pages pagination'}
+                         activeClassName={'active'} />
+                      </div>
+                      <div className="naivga1a">
+                        <form>
+                          <input type="text" placeholder="name" value={searchTextUpdatePlan}
+                            onChange={(e)=>this.setState({searchTextUpdatePlan: e.target.value})} />
+                          <a className="glyphicon glyphicon-remove-circle"
+                            onClick={(e)=> {
+                              e.preventDefault();
+                              this.setState({searchTextUpdatePlan: ''});
+                            }}>
+                             
+                          </a>
+                        </form>
+                      </div>
+                    </div>
                   </div>
                   <div className="modal-body">
                     <PlanList AllPlans={this.props.AllPlans}
                       setupEditCourse={this.setupEditCourse.bind(this)}
                       deleteCourse={this.props.deleteCourse.bind(this)}
+                      currentPageUpdatePlan={currentPageUpdatePlan}
+                      offsetUpdatePlan={offsetUpdatePlan} 
+                      searchTextUpdatePlan={searchTextUpdatePlan}
+                      planCopy={planCopy}
                       />
                   </div>
                 </div>

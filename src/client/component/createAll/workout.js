@@ -4,18 +4,25 @@ import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 import WorkoutList from './workoutList.js';
 import APIs from '../template/constants.js';
 import sweetalert from 'sweetalert';
+import ReactPaginate from 'react-paginate';
 
 export default class Workout extends Component {
   constructor() {
     super();
     this.state = {
+      offsetCreateWorkout:3,
+      currentPageCreateWorkout:0,
+      searchTextCreateWorkout:'',
       mode: 'create',
       title: '', titleError: '',
       description: '', descriptionError: '',
       intensity: '', intensityError: '',
       exercises: [],
       currentWorkout: {},
-      currentIndex: -1
+      currentIndex: -1,
+      currentPageUpdateWorkout:0,
+      offsetUpdateWorkout:4,
+      searchTextUpdateWorkout:''
     };
     this.resetFields = this.resetFields.bind(this);
     this.validationSuccess = this.validationSuccess.bind(this);
@@ -110,7 +117,22 @@ export default class Workout extends Component {
   }
 
   render() {
-    let { exercises } = this.state;
+    let { exercises, currentPageUpdateWorkout, offsetUpdateWorkout, searchTextUpdateWorkout,
+    offsetCreateWorkout, currentPageCreateWorkout, searchTextCreateWorkout } = this.state;
+
+    /*exercise update pagination*/
+    let workoutCopy = searchTextUpdateWorkout.length ?
+      this.props.AllWorkouts.filter(workout =>
+        workout.title.toLowerCase()
+        .startsWith(searchTextUpdateWorkout.toLowerCase())) :
+      [...this.props.AllWorkouts];
+
+      /*workout create pagination*/
+      let exerciseCopy = searchTextCreateWorkout.length ?
+      this.props.AllExercises.filter(exercise =>
+        exercise.title.toLowerCase()
+        .startsWith(searchTextCreateWorkout.toLowerCase())) :
+      [...this.props.AllExercises];
     return (
       <div className="col-md-12 col-lg-12 col-xs-12 createCourse create-workout">
         {
@@ -172,6 +194,19 @@ export default class Workout extends Component {
                   </button>
                 }
               </form>
+              <div className="naivga1a">
+                <form>
+                  <input type="text" placeholder="name" value={searchTextCreateWorkout}
+                    onChange={(e)=>this.setState({searchTextCreateWorkout: e.target.value})} />
+                  <a className="glyphicon glyphicon-remove-circle"
+                    onClick={(e)=> {
+                      e.preventDefault();
+                      this.setState({searchTextCreateWorkout: ''});
+                    }}>
+                     
+                  </a>
+                </form>
+              </div>
             </div>
             <ul className="wrkoutulli">
               <CheckboxGroup
@@ -180,7 +215,7 @@ export default class Workout extends Component {
                   onChange={this.selectExerciseChanged}
                   >
                   {
-                    this.props.AllExercises.map((exercise, i) =>
+                    exerciseCopy.splice(currentPageCreateWorkout*offsetCreateWorkout, offsetCreateWorkout).map((exercise, i) =>
                       <li key={i}>
                         <Checkbox value={exercise.id} className="inputchk4wrkout" />
                         <div>
@@ -204,6 +239,19 @@ export default class Workout extends Component {
                   }
               </CheckboxGroup>
             </ul>
+            <div className="naivga1">
+              <ReactPaginate
+               previousLabel={'previous'}
+               nextLabel={'next'}
+               breakLabel={<a>...</a>}
+               breakClassName={'break-me'}
+               pageCount={exerciseCopy.length/offsetCreateWorkout}
+               pageRangeDisplayed={5}
+               onPageChange={(page)=>this.setState({currentPageCreateWorkout: page.selected})}
+               containerClassName={'pagination'}
+               subContainerClassName={'pages pagination'}
+               activeClassName={'active'} />
+            </div>
             <div id="workoutsViewModal" className="modal fade" role="dialog">
               <div className="modal-dialog" role="document">
                 <div className="modal-content">
@@ -212,11 +260,43 @@ export default class Workout extends Component {
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 className="modal-title">All Workouts</h4>
+                    <div>
+                      <div className="naivga1">
+                        <ReactPaginate
+                         previousLabel={'previous'}
+                         nextLabel={'next'}
+                         breakLabel={<a>...</a>}
+                         breakClassName={'break-me'}
+                         pageCount={workoutCopy.length/offsetUpdateWorkout}
+                         pageRangeDisplayed={5}
+                         onPageChange={(page)=>this.setState({currentPageUpdateWorkout: page.selected})}
+                         containerClassName={'pagination'}
+                         subContainerClassName={'pages pagination'}
+                         activeClassName={'active'} />
+                      </div>
+                      <div className="naivga1a">
+                        <form>
+                          <input type="text" placeholder="name" value={searchTextUpdateWorkout}
+                            onChange={(e)=>this.setState({searchTextUpdateWorkout: e.target.value})} />
+                          <a className="glyphicon glyphicon-remove-circle"
+                            onClick={(e)=> {
+                              e.preventDefault();
+                              this.setState({searchTextUpdateWorkout: ''});
+                            }}>
+                             
+                          </a>
+                        </form>
+                      </div>
+                    </div>
                   </div>
                   <div className="modal-body">
                     <WorkoutList AllWorkouts={this.props.AllWorkouts}
+                      workoutCopy={workoutCopy}
                       setupEditWorkout={this.setupEditWorkout.bind(this)}
                       deleteWorkout={this.props.deleteWorkout}
+                      currentPageUpdateWorkout={currentPageUpdateWorkout}
+                      offsetUpdateWorkout={offsetUpdateWorkout}
+                      searchTextUpdateWorkout={searchTextUpdateWorkout}
                       />
                   </div>
                 </div>

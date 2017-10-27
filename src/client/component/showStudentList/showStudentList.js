@@ -60,9 +60,9 @@ export default class ShowStudentList extends Component {
 									 nextLabel={'next'}
 									 breakLabel={<a>...</a>}
 									 breakClassName={'break-me'}
-									 pageCount={StudentsCopy.length/offset}
+									 pageCount={(StudentsCopy.length/offset)}
 									 pageRangeDisplayed={5}
-									 onPageChange={(page)=>this.setState({currentPage: page.selected-1})}
+									 onPageChange={(page)=>this.setState({currentPage: page.selected})}
 									 containerClassName={'pagination'}
 									 subContainerClassName={'pages pagination'}
 									 activeClassName={'active'} />
@@ -87,7 +87,6 @@ export default class ShowStudentList extends Component {
 						</div> :
 						<div id="testDiv1">
 							 <div>
-								 	
 								<div className="naivga1a">
 									<form>
 			 							<input type="text" placeholder="name" value={searchText}

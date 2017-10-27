@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 
 export default class PlanList extends Component {
 	render () {
+    const{AllPlans, 
+          deleteCourse, 
+          setupEditCourse, 
+          searchTextUpdatePlan, 
+          offsetUpdatePlan, 
+          currentPageUpdatePlan, 
+          planCopy } = this.props;
+
 		return (
-      this.props.AllPlans.length > 0 ?
+      AllPlans.length > 0 ?
       <table className="table table-striped">
        <thead>
         <tr>
@@ -15,7 +23,7 @@ export default class PlanList extends Component {
         </thead>
         <tbody>
         {
-          this.props.AllPlans.map((course, i) => {
+          planCopy.splice(currentPageUpdatePlan*offsetUpdatePlan, offsetUpdatePlan).map((course, i) => {
             return (
               <tr key={i}>
                 <td>{course.title}</td>
@@ -24,14 +32,14 @@ export default class PlanList extends Component {
                   <button data-dismiss='modal'
                     onClick={(e)=>{
                       course.workouts = course.schedule;
-                      this.props.setupEditCourse(course, i);
+                      setupEditCourse(course, i);
                     }}>
                     Edit
                   </button>
                 </td>
                 <td>
                   <button
-										onClick={(e)=>{this.props.deleteCourse(course.id, i)}}
+										onClick={(e)=>{deleteCourse(course.id, i)}}
 										>
   									Delete
   								</button>
