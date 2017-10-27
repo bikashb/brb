@@ -1892,7 +1892,7 @@
    
 }
 .modal-content {
-     border-radius: 0px;
+     border-radius: 0px; width: 100%;
 }
 .planAssignment{
      height:500px;

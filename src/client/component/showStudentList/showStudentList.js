@@ -87,7 +87,7 @@ export default class ShowStudentList extends Component {
 						</div> :
 						<div id="testDiv1">
 							 <div>
-								 
+								 	
 								<div className="naivga1a">
 									<form>
 			 							<input type="text" placeholder="name" value={searchText}
