@@ -123,8 +123,8 @@ class Dashboard extends Component {
 									<table className="table table-striped fnt13">
 
 										 <tbody>
-											{AllPlans.map((plans)=>
-											<tr>
+											{AllPlans.map((plans, pi)=>
+											<tr key={pi}>
 												<td width="25%" className="text-truncate">{plans.title}</td>
 												<td width="25%" className="text-truncate" >
 													<span className="stDate">10 Oct 17</span> <span className="enDate"> - 9 Nov 17</span>

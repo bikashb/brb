@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import $ from 'jquery';
+import sweetalert from 'sweetalert';
 
 /* custom components */
 import Sidebar from '../sidebar/sidebar.js';
@@ -69,30 +70,32 @@ class  Home extends Component {
   getStudentDetails=()=>{
     axios.post(APIs.GetAllStudents)/*Get list of students*/
     .then((response)=>{
-      this.setState({allStudents:response.data});
-      console.log(this.state.allStudents);
+      this.setState({allStudents: response.data});
+      console.log('all students: ', response);
     });
   }
 
   getAllExercise=()=>{
     axios.get(APIs.GetAllExercise+localStorage.getItem('id'))/*Get list of videos specific to instructor*/
     .then((response)=>{
-      this.setState({exercises:response.data});
-      console.log(this.state.exercises);
+      this.setState({exercises: response.data});
+      console.log('all exercises: ', response);
     });
   }
 
   getAllPlans=()=>{
      axios.get(APIs.GetAllPlans+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({courses:response.data.plans});
+      this.setState({courses: response.data.plans});
+      console.log('all plans: ', response);
     });
   }
 
   getAllWorkouts=()=>{
     axios.get(APIs.GetAllWorkout+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
-      this.setState({workouts: response.data.workouts});
+      this.setState({workouts: response.data});
+      console.log('all workouts: ', response);
     });
   }
 
@@ -103,6 +106,7 @@ class  Home extends Component {
         axios.delete(APIs.DeleteExercise + id)
         .then((response) => {
           console.log('delete exercise response: ', response);
+          sweetalert('exercise deletion success');
           let { exercises } = this.state;
           exercises.splice(index, 1);
           this.setState({exercises: exercises});
@@ -112,6 +116,7 @@ class  Home extends Component {
         axios.delete(APIs.DeleteWorkout + id)
         .then((response) => {
           console.log('delete workout response: ', response);
+          sweetalert('workout deletion success');
           let { workouts } = this.state;
           workouts.splice(index, 1);
           this.setState({workouts: workouts});
@@ -121,6 +126,7 @@ class  Home extends Component {
         axios.delete(APIs.DeleteCourse + id)
         .then((response) => {
           console.log('delete course response: ', response);
+          sweetalert('course deletion success');
           let { courses } = this.state;
           courses.splice(index, 1);
           this.setState({courses: courses});
@@ -140,16 +146,20 @@ class  Home extends Component {
         axios.put(APIs.UpdateExercise, exercise)
         .then((response) => {
           console.log('update exercise response: ', response);
+          sweetalert('exercise updation success');
           let { exercises } = this.state;
           exercises.splice(index, 1, exercise);
           this.setState({exercises: exercises});
         });
         break;
       case 'workout':
-        let workout = item;
-        axios.put(APIs.UpdateWorkout, workout)
+        let workout = Object.assign({}, item);
+        let list = item.list;
+        delete workout.list;
+        axios.put(APIs.UpdateWorkout, {workout: workout, list: list})
         .then((response) => {
           console.log('update workout response: ', response);
+          sweetalert('workout updation success');
           let { workouts } = this.state;
           workouts.splice(index, 1, workout);
           this.setState({workouts: workouts});
@@ -157,9 +167,14 @@ class  Home extends Component {
         break;
       case 'course':
         let course = item;
-        let { courses } = this.state;
-        courses.splice(index, 1, course);
-        this.setState({courses: courses});
+        axios.put(APIs.UpdateCourse, {course: course, list: course.workouts})
+        .then((response) => {
+          console.log('update course response: ', response);
+          sweetalert('course updation success');
+          let { courses } = this.state;
+          courses.splice(index, 1, course);
+          this.setState({courses: courses});
+        });
         break;
       default:
         console.log('invalid updation request');

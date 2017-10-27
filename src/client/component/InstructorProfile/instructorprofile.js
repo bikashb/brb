@@ -64,20 +64,21 @@ export default class InstructorProfile extends Component {
         /* upload file */
         try {
           console.log('updating profile with image... ', state.imagePath.value);
-    let fileSelect = document.getElementById('imagePath');
-    let files = fileSelect.files;
-    let formData = new FormData();
-    let file = files[0];
-    console.log('File: ', file);
-    formData.append('myfile', file, file.name);
-          console.log('FormData: ', formData);
-    axios.post(APIs.UploadVideo, formData)
-    .then((response)=>{
-    console.log('image upload response: ', response);
+          let fileSelect = document.getElementById('imagePath');
+          let files = fileSelect.files;
+          let formData = new FormData();
+          let file = files[0];
+          console.log('File: ', file);
+          formData.append('myfile', file, file.name);
+                console.log('FormData: ', formData);
+          axios.post(APIs.UploadVideo, formData)
+          .then((response)=>{
+            console.log('image upload response: ', response);
             this.setState({imagePath: response.data.url});
 
             /* update profile with image */
             let profile = {
+              id: localStorage.getItem('id'),
               user_name: state.name.value,
               image_url: response.data.url,
               description: state.description.value
@@ -107,6 +108,7 @@ export default class InstructorProfile extends Component {
         console.log('updating profile without image...');
         /* update profile without image */
         let profile = {
+          id: localStorage.getItem('id'),
           user_name: state.name.value,
           image_url: '',
           description: state.description.value

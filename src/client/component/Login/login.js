@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {Link, withRouter}from 'react-router-dom';
+import {withRouter}from 'react-router-dom';
 import classNames from 'classnames';
 import validator from 'validator';
-import Signup from '../Signup/signup';
 import axios from 'axios';
 import APIs from '../template/constants.js'
 

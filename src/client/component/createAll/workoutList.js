@@ -16,6 +16,10 @@ export default class WorkoutList extends Component {
         </tr></thead><tbody>
         {
           this.props.AllWorkouts.map((workout, i) => {
+            if(workout.exercises) {
+              workout.list = workout.exercises.map(exercise => exercise);
+              delete workout.exercises;
+            }
             return (
               <tr key={i}>
                 <td>{workout.title}</td>
@@ -23,7 +27,6 @@ export default class WorkoutList extends Component {
                 <td>
                   <button data-dismiss='modal'
                     onClick={(e)=>{
-                      workout.exercises = ['1', '47'];
                       this.props.setupEditWorkout(workout, i);
                     }}>
                     Edit

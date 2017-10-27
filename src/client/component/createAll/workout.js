@@ -13,7 +13,7 @@ export default class Workout extends Component {
       title: '', titleError: '',
       description: '', descriptionError: '',
       intensity: '', intensityError: '',
-      selectedExercise: [],
+      exercises: [],
       currentWorkout: {},
       currentIndex: -1
     };
@@ -21,13 +21,19 @@ export default class Workout extends Component {
     this.validationSuccess = this.validationSuccess.bind(this);
   }
 
+  componentWillMount() {
+      console.log('workout list mounted: ', this.props.AllWorkouts);
+  }
+
   setupEditWorkout(workout, index) {
     this.setState({
       mode: 'update',
+      currentWorkout: workout,
+      currentIndex: index,
       title: workout.title,
       description: workout.description,
       intensity: workout.intensity,
-      selectedExercise: workout.exercises
+      exercises: workout.exercises
     });
   }
 
@@ -37,6 +43,8 @@ export default class Workout extends Component {
     currentWorkout.title = this.state.title;
     currentWorkout.description= this.state.description;
     currentWorkout.intensity = this.state.intensity;
+    currentWorkout.list = this.state.exercises;
+    
     this.props.editWorkout(currentWorkout, currentIndex);
     this.resetFields();
   }
@@ -47,28 +55,28 @@ export default class Workout extends Component {
       title: '', titleError: '',
       description: '', descriptionError: '',
       intensity: '', intensityError: '',
-      selectedExercise: [],
+      exercises: [],
       currentWorkout: {},
       currentIndex: -1
     });
   }
 
   /*Create Workout Starts*/
-  selectExerciseChanged = (newExercise) => {
-    this.setState({selectedExercise: newExercise});
+  selectExerciseChanged = (exercises) => {
+    this.setState({exercises: exercises});
   }
 
   createWorkout = (e) => {
-    let { title, intensity, description, selectedExercise } = this.state;
+    let { title, intensity, description, exercises } = this.state;
     e.preventDefault();
-    if( this.validationSuccess() && this.state.selectedExercise.length !== 0 ) {
+    if( this.validationSuccess() && this.state.exercises.length !== 0 ) {
       axios.post(APIs.CreateWorkout, {
           "description": description,
           "id": localStorage.getItem("id"),
           "duration": 5,
 		      "title": title,
 		      "intensity": intensity,
-		      "list": selectedExercise/*list:[1,2,3]*/
+		      "list": exercises/*list:[1,2,3]*/
         })
         .then((response) => {
           console.log('create workout response: ', response);
@@ -101,7 +109,7 @@ export default class Workout extends Component {
   }
 
   render() {
-    let { selectedExercise } = this.state;
+    let { exercises } = this.state;
     return (
       <div className="col-md-12 col-lg-12 col-xs-12 createCourse create-workout">
         {
@@ -167,7 +175,7 @@ export default class Workout extends Component {
             <ul className="wrkoutulli">
               <CheckboxGroup
                   name="exercises"
-                  value={this.state.selectedExercise}
+                  value={this.state.exercises}
                   onChange={this.selectExerciseChanged}
                   >
                   {

@@ -23,9 +23,15 @@ export default class Plan extends Component {
     this.validationSuccess = this.validationSuccess.bind(this);
   }
 
+  componentWillMount() {
+      console.log('course list mounted: ', this.props.AllPlans);
+  }
+
   setupEditCourse(course, index) {
     this.setState({
       mode: 'update',
+      currentCourse: course,
+      currentIndex: index,
       title: course.title,
       duration: course.duration,
       description: course.description,
@@ -41,6 +47,7 @@ export default class Plan extends Component {
     currentCourse.duration= this.state.duration;
     currentCourse.description= this.state.description;
     currentCourse.intensity = this.state.intensity;
+    currentCourse.list = this.state.selectedWorkout.map(id => ({id: id, day: '2'}));
     this.props.editCourse(currentCourse, currentIndex);
     this.resetFields();
   }
@@ -91,8 +98,7 @@ export default class Plan extends Component {
 		e.preventDefault();
 		let { description, duration, title, intensity, selectedWorkout } = this.state;
 		if(this.validationSuccess() && this.state.selectedWorkout.length !== 0) {
-      let list = [];
-      selectedWorkout.map(id => list.push({id: id, day: '2'}));
+      let list = selectedWorkout.map(id => list.push({id: id, day: '2'}));
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
 		      "id": localStorage.getItem("id"),

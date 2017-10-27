@@ -54,7 +54,7 @@ export default class CreateAll extends Component {
 				return (
 					<Workout AllExercises={AllExercises}
 						AllWorkouts={AllWorkouts}
-						editWorkout={(course, index)=>this.props.editItem('workout', course, index)}
+						editWorkout={(workout, index)=>this.props.editItem('workout', workout, index)}
 						deleteWorkout={(id, index)=>this.props.deleteItem('workout', id, index)}
 						callAllWorkouts={this.props.callAllWorkouts} />
 				);

@@ -23,7 +23,7 @@ export default class PlanList extends Component {
                 <td>
                   <button data-dismiss='modal'
                     onClick={(e)=>{
-                      course.workouts = ['2', '29'];
+                      course.workouts = course.schedule;
                       this.props.setupEditCourse(course, i);
                     }}>
                     Edit
