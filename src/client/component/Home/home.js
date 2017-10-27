@@ -103,33 +103,63 @@ class  Home extends Component {
     console.log('inside delete item: ', type, id, index);
     switch(type) {
       case 'exercise':
-        axios.delete(APIs.DeleteExercise + id)
-        .then((response) => {
-          console.log('delete exercise response: ', response);
-          sweetalert('exercise deletion success');
-          let { exercises } = this.state;
-          exercises.splice(index, 1);
-          this.setState({exercises: exercises});
-        });
+        sweetalert({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able see this Exercise!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              axios.delete(APIs.DeleteExercise + id)
+              .then((response) => {
+                console.log('delete exercise response: ', response);
+                sweetalert('exercise deletion success', {icon: 'success'});
+                let { exercises } = this.state;
+                exercises.splice(index, 1);
+                this.setState({exercises: exercises});
+              });
+            }
+          });
         break;
       case 'workout':
-        axios.delete(APIs.DeleteWorkout + id)
-        .then((response) => {
-          console.log('delete workout response: ', response);
-          sweetalert('workout deletion success');
-          let { workouts } = this.state;
-          workouts.splice(index, 1);
-          this.setState({workouts: workouts});
+        sweetalert({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able see this Workout!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            axios.delete(APIs.DeleteWorkout + id)
+            .then((response) => {
+              console.log('delete workout response: ', response);
+              sweetalert('workout deletion success', {icon: 'success'});
+              let { workouts } = this.state;
+              workouts.splice(index, 1);
+              this.setState({workouts: workouts});
+            });
+          }
         });
         break;
       case 'course':
-        axios.delete(APIs.DeleteCourse + id)
-        .then((response) => {
-          console.log('delete course response: ', response);
-          sweetalert('course deletion success');
-          let { courses } = this.state;
-          courses.splice(index, 1);
-          this.setState({courses: courses});
+        sweetalert({
+          title: "Are you sure?",
+          text: "Once deleted, you will not be able see this Course!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            axios.delete(APIs.DeleteCourse + id)
+            .then((response) => {
+              console.log('delete course response: ', response);
+              sweetalert('course deletion success', {icon: 'success'});
+              let { courses } = this.state;
+              courses.splice(index, 1);
+              this.setState({courses: courses});
+            });
+          }
         });
         break;
       default:
@@ -206,8 +236,8 @@ class  Home extends Component {
     console.log('csv uploading...');
     e.preventDefault();
     var fileSelect = document.getElementById('myCsvfile');
-    console.log(fileSelect.files.length)
-    if(fileSelect.files.length) {
+    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+    if (regex.test(fileSelect.value)) {
       var files = fileSelect.files;
       var formData = new FormData();
       var file = files[0];
@@ -217,7 +247,7 @@ class  Home extends Component {
       .then((response)=>{
         console.log(response.status);
         if (response.status === 201) {
-          alert("file upload successful");
+          sweetalert("","file upload successful", "success");
           this.getStudentDetails();
         }
         if (response.status === 500){
@@ -225,7 +255,7 @@ class  Home extends Component {
         }
       });
     } else {
-      alert("select any .csv file")
+      sweetalert("select any .csv file")
     }
   }
 

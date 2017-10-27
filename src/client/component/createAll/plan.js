@@ -13,7 +13,9 @@ export default class Plan extends Component {
       mode: 'create',
       title: '', titleError: '',
       description: '', descriptionError: '',
+      startDate: {}, endDate: {},
       selectedWorkout: [],
+      workouts: [],
       currentCourse: {},
       currentIndex: -1
     };
@@ -25,6 +27,25 @@ export default class Plan extends Component {
       console.log('course list mounted: ', this.props.AllPlans);
   }
 
+  setWorkoutDays(id, days) {
+    days.sort();
+    let { workouts } = this.state;
+    let workoutFound = workouts.some((workout) => {
+        if(workout.id === id) workout.day = days.toString();
+        return workout.id === id;
+    });
+    if(!workoutFound) {
+      let workout = {};
+      workout.id = id;
+      workout.day = days.toString();
+      workouts.push(workout);
+      this.setState({workouts: workouts});
+    } else {
+      this.setState({workouts: workouts});
+    }
+    console.log('workouts: ',  workouts);
+  }
+
   setupEditCourse(course, index) {
     this.setState({
       mode: 'update',
@@ -32,6 +53,8 @@ export default class Plan extends Component {
       currentIndex: index,
       title: course.title,
       description: course.description,
+      startDate: course.start_date,
+      endDate: course.end_date,
       selectedWorkout: course.workouts
     });
   }
@@ -51,7 +74,9 @@ export default class Plan extends Component {
       mode: 'create',
       title: '', titleError: '',
       description: '', descriptionError: '',
+      startDate: {}, endDate: {},
       selectedWorkout: [],
+      workouts: [],
       currentCourse: {},
       currentIndex: -1
     });
@@ -77,14 +102,16 @@ export default class Plan extends Component {
 
 	createCourse = (e) => {
 		e.preventDefault();
-		let { description, title, selectedWorkout } = this.state;
+		let { workouts, description, startDate, endDate, title, selectedWorkout } = this.state;
 		if(this.validationSuccess() && this.state.selectedWorkout.length !== 0) {
-      let list = selectedWorkout.map(id => ({id: id, day: '2'}));
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
 		      "id": localStorage.getItem("id"),
 		      "title": title,
-		      "list": list/*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
+          "start_date": startDate,
+          "end_date": endDate,
+          "duration": 4,
+		      "list": workouts/*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
 		    })
 		    .then((response)=>{
           console.log('create course response: ', response);
@@ -97,6 +124,7 @@ export default class Plan extends Component {
 	/*Create Plan Ends*/
 
   render() {
+    let { selectedWorkout } = this.state;
     return (
       <div  className="col-md-12 col-lg-12 col-xs-12 createCourse create-plan">
         {
@@ -140,6 +168,26 @@ export default class Plan extends Component {
                     onChange={(e)=>this.setState({description: e.target.value, descriptionError: ''})} />
                   <span style={{color:'red'}}>{this.state.descriptionError}</span>
                 </div>
+                <div className="form-group">
+                  <label>Start Date</label>
+                  <input type="date" name="Start Date"
+                    value={this.state.startDate} className="form-control"
+                    onChange={(e) => {
+                      this.setState({startDate: e.target.value})
+                      console.log('startDate: ', e.target.value);
+                    }} />
+                  <span style={{color:'red'}}>{this.state.startDateError}</span>
+                </div>
+                <div className="form-group">
+                  <label>End Date</label>
+                  <input type="date" name="End Date"
+                    value={this.state.endDate} className="form-control"
+                    onChange={(e) => {
+                      this.setState({endDate: e.target.value})
+                      console.log('endDate: ', e.target.value);
+                    }} />
+                  <span style={{color:'red'}}>{this.state.endDateError}</span>
+                </div>
                 {
                   this.state.mode === 'create' ?
                   <button className="btn btn-info" type="submit"
@@ -155,16 +203,22 @@ export default class Plan extends Component {
             </div>
             <ul className="wrkoutulli_1">
               <CheckboxGroup
-                  name="workouts"
-                  value={this.state.selectedWorkout}
-                  onChange={this.selectWorkoutChanged}
-                  >
-                  {this.props.AllWorkouts.map((workout, i)  =>
-                    <li key={i}>
-                      <Checkbox value={workout.id} className="inputchk4wrkout" />
-                      <ShowWorkout workout={workout} />
-                    </li>
-                  )}
+                name="workouts"
+                value={this.state.selectedWorkout}
+                onChange={this.selectWorkoutChanged}
+                >
+                {this.props.AllWorkouts.map((workout, i)  =>
+                  <li key={i}>
+                    <Checkbox value={workout.id} className="inputchk4wrkout" />
+                    <ShowWorkout
+                      style={{
+                        display: selectedWorkout.indexOf(workout.id) > -1 ? 'block' : 'none',
+                        backgroundColor: 'teal'
+                      }}
+                      workout={workout}
+                      setWorkoutDays={this.setWorkoutDays.bind(this)} />
+                  </li>
+                )}
               </CheckboxGroup>
             </ul>
             <div id="plansViewModal" className="modal fade" role="dialog">

@@ -19,7 +19,7 @@ export default class PlanList extends Component {
             return (
               <tr key={i}>
                 <td>{course.title}</td>
-                <td>5</td>
+                <td>{course.workouts.length}</td>
                 <td>
                   <button data-dismiss='modal'
                     onClick={(e)=>{
