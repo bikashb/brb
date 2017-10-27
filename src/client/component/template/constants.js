@@ -1,5 +1,5 @@
-// const url = '';
-const url = 'http://localhost:3002';
+const url = '';
+// const url = 'http://localhost:3002';
 
 module.exports = {
 	Signup: url + '/api/v1/signup',
