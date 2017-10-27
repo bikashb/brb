@@ -26,6 +26,7 @@ export default class Workout extends Component {
   }
 
   setupEditWorkout(workout, index) {
+    console.log('selected workout: ', workout)
     this.setState({
       mode: 'update',
       currentWorkout: workout,
@@ -44,7 +45,7 @@ export default class Workout extends Component {
     currentWorkout.description= this.state.description;
     currentWorkout.intensity = this.state.intensity;
     currentWorkout.list = this.state.exercises;
-    
+
     this.props.editWorkout(currentWorkout, currentIndex);
     this.resetFields();
   }

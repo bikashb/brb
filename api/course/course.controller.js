@@ -45,10 +45,7 @@ controller.editCourse= function(req,res){
   courseData=req.body.course;
   courseData.utc_last_updated= new Date();
   delete courseData.list;
-  delete courseData.schedule;
   delete courseData.workouts;
-  delete courseData.duration;
-  delete courseData.intensity;
   console.log('list::: ', req.body.list)
   knex('course').where("id",'=',Number(req.body.course.id)).update(courseData).then(function(value){
     console.log('value::: ', value);
