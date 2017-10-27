@@ -233,7 +233,7 @@ export default class Exercise extends Component {
                   </div>
                   <div className="naivga1a">
                     <form>
-                      <input type="text" placeholder="name" value={searchTextUpdateExercise}
+                      <input className="searchTxt_pop_align" type="text" placeholder="Search Exercise" value={searchTextUpdateExercise}
                         onChange={(e)=>this.setState({searchTextUpdateExercise: e.target.value})} />
                       <a className="glyphicon glyphicon-remove-circle"
                         onClick={(e)=> {

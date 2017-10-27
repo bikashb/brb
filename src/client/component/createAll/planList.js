@@ -17,8 +17,8 @@ export default class PlanList extends Component {
         <tr>
           <th>Title</th>
           <th>Available Workouts</th>
-          <th>Edit</th>
-          <th>Delete</th>
+          <th>Edit / Delete</th>
+           
         </tr>
         </thead>
         <tbody>
@@ -27,22 +27,21 @@ export default class PlanList extends Component {
             return (
               <tr key={i}>
                 <td>{course.title}</td>
-                <td>{course.workouts.length}</td>
+                <td> <span className="exNam">[ Workout 1 <span className="dura">-5 Exercises</span>, Workout 2 <span className="dura">-5 Exercises</span></span></td>
                 <td>
-                  <button data-dismiss='modal'
+                  <a data-dismiss='modal' className="glyphicon glyphicon-pencil"
                     onClick={(e)=>{
-                      course.workouts = course.schedule;
+                      course.workouts = course.workouts;
                       setupEditCourse(course, i);
                     }}>
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button
+                     
+                  </a>&nbsp; &nbsp;
+                 
+                  <a className="glyphicon glyphicon-remove-circle"
 										onClick={(e)=>{deleteCourse(course.id, i)}}
 										>
-  									Delete
-  								</button>
+  									 
+  								</a>
                 </td>
               </tr>
             )

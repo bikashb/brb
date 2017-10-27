@@ -65,9 +65,9 @@ class Dashboard extends Component {
 								<div className="table-responsive">
 									<div className="dash_consolidate_mas">
 										<a href="#" className="dash_consolidate">Ongoing Course List</a>
-										<span>Quick view to Exercise details &amp;  Course assignment</span>
+										<span>Quick view to Student details under Course </span>
 										<img src="images/preview.png" />
-										<select value={this.state.selectedCourseID}
+										<select className="dashbrd_align" value={this.state.selectedCourseID}
 											onChange={(e) => {
 												this.setState({selectedCourseID: e.target.value});
 												this.getStudentsUnderCourse(e.target.value);
@@ -80,11 +80,15 @@ class Dashboard extends Component {
 												)
 											}
 										</select>
+										<div className="dashSTEDDate">
+											<span>Start Date: <h3>10/12/2000</h3></span>
+											<span>End Date: <h3>10/12/2000</h3></span>
+										</div>
 									</div>
 									{
 										this.state.students.length ?
 										<div className="dashTblScroll">
-											<table className="table table-striped fnt13">
+											<table className="table table-striped">
 		                    <thead>
 		                        <tr>
 		                           <th width="25%">Student Name</th>
@@ -94,7 +98,7 @@ class Dashboard extends Component {
 		                        </tr>
 		                    </thead>
 											</table>
-											<table className="table table-striped fnt13">
+											<table className="table table-striped">
 												 <tbody>
 													{this.state.students.map((student, si) =>
 													<tr key={si}>

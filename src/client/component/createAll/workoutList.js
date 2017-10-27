@@ -18,8 +18,8 @@ export default class WorkoutList extends Component {
         <tr>
           <th>Title</th>
           <th>Available Exercises</th>
-          <th>Edit</th>
-          <th>Delete</th>
+          <th>Edit / Delete</th>
+           
         </tr></thead><tbody>
         {
           workoutCopy.splice(currentPageUpdateWorkout*offsetUpdateWorkout, offsetUpdateWorkout).map((workout, i) => {
@@ -27,20 +27,20 @@ export default class WorkoutList extends Component {
             return (
               <tr key={i}>
                 <td>{workout.title}</td>
-                <td>5</td>
+                <td> <span className="exNam">[ Exercise 1 <span className="dura">-30 mins</span>, Exercise 2 <span className="dura">-30 mins</span>, Exercise 3 <span className="dura">-30 mins</span> ]</span>
+                </td>
                 <td>
-                  <button data-dismiss='modal'
+                  <a data-dismiss='modal' className="glyphicon glyphicon-pencil"
                     onClick={(e)=>{
                       setupEditWorkout(workout, i);
                     }}>
-                    Edit
-                  </button>
-                </td>
-                <td>
-                  <button
+                     
+                  </a>&nbsp; &nbsp;
+                 
+                  <a className="glyphicon glyphicon-remove-circle"
                     onClick={(e)=>{deleteWorkout(workout.id, i)}}>
-  									Delete
-  								</button>
+  									 
+  								</a>
                 </td>
               </tr>
             )

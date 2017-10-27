@@ -51,13 +51,7 @@ export default class AssignedStudents extends Component {
 					courses.length ?
             <div>
 							<div>
-                <ul className="legends4Tbl">
-                    <li><span className="lNew"></span>New</li>
-                    <li><span className="lCompleted"></span>Completed</li>
-                    <li><span className="lAlmost"></span>Almost</li>
-                    <li><span className="lImprove"></span>Need to Improve</li>
-                    <li><span className="lGood"></span>Good</li>
-                </ul>
+                 
                 <div className="naivga1a">
 					<form>
 							<input type="text" placeholder="name" value={searchTextAssignedStudents}

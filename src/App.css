@@ -1146,6 +1146,9 @@
  
  #accordion {
      margin: 15px 0 0 0;
+         clear: both;
+    display: inline-block;
+    width: 100%;
  }
  
  #accordion table th {
@@ -1410,7 +1413,7 @@
      margin: 0 0 0 0;
      padding: 0 0 0 0;
      list-style: none;
-     width: 100%;
+     width: 100%; clear: both;
  }
  
  ul.thumb_workouts li {
@@ -1476,8 +1479,10 @@
  .course_thumb_mas {
      margin: 0 0 30px 0;
      padding: 15px;
-     float: left;
-     background: #f2f2f2;
+     loat: left;
+     ackground: #f2f2f2;
+     display: inline-block;
+    width: 100%;
  }
  
  .flt_left {
@@ -2038,6 +2043,28 @@ margin: 0 20px 0 0;
     top: 14px;
     left: 10px;
     color: #c30707;
+}
+.dashbrd_align{
+     margin: 20px 0 0 0;
+}
+.dashSTEDDate{
+     
+     font-family: arial;
+     font-size: 18px;
+}
+.dashSTEDDate span{display: inline-block; margin: 10px 20px 0 0;color: #7d7d7d;}
+.dashSTEDDate span h3{ display: inline-block; font-family: "HelveticaNeueLT Com 35 Th"; font-size: 30px; color: #fff; }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+     padding: 16px;
+}
+.searchTxt_pop_align{
+     padding: 0 0 0 35px !important;
+}
+.exNam{
+    display: inline-block; font-family: "HelveticaNeueLT Com 35 Th"; font-size: 20px; vertical-align: top;  
+}
+.dura{
+     color: #ffa200;
 }
  /**/
  /*====================================================*/

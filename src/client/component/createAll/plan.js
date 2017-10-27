@@ -231,7 +231,7 @@ export default class Plan extends Component {
               </form>
               <div className="naivga1a">
                 <form>
-                  <input type="text" placeholder="name" value={searchTextCreatePlan}
+                  <input type="text" className="searchTxt_pop_align" placeholder="name" value={searchTextCreatePlan}
                     onChange={(e)=>this.setState({searchTextCreatePlan: e.target.value})} />
                   <a className="glyphicon glyphicon-remove-circle"
                     onClick={(e)=> {
@@ -253,7 +253,7 @@ export default class Plan extends Component {
                     <li key={i}>
                       <Checkbox value={workout.id} className="inputchk4wrkout" />
                       <ShowWorkout style={{
-                          display: selectedWorkout.indexOf(workout.id) > -1 ? 'block' : 'none',
+                          display: 'block',
                           backgroundColor: 'teal'
                         }}
                         workout={workout} 
@@ -299,7 +299,7 @@ export default class Plan extends Component {
                       </div>
                       <div className="naivga1a">
                         <form>
-                          <input type="text" placeholder="name" value={searchTextUpdatePlan}
+                          <input type="text" className="searchTxt_pop_align" placeholder="name" value={searchTextUpdatePlan}
                             onChange={(e)=>this.setState({searchTextUpdatePlan: e.target.value})} />
                           <a className="glyphicon glyphicon-remove-circle"
                             onClick={(e)=> {

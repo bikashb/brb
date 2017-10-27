@@ -196,7 +196,7 @@ export default class Workout extends Component {
               </form>
               <div className="naivga1a">
                 <form>
-                  <input type="text" placeholder="name" value={searchTextCreateWorkout}
+                  <input  type="text" className="searchTxt_pop_align" placeholder="name" value={searchTextCreateWorkout}
                     onChange={(e)=>this.setState({searchTextCreateWorkout: e.target.value})} />
                   <a className="glyphicon glyphicon-remove-circle"
                     onClick={(e)=> {
@@ -276,7 +276,7 @@ export default class Workout extends Component {
                       </div>
                       <div className="naivga1a">
                         <form>
-                          <input type="text" placeholder="name" value={searchTextUpdateWorkout}
+                          <input type="text" className="searchTxt_pop_align" placeholder="name" value={searchTextUpdateWorkout}
                             onChange={(e)=>this.setState({searchTextUpdateWorkout: e.target.value})} />
                           <a className="glyphicon glyphicon-remove-circle"
                             onClick={(e)=> {
