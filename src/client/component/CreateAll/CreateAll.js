@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Exercise from './exercise.js';
-import Plan from './plan.js';
-import Workout from './workout.js';
+import ExerciseTab from './Exercise/ExerciseTab';
+import CourseTab from './Course/CourseTab';
+import WorkoutTab from './Workout/WorkoutTab';
 
 export default class CreateAll extends Component {
 	constructor(props) {
@@ -36,7 +36,7 @@ export default class CreateAll extends Component {
 		switch(currentTab) {
 			case 'create-exercise':
 				return (
-					<Exercise
+					<ExerciseTab
 						AllExercises={AllExercises}
 						editExercise={(exercise, index)=>this.props.editItem('exercise', exercise, index)}
 						deleteExercise={(id, index)=>this.props.deleteItem('exercise', id, index)}
@@ -44,7 +44,7 @@ export default class CreateAll extends Component {
 				);
 			case 'create-plan':
 				return (
-					<Plan AllWorkouts={AllWorkouts}
+					<CourseTab AllWorkouts={AllWorkouts}
 						AllPlans={AllPlans}
 						editCourse={(course, index)=>this.props.editItem('course', course, index)}
 						deleteCourse={(id, index)=>this.props.deleteItem('course', id, index)}
@@ -52,7 +52,7 @@ export default class CreateAll extends Component {
 				);
 			case 'create-workout':
 				return (
-					<Workout AllExercises={AllExercises}
+					<WorkoutTab AllExercises={AllExercises}
 						AllWorkouts={AllWorkouts}
 						editWorkout={(workout, index)=>this.props.editItem('workout', workout, index)}
 						deleteWorkout={(id, index)=>this.props.deleteItem('workout', id, index)}
@@ -60,7 +60,7 @@ export default class CreateAll extends Component {
 				);
 			default:
 				return (
-					<Exercise
+					<ExerciseTab
 						AllExercises={AllExercises}
 						editExercise={this.props.editExercise}
 						deleteExercise={(id, index)=>this.props.deleteItem('exercise', id, index)}

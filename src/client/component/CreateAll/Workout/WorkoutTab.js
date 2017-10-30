@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
-import WorkoutList from './workoutList.js';
-import APIs from '../template/constants.js';
+import WorkoutList from './WorkoutList';
+import APIs from '../../template/constants.js';
 import sweetalert from 'sweetalert';
 import ReactPaginate from 'react-paginate';
 
-export default class Workout extends Component {
+export default class WorkoutTab extends Component {
   constructor() {
     super();
     this.state = {
@@ -54,7 +54,6 @@ export default class Workout extends Component {
       currentWorkout.description= this.state.description;
       currentWorkout.intensity = this.state.intensity;
       currentWorkout.list = this.state.exercises;
-
       this.props.editWorkout(currentWorkout, currentIndex);
       this.resetFields();
     }
@@ -138,8 +137,10 @@ export default class Workout extends Component {
     let exerciseCopy = searchTextCreateWorkout.length ?
     this.props.AllExercises.filter(exercise =>
       exercise.title.toLowerCase()
-      .startsWith(searchTextCreateWorkout.toLowerCase())) :
-    [...this.props.AllExercises];
+      .startsWith(searchTextCreateWorkout.toLowerCase()))
+      .sort((a, b) => exercises.indexOf(b.id) > -1)  :
+    [...(this.props.AllExercises.sort((a, b) => exercises.indexOf(b.id) > -1))];
+    
     return (
       <div className="col-md-12 col-lg-12 col-xs-12 createCourse create-workout">
         {

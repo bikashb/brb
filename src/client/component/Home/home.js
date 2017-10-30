@@ -10,7 +10,7 @@ import ShowPlan from '../showPlan/showPlan.js';
 import Dashboard from '../dashboard/dashboard.js';
 import ShowStudentList from '../showStudentList/showStudentList.js';
 import AssignedStudents from '../AssignedStudents/AssignedStudents';
-import CreateALL from '../createAll/createAll.js';
+import CreateAll from '../CreateAll/CreateAll.js';
 import Footer from '../footer/footer.js';
 import InstructorProfile from '../InstructorProfile/instructorprofile.js';
 import APIs from '../template/constants.js';
@@ -364,7 +364,7 @@ class  Home extends Component {
                                   />
                                 </div>
                                 <div className="tab-pane creationTab" id="e">
-                                  <CreateALL
+                                  <CreateAll
                                     AllExercises={this.state.exercises}
                                     AllWorkouts={this.state.workouts}
                                     AllPlans={this.state.courses}

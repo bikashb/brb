@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import APIs from '../template/constants.js';
-import ExerciseList from './exerciseList.js';
+import APIs from '../../template/constants.js';
+import ExerciseList from './ExerciseList';
 import sweetalert from 'sweetalert';
 import ReactPaginate from 'react-paginate';
 
-export default class Exercise extends Component {
+export default class ExerciseTab extends Component {
   constructor() {
     super();
     this.state = {

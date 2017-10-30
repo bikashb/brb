@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
-class ShowWorkout extends Component {
+export default class WorkoutCard extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -49,5 +48,3 @@ class ShowWorkout extends Component {
 		)
 	}
 }
-
-export default ShowWorkout;

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
-import ShowWorkout from '../showWorkout/showWorkout.js';
-import PlanList from './planList.js'
-import APIs from '../template/constants.js';
+import WorkoutCard from './WorkoutCard';
+import CourseList from './CourseList';
+import APIs from '../../template/constants.js';
 import sweetalert from 'sweetalert';
 import ReactPaginate from 'react-paginate';
 
-export default class Plan extends Component {
+export default class CourseTab extends Component {
   constructor() {
     super();
     this.state = {
@@ -168,8 +168,9 @@ export default class Plan extends Component {
         let workoutCopy = searchTextCreatePlan.length ?
           this.props.AllWorkouts.filter(workout =>
             workout.title.toLowerCase()
-            .startsWith(searchTextCreatePlan.toLowerCase())) :
-          [...this.props.AllWorkouts];
+            .startsWith(searchTextCreatePlan.toLowerCase()))
+            .sort((a, b) => workouts.indexOf(b.id) > -1) :
+          [...(this.props.AllWorkouts.sort((a, b) => workouts.indexOf(b.id) > -1))];
 
     return (
       <div  className="col-md-12 col-lg-12 col-xs-12 createCourse create-plan">
@@ -272,7 +273,7 @@ export default class Plan extends Component {
                     workoutCopy.splice(currentPageCreatePlan*offsetCreatePlan, offsetCreatePlan).map((workout, i)  =>
                     <li key={i}>
                       <Checkbox value={workout.id} className="inputchk4wrkout" />
-                      <ShowWorkout
+                      <WorkoutCard
                         display={workouts.indexOf(workout.id) > -1}
                         workout={workout}
                         setWorkoutDays={this.setWorkoutDays.bind(this)} />
@@ -332,7 +333,7 @@ export default class Plan extends Component {
                     </div>
                   </div>
                   <div className="modal-body">
-                    <PlanList AllPlans={this.props.AllPlans}
+                    <CourseList AllPlans={this.props.AllPlans}
                       setupEditCourse={this.setupEditCourse.bind(this)}
                       deleteCourse={this.props.deleteCourse.bind(this)}
                       currentPageUpdatePlan={currentPageUpdatePlan}
