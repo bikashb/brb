@@ -43,7 +43,6 @@ class Login extends Component {
 
       formIsValid = () => {
         var state = this.state;
-        //var username = document.getElementsByName("username");
        if (validator.isEmpty(state.username.value)) {
           state.username.isValid = false;
           state.username.message = 'Please Enter Username';
@@ -69,6 +68,7 @@ class Login extends Component {
         });
         this.setState(state);
       }
+
       loginSubmit = (e, value) => {
         e.preventDefault();
         this.resetValidationStates();
@@ -80,23 +80,16 @@ class Login extends Component {
             })
             .then((response)=>{
               if (response.status == 200) {
-                console.log(response)
-                  localStorage.setItem('username',response.data.user.user_name);
-                  localStorage.setItem('id',response.data.user.id);
-                  this.props.history.push('/home');
-                }
-                /*if (response.status == 200 && response.data.type == "I") {
-                  localStorage.setItem('username',response.data.name );
-                  this.props.history.push('/home');
-                }else{
-                  alert("You are not Instructor");
-                  this.props.history.push('/');
-                }*/
-                console.log(response);
+                localStorage.setItem('username',response.data.user.user_name);
+                localStorage.setItem('id',response.data.user.id);
+                this.props.history.push({
+                  pathname: '/home',
+                  state: {user: response.data.user}
+                });
+              }
             }).catch((error) => {
-               console.log(error)
+               console.log(error);
             });
-
         }
       }
   render () {

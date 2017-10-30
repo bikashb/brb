@@ -41,7 +41,6 @@ class  Home extends Component {
   }
 
   show = (e, value)=>{
-    console.log(e, value)
     this.setState({showView: true});
       $(document).ready(function() {
         if($(value).offset()) {
@@ -61,6 +60,19 @@ class  Home extends Component {
     if(localStorage.getItem('username') === null)/*Check user*/ {
       this.props.history.push('/');
     }
+
+    /* setting profile details */
+    if(this.props.location.state) {
+      console.log('location state: ', this.props.location.state);
+      let { user } = this.props.location.state;
+      let instructorDetails = {};
+      instructorDetails.imagePath = user.profile_img_url;
+      instructorDetails.description = user.description;
+      this.setState({
+        instructorDetails: instructorDetails
+      });
+    }
+
     this.getStudentDetails();/*Get list of students*/
     this.getAllExercise();
     this.getAllPlans();
@@ -381,7 +393,9 @@ class  Home extends Component {
         </div>
     </section>
     <Footer />
-    <InstructorProfile updateInstructorDetails={this.updateInstructorDetails.bind(this)} />
+    <div id="myProfileModal" className="modal fade" role="dialog">
+      <InstructorProfile updateInstructorDetails={this.updateInstructorDetails.bind(this)} />
+    </div>
     <GroupMessage />
     </div>
     );

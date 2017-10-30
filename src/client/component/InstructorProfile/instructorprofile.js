@@ -46,11 +46,10 @@ export default class InstructorProfile extends Component {
       Object.keys(profile).map(key => {
           if(key != 'imagePath') state[key].value = profile[key];
       });
-      console.log('state: ', state)
-      props.updateInstructorDetails({
-        imagePath: response.data.data.profile_img_url ? response.data.data.profile_img_url : 'images/profile_img.jpg',
-        description: response.data.data.description
-      });
+      // props.updateInstructorDetails({
+      //   imagePath: response.data.data.profile_img_url ? response.data.data.profile_img_url : 'images/profile_img.jpg',
+      //   description: response.data.data.description
+      // });
       this.setState(state,
          () => {console.log('profile received: ', state);});
     });
@@ -161,7 +160,6 @@ export default class InstructorProfile extends Component {
   render() {
     let { state } = this;
     return (
-      <div id="myProfileModal" className="modal fade" role="dialog">
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -198,9 +196,6 @@ export default class InstructorProfile extends Component {
                       id="imagePath"
                     />
                   </label>
-                  {/*<img className="img-responsive"
-                    alt="Profile Picture"
-                    src={this.state.imagePath.value} />*/}
                   <span className="help-block">{state.imagePath.message}</span>
                 </div>
             </form>
@@ -216,7 +211,6 @@ export default class InstructorProfile extends Component {
             </div>
           </div>
         </div>
-      </div>
       </div>
     );
   }
