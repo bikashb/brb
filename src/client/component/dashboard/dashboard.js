@@ -26,7 +26,12 @@ class Dashboard extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({courses: nextProps.AllPlans})
+		if(this.props.AllPlans.length) {
+			this.setState({courses: this.props.AllPlans, selectedCourseID: this.props.AllPlans[0].id});
+			this.getStudentsUnderCourse(this.props.AllPlans[0].id);
+		} else {
+			console.log('no courses to display in the dashboard');
+		}
 	}
 
 	getStudentsUnderCourse(courseID) {

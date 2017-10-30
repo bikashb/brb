@@ -15,6 +15,7 @@ export default class Exercise extends Component {
       intensity: '', intensityError: '',
       description: '', descriptionError: '',
       video_url: '',
+      file: '',
       fileError: '',
       currentExercise: {},
       currentIndex: -1,
@@ -31,8 +32,7 @@ export default class Exercise extends Component {
 		exerciseDetails.preventDefault();
 		let fileSelect = document.getElementById('myfile');
 		let { description, title, intensity, type } = this.state;
-		//if(type==''||description==''||title==''||intensity==''||fileSelect.files.length==0) {
-    if(this.validationSuccess() && fileSelect.files.length !== 0) {
+    if(this.validationSuccess()) {
 			/* video upload */
 			console.log("video uploading");
 			let files = fileSelect.files;
@@ -68,7 +68,8 @@ export default class Exercise extends Component {
 	/*Create Exercise Ends*/
 
   validationSuccess() {
-    let { title, type, intensity, description } = this.state;
+    let { file, title, type, intensity, description } = this.state;
+    let fileSelect = document.getElementById('myfile');
     if (title === '') {
       this.setState({titleError: 'Please enter Title'});
       return false;
@@ -88,12 +89,10 @@ export default class Exercise extends Component {
       this.setState({descriptionError: 'Please enter Description'});
       return false;
     }
-      //  if(myfile.value==''){
-      //   document.getElementById('pointDescription').innerHTML='';
-      //  document.getElementById('pointMyfile').innerHTML="Please upload Video";
-      //  myfile.focus();
-      // return false;
-      // }
+    if(file === '') {
+      this.setState({fileError: 'Please select a video'});
+      return false;
+    }
     return true;
   }
 
@@ -127,7 +126,7 @@ export default class Exercise extends Component {
       type: '', typeError: '',
       intensity: '', intensityError: '',
       description: '', descriptionError: '',
-      video_url: '', fileError: '',
+      video_url: '', fileError: '', file: '',
       currentExercise: {},
       currentIndex: -1
     });
@@ -193,7 +192,10 @@ export default class Exercise extends Component {
           </div>
           <div className="form-group">
             <label>File input</label>
-            <input id="myfile" name="myFile" encType="multipart/form-data" type="file" />
+            <input id="myfile" name="myFile" encType="multipart/form-data" type="file"
+              value={this.state.file} accept="video/*"
+              onChange={(e) => this.setState({file: e.target.value, fileError: ''})}
+              />
             <span style={{color:'red'}}>{this.state.fileError}</span>
           </div>
           <ul id="fileList"></ul>
@@ -240,7 +242,7 @@ export default class Exercise extends Component {
                           e.preventDefault();
                           this.setState({searchTextUpdateExercise: ''});
                         }}>
-                         
+
                       </a>
                     </form>
                   </div>

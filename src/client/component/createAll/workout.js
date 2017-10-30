@@ -34,6 +34,7 @@ export default class Workout extends Component {
 
   setupEditWorkout(workout, index) {
     console.log('selected workout: ', workout)
+    let exerciseIDs = workout.exercises.map(exercise => exercise.id);
     this.setState({
       mode: 'update',
       currentWorkout: workout,
@@ -41,20 +42,22 @@ export default class Workout extends Component {
       title: workout.title,
       description: workout.description,
       intensity: workout.intensity,
-      exercises: workout.exercises
+      exercises: exerciseIDs
     });
   }
 
   updateWorkout(e) {
     e.preventDefault();
-    let { currentIndex, currentWorkout } = this.state;
-    currentWorkout.title = this.state.title;
-    currentWorkout.description= this.state.description;
-    currentWorkout.intensity = this.state.intensity;
-    currentWorkout.list = this.state.exercises;
+    if(this.validationSuccess()) {
+      let { currentIndex, currentWorkout } = this.state;
+      currentWorkout.title = this.state.title;
+      currentWorkout.description= this.state.description;
+      currentWorkout.intensity = this.state.intensity;
+      currentWorkout.list = this.state.exercises;
 
-    this.props.editWorkout(currentWorkout, currentIndex);
-    this.resetFields();
+      this.props.editWorkout(currentWorkout, currentIndex);
+      this.resetFields();
+    }
   }
 
   resetFields() {
@@ -77,7 +80,7 @@ export default class Workout extends Component {
   createWorkout = (e) => {
     let { title, intensity, description, exercises } = this.state;
     e.preventDefault();
-    if( this.validationSuccess() && this.state.exercises.length !== 0 ) {
+    if( this.validationSuccess()) {
       axios.post(APIs.CreateWorkout, {
           "description": description,
           "id": localStorage.getItem("id"),
@@ -97,20 +100,24 @@ export default class Workout extends Component {
   /*Create Workout Ends*/
 
   validationSuccess() {
-    let { title, intensity, description } = this.state;
+    let { exercises, title, intensity, description } = this.state;
     if (title === '') {
-      this.setState({titleError: 'Please enter Title'});
+      this.setState({titleError: 'Please enter Title.'});
       return false;
     }
     if(intensity === '') {
-      this.setState({intensityError: 'Please enter Intensity Numbers'});
+      this.setState({intensityError: 'Please enter Intensity Numbers.'});
       return false;
     } else if(isNaN(intensity)) {
-       this.setState({intensityError: 'Please enter only Numbers'});
+       this.setState({intensityError: 'Please enter only Numbers.'});
        return false;
     }
-    if(description === ''){
-      this.setState({descriptionError: 'Please enter Description'});
+    if(description === '') {
+      this.setState({descriptionError: 'Please enter Description.'});
+      return false;
+    }
+    if(exercises.length === 0) {
+      sweetalert('Please select atleast one exercise.');
       return false;
     }
     return true;
@@ -128,11 +135,11 @@ export default class Workout extends Component {
       [...this.props.AllWorkouts];
 
       /*workout create pagination*/
-      let exerciseCopy = searchTextCreateWorkout.length ?
-      this.props.AllExercises.filter(exercise =>
-        exercise.title.toLowerCase()
-        .startsWith(searchTextCreateWorkout.toLowerCase())) :
-      [...this.props.AllExercises];
+    let exerciseCopy = searchTextCreateWorkout.length ?
+    this.props.AllExercises.filter(exercise =>
+      exercise.title.toLowerCase()
+      .startsWith(searchTextCreateWorkout.toLowerCase())) :
+    [...this.props.AllExercises];
     return (
       <div className="col-md-12 col-lg-12 col-xs-12 createCourse create-workout">
         {
@@ -203,7 +210,7 @@ export default class Workout extends Component {
                       e.preventDefault();
                       this.setState({searchTextCreateWorkout: ''});
                     }}>
-                     
+
                   </a>
                 </form>
               </div>
@@ -283,7 +290,7 @@ export default class Workout extends Component {
                               e.preventDefault();
                               this.setState({searchTextUpdateWorkout: ''});
                             }}>
-                             
+
                           </a>
                         </form>
                       </div>

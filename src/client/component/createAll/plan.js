@@ -14,9 +14,9 @@ export default class Plan extends Component {
       mode: 'create',
       title: '', titleError: '',
       description: '', descriptionError: '',
-      startDate: {}, endDate: {},
-      selectedWorkout: [],
+      startDate: new Date("2017-11-01"), endDate: new Date("2017-11-07"),
       workouts: [],
+      list: [],
       currentCourse: {},
       currentIndex: -1,
       currentPageUpdatePlan:0,
@@ -35,9 +35,10 @@ export default class Plan extends Component {
   }
 
   setWorkoutDays(id, days) {
+    console.log('id: ', id)
     days.sort();
-    let { workouts } = this.state;
-    let workoutFound = workouts.some((workout) => {
+    let { list } = this.state;
+    let workoutFound = list.some((workout) => {
         if(workout.id === id) workout.day = days.toString();
         return workout.id === id;
     });
@@ -45,15 +46,17 @@ export default class Plan extends Component {
       let workout = {};
       workout.id = id;
       workout.day = days.toString();
-      workouts.push(workout);
-      this.setState({workouts: workouts});
+      list.push(workout);
+      this.setState({list: list});
     } else {
-      this.setState({workouts: workouts});
+      this.setState({list: list});
     }
-    console.log('workouts: ',  workouts);
+    console.log('list: ',  list);
   }
 
   setupEditCourse(course, index) {
+    console.log('selected course: ', course);
+    let workoutIDs = course.workouts.map(workout => workout.id);
     this.setState({
       mode: 'update',
       currentCourse: course,
@@ -62,18 +65,22 @@ export default class Plan extends Component {
       description: course.description,
       startDate: course.start_date,
       endDate: course.end_date,
-      selectedWorkout: course.workouts
+      workouts: workoutIDs
     });
   }
 
   updateCourse(e) {
     e.preventDefault();
-    let { currentIndex, currentCourse } = this.state;
-    currentCourse.title = this.state.title;
-    currentCourse.description= this.state.description;
-    currentCourse.workouts = this.state.selectedWorkout.map(id => ({id: id, day: '2'}));
-    this.props.editCourse(currentCourse, currentIndex);
-    this.resetFields();
+    if(this.validationSuccess()) {
+      let { currentIndex, currentCourse } = this.state;
+      currentCourse.title = this.state.title;
+      currentCourse.description= this.state.description;
+      // days are hard coded here -- need to be changed
+      // currentCourse.workouts = this.state.workouts.map(id => ({id: id, day: '2'}));
+      currentCourse.workouts = this.state.list;
+      this.props.editCourse(currentCourse, currentIndex);
+      this.resetFields();
+    }
   }
 
   resetFields() {
@@ -81,16 +88,17 @@ export default class Plan extends Component {
       mode: 'create',
       title: '', titleError: '',
       description: '', descriptionError: '',
-      startDate: {}, endDate: {},
-      selectedWorkout: [],
+      startDate: new Date("2017-11-01"), endDate: new Date("2017-11-07"),
       workouts: [],
+      list: [],
       currentCourse: {},
       currentIndex: -1
     });
   }
 
   validationSuccess() {
-    let { title, description } = this.state;
+    let { list, title, description } = this.state;
+    console.log('list -- ', list);
     if (title === '') {
       this.setState({titleError: 'Please enter Title'});
       return false;
@@ -99,18 +107,27 @@ export default class Plan extends Component {
       this.setState({descriptionError: 'Please enter Description'});
       return false;
     }
+    if(list.length === 0) {
+      sweetalert('Ensure that you have selected atleast one workout with days marked.');
+      return false;
+    }
     return true;
   }
 
   /*Create Plan Starts*/
-	selectWorkoutChanged = (newWorkout) => {
-		this.setState({selectedWorkout: newWorkout});
+	selectWorkoutChanged = (workouts) => {
+    let { list } = this.state;
+    list = list.filter(item => workouts.indexOf(item.id) > -1);
+		this.setState({
+      workouts: workouts,
+      list: list
+    });
 	}
 
 	createCourse = (e) => {
 		e.preventDefault();
-		let { workouts, description, startDate, endDate, title, selectedWorkout } = this.state;
-		if(this.validationSuccess() && this.state.selectedWorkout.length !== 0) {
+		let { description, startDate, endDate, title, list } = this.state;
+		if(this.validationSuccess()) {
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
 		      "id": localStorage.getItem("id"),
@@ -118,7 +135,7 @@ export default class Plan extends Component {
           "start_date": startDate,
           "end_date": endDate,
           "duration": 4,
-		      "list": workouts/*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
+		      "list": list /*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
 		    })
 		    .then((response)=>{
           console.log('create course response: ', response);
@@ -131,13 +148,13 @@ export default class Plan extends Component {
 	/*Create Plan Ends*/
 
   render() {
-    const { currentPageUpdatePlan, 
-            offsetUpdatePlan, 
+    const { currentPageUpdatePlan,
+            offsetUpdatePlan,
             searchTextUpdatePlan,
             currentPageCreatePlan,
             offsetCreatePlan,
-            searchTextCreatePlan, 
-            selectedWorkout
+            searchTextCreatePlan,
+            workouts
           } = this.state;
 
     /*plan update pagination*/
@@ -147,12 +164,12 @@ export default class Plan extends Component {
         .startsWith(searchTextUpdatePlan.toLowerCase())) :
       [...this.props.AllPlans];
 
-/*plan update pagination*/
-    let workoutCopy = searchTextCreatePlan.length ?
-      this.props.AllWorkouts.filter(workout =>
-        workout.title.toLowerCase()
-        .startsWith(searchTextCreatePlan.toLowerCase())) :
-      [...this.props.AllWorkouts];
+    /*plan update pagination*/
+        let workoutCopy = searchTextCreatePlan.length ?
+          this.props.AllWorkouts.filter(workout =>
+            workout.title.toLowerCase()
+            .startsWith(searchTextCreatePlan.toLowerCase())) :
+          [...this.props.AllWorkouts];
 
     return (
       <div  className="col-md-12 col-lg-12 col-xs-12 createCourse create-plan">
@@ -200,7 +217,8 @@ export default class Plan extends Component {
                 <div className="form-group">
                   <label>Start Date</label>
                   <input type="date" name="Start Date"
-                    value={this.state.startDate} className="form-control"
+                    value={"2017-11-01"} className="form-control"
+                    disabled={true}
                     onChange={(e) => {
                       this.setState({startDate: e.target.value})
                       console.log('startDate: ', e.target.value);
@@ -210,7 +228,8 @@ export default class Plan extends Component {
                 <div className="form-group">
                   <label>End Date</label>
                   <input type="date" name="End Date"
-                    value={this.state.endDate} className="form-control"
+                    value={"2017-11-07"} className="form-control"
+                    disabled={true}
                     onChange={(e) => {
                       this.setState({endDate: e.target.value})
                       console.log('endDate: ', e.target.value);
@@ -238,7 +257,7 @@ export default class Plan extends Component {
                       e.preventDefault();
                       this.setState({searchTextCreatePlan: ''});
                     }}>
-                     
+
                   </a>
                 </form>
               </div>
@@ -246,20 +265,20 @@ export default class Plan extends Component {
             <ul className="wrkoutulli_1">
               <CheckboxGroup
                   name="workouts"
-                  value={this.state.selectedWorkout}
+                  value={this.state.workouts}
                   onChange={this.selectWorkoutChanged}
                   >
-                  {workoutCopy.splice(currentPageCreatePlan*offsetCreatePlan, offsetCreatePlan).map((workout, i)  =>
+                  {
+                    workoutCopy.splice(currentPageCreatePlan*offsetCreatePlan, offsetCreatePlan).map((workout, i)  =>
                     <li key={i}>
                       <Checkbox value={workout.id} className="inputchk4wrkout" />
-                      <ShowWorkout style={{
-                          display: 'block',
-                          backgroundColor: 'teal'
-                        }}
-                        workout={workout} 
+                      <ShowWorkout
+                        display={workouts.indexOf(workout.id) > -1}
+                        workout={workout}
                         setWorkoutDays={this.setWorkoutDays.bind(this)} />
                     </li>
-                  )}
+                  )
+                }
               </CheckboxGroup>
             </ul>
             <div className="naivga1">
@@ -306,7 +325,7 @@ export default class Plan extends Component {
                               e.preventDefault();
                               this.setState({searchTextUpdatePlan: ''});
                             }}>
-                             
+
                           </a>
                         </form>
                       </div>
@@ -317,7 +336,7 @@ export default class Plan extends Component {
                       setupEditCourse={this.setupEditCourse.bind(this)}
                       deleteCourse={this.props.deleteCourse.bind(this)}
                       currentPageUpdatePlan={currentPageUpdatePlan}
-                      offsetUpdatePlan={offsetUpdatePlan} 
+                      offsetUpdatePlan={offsetUpdatePlan}
                       searchTextUpdatePlan={searchTextUpdatePlan}
                       planCopy={planCopy}
                       />

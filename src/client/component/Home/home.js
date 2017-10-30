@@ -176,7 +176,7 @@ class  Home extends Component {
         axios.put(APIs.UpdateExercise, exercise)
         .then((response) => {
           console.log('update exercise response: ', response);
-          sweetalert('exercise updation success');
+          sweetalert('exercise updation success', {icon: 'success'});
           let { exercises } = this.state;
           exercises.splice(index, 1, exercise);
           this.setState({exercises: exercises});
@@ -189,7 +189,7 @@ class  Home extends Component {
         axios.put(APIs.UpdateWorkout, {workout: workout, list: list})
         .then((response) => {
           console.log('update workout response: ', response);
-          sweetalert('workout updation success');
+          sweetalert('workout updation success', {icon: 'success'});
           let { workouts } = this.state;
           workouts.splice(index, 1, workout);
           this.setState({workouts: workouts});
@@ -200,7 +200,7 @@ class  Home extends Component {
         axios.put(APIs.UpdateCourse, {course: course, list: course.workouts})
         .then((response) => {
           console.log('update course response: ', response);
-          sweetalert('course updation success');
+          sweetalert('course updation success', {icon: 'success'});
           let { courses } = this.state;
           courses.splice(index, 1, course);
           this.setState({courses: courses});

@@ -176,6 +176,7 @@ export default class InstructorProfile extends Component {
                      name="name" id="name"
                      value={state.name.value}
                      onChange={this.onChange}
+                     disabled={true}
                      />
                    <span className="help-block">{state.name.message}</span>
                 </div>

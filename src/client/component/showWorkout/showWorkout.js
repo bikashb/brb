@@ -9,8 +9,16 @@ class ShowWorkout extends Component {
 			days: []
 		};
 	}
+
+	componentWillReceiveProps(nextProps) {
+		if(!nextProps.display) {
+			let days = [];
+			this.setState({days: days});
+		}
+	}
+
 	render () {
-		const { workout } = this.props;
+		const { workout, display } = this.props;
 		return (
 			<div>
 				<div className="videoBtmTypo"> <span>Title :</span> {workout.title}</div>
@@ -19,7 +27,10 @@ class ShowWorkout extends Component {
 				<div>
 					&nbsp;&nbsp;
 					<CheckboxGroup
-					  style={this.props.style}
+						style={{
+							display: display ?'block' : 'none',
+							backgroundColor: '#EEEEEE'
+						}}
 						value={this.state.days}
 						onChange={(days) => {
 							this.setState({days: days});
