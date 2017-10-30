@@ -14,18 +14,20 @@ export default class WorkoutItem extends Component {
       <tr>
         <td>{workout.title}</td>
         <td>{workout.description}</td>
-        <td>
+        <td className='exCount'>
           <a
             onMouseOver={e => this.setState({tooltipOpen: true})}
             onMouseOut={e => this.setState({tooltipOpen: false})}>
             {workout.exercises.length}
           </a>
-          <div style={{display: tooltipOpen ? 'block' : 'none'}}>
-            {
-              workout.exercises.length > 0 ?
-              workout.exercises.map((e, i) => <div key={i}>{e.title}</div>) :
-              'No exercises available.'
-            }
+          <div className='exCountName' style={{display: tooltipOpen ? 'block' : 'none'}}>
+            <ul>
+              {
+                workout.exercises.length > 0 ?
+                workout.exercises.map((e, i) => <li key={i}>{i+1} - {e.title}</li>) :
+                'No exercises available.'
+              }
+            </ul>
           </div>
         </td>
         <td>

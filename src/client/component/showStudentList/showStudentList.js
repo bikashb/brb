@@ -47,7 +47,7 @@ export default class ShowStudentList extends Component {
 												<li>Age :<span>{student.age}</span></li>
 												<li>Weight : <span>{student.current_weight}</span></li>
 											</ul>
-											<div className="description1"><span>Description</span> :  Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ulLorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ul</div>
+											<div className="description1"><span>Health Status</span> :  Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ulLorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ul</div>
 											</div>
 										</div>
 									</blockquote>
@@ -76,14 +76,14 @@ export default class ShowStudentList extends Component {
 			 									e.preventDefault();
 			 									this.setState({searchText: ''});
 			 								}}>
-			 								 
+
 			 							</a>
 			 						</form>
 								</div>
 							</div>
 
 
-							 
+
 						</div> :
 						<div id="testDiv1">
 							 <div>
@@ -96,7 +96,7 @@ export default class ShowStudentList extends Component {
 			 									e.preventDefault();
 			 									this.setState({searchText: ''});
 			 								}}>
-			 								 
+
 			 							</a>
 			 						</form>
 								</div>

@@ -137,10 +137,11 @@ export default class WorkoutTab extends Component {
     let exerciseCopy = searchTextCreateWorkout.length ?
     this.props.AllExercises.filter(exercise =>
       exercise.title.toLowerCase()
-      .startsWith(searchTextCreateWorkout.toLowerCase()))
-      .sort((a, b) => exercises.indexOf(b.id) > -1)  :
-    [...(this.props.AllExercises.sort((a, b) => exercises.indexOf(b.id) > -1))];
-    
+      .startsWith(searchTextCreateWorkout.toLowerCase())) :
+    [...this.props.AllExercises];
+      //.sort((a, b) => exercises.indexOf(b.id) > -1)  :
+    //[...(this.props.AllExercises.sort((a, b) => exercises.indexOf(b.id) > -1))];
+
     return (
       <div className="col-md-12 col-lg-12 col-xs-12 createCourse create-workout">
         {

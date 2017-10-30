@@ -168,9 +168,10 @@ export default class CourseTab extends Component {
         let workoutCopy = searchTextCreatePlan.length ?
           this.props.AllWorkouts.filter(workout =>
             workout.title.toLowerCase()
-            .startsWith(searchTextCreatePlan.toLowerCase()))
-            .sort((a, b) => workouts.indexOf(b.id) > -1) :
-          [...(this.props.AllWorkouts.sort((a, b) => workouts.indexOf(b.id) > -1))];
+            .startsWith(searchTextCreatePlan.toLowerCase())) :
+          [...this.props.AllWorkouts];
+            //.sort((a, b) => workouts.indexOf(b.id) > -1) :
+          //[...(this.props.AllWorkouts.sort((a, b) => workouts.indexOf(b.id) > -1))];
 
     return (
       <div  className="col-md-12 col-lg-12 col-xs-12 createCourse create-plan">
@@ -263,7 +264,7 @@ export default class CourseTab extends Component {
                 </form>
               </div>
             </div>
-            <ul className="wrkoutulli_1">
+            <ul className="wrkoutulli_1 col-md-12 col-lg-12 col-xs-12 ">
               <CheckboxGroup
                   name="workouts"
                   value={this.state.workouts}

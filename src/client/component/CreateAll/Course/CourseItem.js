@@ -15,16 +15,16 @@ export default class CourseItem extends Component {
       <tr>
         <td>{course.title}</td>
         <td>{course.description}</td>
-        <td>
+        <td className='exCount'>
           <a
             onMouseOver={e => this.setState({tooltipOpen: true})}
             onMouseOut={e => this.setState({tooltipOpen: false})}>
             {course.workouts.length}
           </a>
-          <div style={{display: tooltipOpen? 'block' : 'none'}}>
+          <div  className='exCountName' style={{display: tooltipOpen? 'block' : 'none'}}>
             {
               course.workouts.length > 0 ?
-              course.workouts.map((w, i) => <div key={i}>{w.title}</div>) :
+              course.workouts.map((w, i) => <div key={i}>{i+1} - {w.title}</div>) :
               'No workouts available.'
             }
           </div>
