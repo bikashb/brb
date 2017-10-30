@@ -20,10 +20,10 @@ export default class CourseTab extends Component {
       currentCourse: {},
       currentIndex: -1,
       currentPageUpdatePlan:0,
-      offsetUpdatePlan:4,
+      offsetUpdatePlan:12,
       searchTextUpdatePlan:'',
       currentPageCreatePlan:0,
-      offsetCreatePlan:3,
+      offsetCreatePlan:12,
       searchTextCreatePlan:''
     };
     this.resetFields = this.resetFields.bind(this);
@@ -76,8 +76,8 @@ export default class CourseTab extends Component {
       currentCourse.title = this.state.title;
       currentCourse.description= this.state.description;
       // days are hard coded here -- need to be changed
-      // currentCourse.workouts = this.state.workouts.map(id => ({id: id, day: '2'}));
-      currentCourse.workouts = this.state.list;
+      currentCourse.workouts = this.state.workouts.map(id => ({id: id, day: '1'}));
+      // currentCourse.workouts = this.state.list;
       this.props.editCourse(currentCourse, currentIndex);
       this.resetFields();
     }
@@ -97,8 +97,7 @@ export default class CourseTab extends Component {
   }
 
   validationSuccess() {
-    let { list, title, description } = this.state;
-    console.log('list -- ', list);
+    let { workouts, title, description } = this.state;
     if (title === '') {
       this.setState({titleError: 'Please enter Title'});
       return false;
@@ -107,8 +106,8 @@ export default class CourseTab extends Component {
       this.setState({descriptionError: 'Please enter Description'});
       return false;
     }
-    if(list.length === 0) {
-      sweetalert('Ensure that you have selected atleast one workout with days marked.');
+    if(workouts.length === 0) {
+      sweetalert('Ensure that you have selected atleast one workout.');
       return false;
     }
     return true;
@@ -126,7 +125,7 @@ export default class CourseTab extends Component {
 
 	createCourse = (e) => {
 		e.preventDefault();
-		let { description, startDate, endDate, title, list } = this.state;
+		let { description, startDate, endDate, title, list, workouts } = this.state;
 		if(this.validationSuccess()) {
 			axios.post(APIs.CreatePlan,{
 		      "description": description,
@@ -135,7 +134,7 @@ export default class CourseTab extends Component {
           "start_date": startDate,
           "end_date": endDate,
           "duration": 4,
-		      "list": list /*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
+		      "list": workouts.map(id => ({id: id, day: '1'})) /*list:[{id: 14, day: 1}, {id: 21, day: 2}]*/
 		    })
 		    .then((response)=>{
           console.log('create course response: ', response);

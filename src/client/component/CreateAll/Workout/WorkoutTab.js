@@ -10,7 +10,7 @@ export default class WorkoutTab extends Component {
   constructor() {
     super();
     this.state = {
-      offsetCreateWorkout:3,
+      offsetCreateWorkout:12,
       currentPageCreateWorkout:0,
       searchTextCreateWorkout:'',
       mode: 'create',
@@ -21,7 +21,7 @@ export default class WorkoutTab extends Component {
       currentWorkout: {},
       currentIndex: -1,
       currentPageUpdateWorkout:0,
-      offsetUpdateWorkout:4,
+      offsetUpdateWorkout:12,
       searchTextUpdateWorkout:''
     };
     this.resetFields = this.resetFields.bind(this);

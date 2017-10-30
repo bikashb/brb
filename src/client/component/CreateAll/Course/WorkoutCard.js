@@ -27,7 +27,7 @@ export default class WorkoutCard extends Component {
 					&nbsp;&nbsp;
 					<CheckboxGroup
 						style={{
-							display: display ?'block' : 'none',
+							display: 'none',
 							backgroundColor: '#EEEEEE'
 						}}
 						value={this.state.days}

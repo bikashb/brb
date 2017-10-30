@@ -20,7 +20,7 @@ export default class ExerciseTab extends Component {
       currentExercise: {},
       currentIndex: -1,
       currentPageUpdateExercise:0,
-      offsetUpdateExercise:4,
+      offsetUpdateExercise:12,
       searchTextUpdateExercise:''
     };
     this.resetFields = this.resetFields.bind(this);
