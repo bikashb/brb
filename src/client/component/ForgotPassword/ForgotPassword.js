@@ -5,14 +5,13 @@ import axios from 'axios';
 import classNames from 'classnames';
 import APIs from '../template/constants.js';
 
-
 const styles={
   signupSvgStyle: {
     width:180,height:80,marginTop:10
   }
 }
 
-class forgotPassword extends Component {
+export default class ForgotPassword extends Component {
     constructor() {
         super();
         this.state = {
@@ -102,6 +101,3 @@ class forgotPassword extends Component {
     );
   }
 }
-
-
-export default withRouter(forgotPassword);

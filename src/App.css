@@ -1804,7 +1804,7 @@
      width: 30%;
      float: left;
      position: relative;
-     height: 210px;
+     /*height: 210px;*/
      border:#e0e3e3 1px solid;
      font-family: "HelveticaNeueLT Com 35 Th";
  }

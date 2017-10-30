@@ -4,17 +4,17 @@ import $ from 'jquery';
 import sweetalert from 'sweetalert';
 
 /* custom components */
-import Sidebar from '../sidebar/sidebar.js';
+import Sidebar from '../Sidebar/Sidebar.js';
 import CourseAndWorkoutTab from '../courseAndWorkoutTab/courseAndWorkoutTab.js'
 import ShowPlan from '../showPlan/showPlan.js';
-import Dashboard from '../dashboard/dashboard.js';
+import Dashboard from '../Dashboard/Dashboard.js';
 import ShowStudentList from '../showStudentList/showStudentList.js';
 import AssignedStudents from '../AssignedStudents/AssignedStudents';
 import CreateAll from '../CreateAll/CreateAll.js';
-import Footer from '../footer/footer.js';
+import Footer from '../Footer/Footer.js';
 import InstructorProfile from '../InstructorProfile/instructorprofile.js';
 import APIs from '../template/constants.js';
-import GroupMessage from '../GroupMessage/groupmessage.js';
+import GroupMessage from '../GroupMessage/GroupMessage.js';
 
 class  Home extends Component {
   constructor() {
@@ -271,126 +271,114 @@ class  Home extends Component {
     }
   }
 
-  checkboxChangeVideo=(e,value)=>{
-    console.log(e.target.value,value)
-    var array=this.state.selectedStudentsVideo;
-    var obj = {
-    'user_id':JSON.parse(e.target.value).user,
-    'exercise_id':value.id
-    };
-    array.push(obj);
-    this.setState({selectedStudentsVideo:array})
-    console.log(this.state.selectedStudentsVideo);
-  }
-
   render() {
     return (
-        <div>
-           <header className="navbar clearfix cus_Hgt" id="header">
-        <div className="container-fluid cus_Hgt">
-            <div className="navbar-brand">
-                <a href="index.html">
-                  <img src="images/resoltz-bright-log-text.png" alt=":: ReoltZ ::" className="img-responsive" />
-                </a>
-                <div id="sidebar-collapse" className="sidebar-collapse btn">
-                    <i className="fa fa-bars" data-icon1="fa fa-bars" data-icon2="fa fa-bars"></i>
-                </div>
-            </div>
-            <ul className="nav navbar-nav usrTop pull-right ">
-              <li className="dropdown user" id="header-user">
-                <a className="dropdown-toggle" data-toggle="dropdown">
-                  <span className="username">{localStorage.getItem("username")}  </span>
-                  <i className="fa fa-angle-down"></i>
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a data-toggle="modal" data-target="#myProfileModal"><i className="fa fa-user"></i> My Profile</a></li>
-                  <li><a href="/" onClick={this.logout}><i className="fa fa-power-off"></i> Log Out</a></li>
-                </ul>
-              </li>
-            </ul>
-        </div>
-    </header>
+      <div>
+        <header className="navbar clearfix cus_Hgt" id="header">
+          <div className="container-fluid cus_Hgt">
+              <div className="navbar-brand">
+                  <a href="index.html">
+                    <img src="images/resoltz-bright-log-text.png" alt=":: ReoltZ ::" className="img-responsive" />
+                  </a>
+                  <div id="sidebar-collapse" className="sidebar-collapse btn">
+                      <i className="fa fa-bars" data-icon1="fa fa-bars" data-icon2="fa fa-bars"></i>
+                  </div>
+              </div>
+              <ul className="nav navbar-nav usrTop pull-right ">
+                <li className="dropdown user" id="header-user">
+                  <a className="dropdown-toggle" data-toggle="dropdown">
+                    <span className="username">{localStorage.getItem("username")}  </span>
+                    <i className="fa fa-angle-down"></i>
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li><a data-toggle="modal" data-target="#myProfileModal"><i className="fa fa-user"></i> My Profile</a></li>
+                    <li><a href="/" onClick={this.logout}><i className="fa fa-power-off"></i> Log Out</a></li>
+                  </ul>
+                </li>
+              </ul>
+          </div>
+        </header>
     <section id="page" className="container-fluid">
         <Sidebar show={this.show}/>
         <div id="main-content">
-           <div className="row">
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 dash_img"><img src="images/dash_pic.png" alt="ResoltZ" />
-                  <div className="dash_img_txt">
-                    <h1>Lorem ipsum dol</h1>
-                    <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
-                    <ul>
-                      <li>pretium</li>
-                      <li>arcu</li>
-                      <li>massa</li>
-                    </ul>
-                  </div>
-                </div>
+         <div className="row">
+          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 dash_img"><img src="images/dash_pic.png" alt="ResoltZ" />
+            <div className="dash_img_txt">
+              <h1>Lorem ipsum dol</h1>
+              <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
+              <ul>
+                <li>pretium</li>
+                <li>arcu</li>
+                <li>massa</li>
+              </ul>
             </div>
-             <div className="row profilBlk" id="myProfile">
-                <div className="col-md-3">
-                    <div className="profil_align">
-                        <div className="userTitle">
-                            <h2>{localStorage.getItem("username")}</h2>
-                            <h3>Instructor</h3>
-                        </div>
-                        <div className="list-group">
-                            <img className="img-responsive"
-                              alt="Profile Picture"
-                              src={this.state.instructorDetails.imagePath} />
-                            <div className="list-group-item profile-details">
-                                <p><i className="fa fa-circle text-green"></i> Online</p>
-                                <p>{this.state.instructorDetails.description}</p>
-                            </div>
+          </div>
+         </div>
+         <div className="row profilBlk" id="myProfile">
+            <div className="col-md-3">
+                <div className="profil_align">
+                    <div className="userTitle">
+                        <h2>{localStorage.getItem("username")}</h2>
+                        <h3>Instructor</h3>
+                    </div>
+                    <div className="list-group">
+                        <img className="img-responsive"
+                          alt="Profile Picture"
+                          src={this.state.instructorDetails.imagePath} />
+                        <div className="list-group-item profile-details">
+                            <p><i className="fa fa-circle text-green"></i> Online</p>
+                            <p>{this.state.instructorDetails.description}</p>
                         </div>
                     </div>
                 </div>
-                <div className=" col-md-9">
-                  <Dashboard show={this.show} AllPlans={this.state.courses}/>
-                </div>
-                {this.state.showView?
-                    <div className="col-md-12" id="course-block">
-                      <CourseAndWorkoutTab />
-                            <div className="tab-content">
-                                <div className="tab-pane studentsTab" id="b">
-                                  <ShowStudentList AllStudents={this.state.allStudents} />
-                                  <div className="csv_mas">
-                                    <form className="csvClass">
-                                      <label>Upload CSV File</label>
-                                      <input id="myCsvfile" name="myCsvfile"
-                                        encType="multipart/form-data"  type="file"/>
-                                      <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
-                                    </form>
-                                    <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
-                                  </div>
-                                </div>
-                                <div className="tab-pane viewAssignedTab" id="c">
-                                  <AssignedStudents
-                                    courses={this.state.courses}
-                                    show={this.show}
-                                  />
-                                </div>
-                                <div className="tab-pane plansTab" id="d">
-                                  <ShowPlan
-                                      AllPlans={this.state.courses}
-                                      AllStudents={this.state.allStudents}
-                                  />
-                                </div>
-                                <div className="tab-pane creationTab" id="e">
-                                  <CreateAll
-                                    AllExercises={this.state.exercises}
-                                    AllWorkouts={this.state.workouts}
-                                    AllPlans={this.state.courses}
-                                    callAllExercises={this.getAllExercise}
-                                    callAllWorkouts={this.getAllWorkouts}
-                                    callAllPlans={this.getAllPlans}
-                                    editItem={this.updateItem.bind(this)}
-                                    deleteItem={this.deleteItem.bind(this)}
-                                  />
-                                </div>
-                            </div>
-                        </div>:null}
             </div>
+            <div className=" col-md-9">
+              <Dashboard show={this.show} AllPlans={this.state.courses}/>
+            </div>
+            {this.state.showView?
+                <div className="col-md-12" id="course-block">
+                  <CourseAndWorkoutTab />
+                        <div className="tab-content">
+                            <div className="tab-pane studentsTab" id="b">
+                              <ShowStudentList AllStudents={this.state.allStudents} />
+                              <div className="csv_mas">
+                                <form className="csvClass">
+                                  <label>Upload CSV File</label>
+                                  <input id="myCsvfile" name="myCsvfile"
+                                    encType="multipart/form-data"  type="file"/>
+                                  <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
+                                </form>
+                                <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
+                              </div>
+                            </div>
+                            <div className="tab-pane viewAssignedTab" id="c">
+                              <AssignedStudents
+                                courses={this.state.courses}
+                                show={this.show}
+                              />
+                            </div>
+                            <div className="tab-pane plansTab" id="d">
+                              <ShowPlan
+                                  AllPlans={this.state.courses}
+                                  AllStudents={this.state.allStudents}
+                              />
+                            </div>
+                            <div className="tab-pane creationTab" id="e">
+                              <CreateAll
+                                AllExercises={this.state.exercises}
+                                AllWorkouts={this.state.workouts}
+                                AllPlans={this.state.courses}
+                                callAllExercises={this.getAllExercise}
+                                callAllWorkouts={this.getAllWorkouts}
+                                callAllPlans={this.getAllPlans}
+                                editItem={this.updateItem.bind(this)}
+                                deleteItem={this.deleteItem.bind(this)}
+                              />
+                            </div>
+                        </div>
+                    </div>:null}
         </div>
+    </div>
     </section>
     <Footer />
     <div id="myProfileModal" className="modal fade" role="dialog">

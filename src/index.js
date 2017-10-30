@@ -6,7 +6,7 @@ import Switch from  'react-router-dom/Switch'
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 import Login from './client/component/Login/login.js';
-import forgotPassword from './client/component/forgotPassword/forgotpassword.js';
+import ForgotPassword from './client/component/ForgotPassword/ForgotPassword.js';
 import PasswordReset from './client/component/PasswordReset/passwordreset.js';
 import Signup from './client/component/Signup/signup.js';
 import Home from './client/component/Home/home.js';
@@ -20,7 +20,7 @@ ReactDOM.render (
 			<Route path='/signup' component={Signup} />
 			<Route exact path='/' component={Login} />
 			<Route path='/passwordreset' component={PasswordReset} />
-			<Route path='/forgotpassword' component={forgotPassword} />
+			<Route path='/forgotpassword' component={ForgotPassword} />
 			<Route path='/home' component={Home} />
 	  </Switch>
 	</HashRouter>,

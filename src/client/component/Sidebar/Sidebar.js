@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import $ from 'jquery';
 
-
-class Sidebar extends Component {
+export default class Sidebar extends Component {
 	constructor() {
 		super();
 		this.state = {
@@ -113,5 +111,3 @@ class Sidebar extends Component {
 		)
 	}
 }
-
-export default Sidebar;

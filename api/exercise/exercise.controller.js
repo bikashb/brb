@@ -90,4 +90,15 @@ controller.deleteexercise = function(req, res) {
   })
 }
 
+
+controller.getExerciseByexerciseId = function(req,res){
+  knex('exercise').where({"id":req.params.id}).select('*').then(function(data){
+    console.log(data);
+    res.status(201).send(data);
+  }).catch(function(err){
+    console.log(err);
+    res.status(500).send('no data');
+  });
+}
+
 exports =  module.exports =  controller;
