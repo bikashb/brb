@@ -6,4 +6,5 @@ router.get("/course/:id",userDetailsController.getByCourse);
 router.get("/:user_name",userDetailsController.getUserDetails);
 router.get("/profiledetails/:id",userDetailsController.userdetailsbyId);
 router.put("/updateprofile",userDetailsController.updateprofile);
+router.put("/updatepassword",userDetailsController.changepassword);
 exports = module.exports = router;

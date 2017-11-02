@@ -251,4 +251,20 @@ controller.deleteCourse = function(req, res) {
   })
 }
 
+
+
+controller.fetchCoursesByStdId = function(req,res){
+
+  let query = "select * from course, course_to_user where course_to_user.user_id = " +
+    req.params.id + " and course.id = course_to_user.course_id";
+  knex.raw(query).then(function(data) {
+    console.log(data.rows);
+    res.status(200).json(data.rows);
+  }).catch(function(err) {
+    console.log("getByStd Error: ", err);
+    res.status(204).json({message: "error"});
+  });
+}
+
+
 exports = module.exports = controller;

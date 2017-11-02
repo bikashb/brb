@@ -108,4 +108,29 @@ controller.getByCourse = function(req, res) {
   });
 }
 
+controller.changepassword = function(req,res) {
+  knex('user_detail').where({id:req.body.id}).select('password').then(function(value) {
+    console.log(value[0].password);
+
+    if(value[0].password==req.body.old_password)
+    {
+
+      knex('user_detail').where({id:req.body.id}).update({password:req.body.new_password}).then(function(val) {
+
+        res.status(200).json({message:"successfully updated"});
+      }).catch(function(err) {
+        console.log(err);
+        res.status(204).json({message:"no content"});
+      });
+    }
+  else{
+    console.log("l");
+    res.status(403).json({message:'wrong password'})
+  }
+  }).catch(function(err){
+   res.status(204).json({message:"no content"});
+  });
+
+}
+
 exports = module.exports = controller;
