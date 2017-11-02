@@ -5,7 +5,6 @@ import sweetalert from 'sweetalert';
 
 /* custom components */
 import Sidebar from '../Sidebar/Sidebar.js';
-import CourseAndWorkoutTab from '../courseAndWorkoutTab/courseAndWorkoutTab.js'
 import ShowPlan from '../showPlan/showPlan.js';
 import Dashboard from '../Dashboard/Dashboard.js';
 import ShowStudentList from '../showStudentList/showStudentList.js';
@@ -40,7 +39,7 @@ class  Home extends Component {
     };
   }
 
-  show = (e, value)=>{
+  show = (e, value) => {
     this.setState({showView: true});
       $(document).ready(function() {
         if($(value).offset()) {
@@ -87,7 +86,7 @@ class  Home extends Component {
     });
   }
 
-  getAllExercise=()=>{
+  getAllExercise = () => {
     axios.get(APIs.GetAllExercise+localStorage.getItem('id'))/*Get list of videos specific to instructor*/
     .then((response)=>{
       this.setState({exercises: response.data});
@@ -95,7 +94,7 @@ class  Home extends Component {
     });
   }
 
-  getAllPlans=()=>{
+  getAllPlans = () => {
      axios.get(APIs.GetAllPlans+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
       this.setState({courses: response.data.courses});
@@ -103,7 +102,7 @@ class  Home extends Component {
     });
   }
 
-  getAllWorkouts=()=>{
+  getAllWorkouts = () => {
     axios.get(APIs.GetAllWorkout+localStorage.getItem('id'))/*Get All the plans specific to instructor*/
     .then((response)=>{
       this.setState({workouts: response.data});
@@ -224,27 +223,24 @@ class  Home extends Component {
     }
   }
 
-  logout = ()=>/*Log out*/ {
+  logout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("id");
     this.props.history.push('/');
   }
 
-  userUnderExercise = (exercise)=>/*Get Student Details Under particular Exercise*/
-  {
+  userUnderExercise = (exercise) => {
     axios.get(APIs.GetStudentUnderExercise+exercise)
-    .then((response)=>{
-      console.log(response.data);
-      this.setState({studentUnderExercise:response.data});
-      console.log(this.state.studentUnderExercise);
+    .then((response) => {
+      this.setState({studentUnderExercise: response.data});
     });
   }
 
-  selectStudentChanged = (newStudent) =>{
-    this.setState({selectedStudent:newStudent})
+  selectStudentChanged = (newStudent) => {
+    this.setState({selectedStudent: newStudent});
   }
 
-  csvFile = (e) =>{
+  csvFile = (e) => {
     console.log('csv uploading...');
     e.preventDefault();
     var fileSelect = document.getElementById('myCsvfile');
@@ -268,6 +264,22 @@ class  Home extends Component {
       });
     } else {
       sweetalert("select any .csv file")
+    }
+  }
+
+  getCurrentMenuItem() {
+    let { currentMenuItem } = this.state;
+    switch(currentMenuItem) {
+      case 'cve':
+        return ;
+      case 'students':
+        return ;
+      case 'assign course':
+        return ;
+      case 'assigned students':
+        return ;
+      default:
+        return null;
     }
   }
 
@@ -298,23 +310,24 @@ class  Home extends Component {
               </ul>
           </div>
         </header>
-    <section id="page" className="container-fluid">
-        <Sidebar show={this.show}/>
-        <div id="main-content">
-         <div className="row">
-          <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 dash_img"><img src="images/dash_pic.png" alt="ResoltZ" />
-            <div className="dash_img_txt">
-              <h1>Lorem ipsum dol</h1>
-              <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
-              <ul>
-                <li>pretium</li>
-                <li>arcu</li>
-                <li>massa</li>
-              </ul>
+        <section id="page" className="container-fluid">
+          <Sidebar show={this.show}
+            changeCurrentMenuItem={menuItem => this.setState({currentMenuItem: menuItem})} />
+          <div id="main-content">
+          <div className="row">
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 dash_img"><img src="images/dash_pic.png" alt="ResoltZ" />
+              <div className="dash_img_txt">
+                <h1>Lorem ipsum dol</h1>
+                <h2>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequa</h2>
+                <ul>
+                  <li>pretium</li>
+                  <li>arcu</li>
+                  <li>massa</li>
+                </ul>
+              </div>
             </div>
           </div>
-         </div>
-         <div className="row profilBlk" id="myProfile">
+          <div className="row profilBlk" id="myProfile">
             <div className="col-md-3">
                 <div className="profil_align">
                     <div className="userTitle">
@@ -335,50 +348,84 @@ class  Home extends Component {
             <div className=" col-md-9">
               <Dashboard show={this.show} AllPlans={this.state.courses}/>
             </div>
-            {this.state.showView?
-                <div className="col-md-12" id="course-block">
-                  <CourseAndWorkoutTab />
-                        <div className="tab-content">
-                            <div className="tab-pane studentsTab" id="b">
-                              <ShowStudentList AllStudents={this.state.allStudents} />
-                              <div className="csv_mas">
-                                <form className="csvClass">
-                                  <label>Upload CSV File</label>
-                                  <input id="myCsvfile" name="myCsvfile"
-                                    encType="multipart/form-data"  type="file"/>
-                                  <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
-                                </form>
-                                <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
-                              </div>
-                            </div>
-                            <div className="tab-pane viewAssignedTab" id="c">
-                              <AssignedStudents
-                                courses={this.state.courses}
-                                show={this.show}
-                              />
-                            </div>
-                            <div className="tab-pane plansTab" id="d">
-                              <ShowPlan
-                                  AllPlans={this.state.courses}
-                                  AllStudents={this.state.allStudents}
-                              />
-                            </div>
-                            <div className="tab-pane creationTab" id="e">
-                              <CreateAll
-                                AllExercises={this.state.exercises}
-                                AllWorkouts={this.state.workouts}
-                                AllPlans={this.state.courses}
-                                callAllExercises={this.getAllExercise}
-                                callAllWorkouts={this.getAllWorkouts}
-                                callAllPlans={this.getAllPlans}
-                                editItem={this.updateItem.bind(this)}
-                                deleteItem={this.deleteItem.bind(this)}
-                              />
-                            </div>
-                        </div>
-                    </div>:null}
-        </div>
-    </div>
+            {
+              this.state.showView ?
+              <div className="col-md-12" id="course-block">
+                <div id="coursesAndWorkoutsTab">
+                  <div className="rgt_panel_heading">
+                    <h2>Courses &amp; Workouts</h2>
+                  </div>
+                  <div className="tabs-left">
+                    <ul className="nav nav-tabs">
+                      <li className="creationTab">
+                        <a href="#e" data-toggle="tab" className="create_tab"
+                          onClick={()=>this.setState({currentMenuItem: 'cve'})} >
+                          <span>Create / View / Edit</span>
+                        </a>
+                      </li>
+                      <li className="studentsTab">
+                        <a href="#b" data-toggle="tab" className="student_tab"
+                          onClick={()=>this.setState({currentMenuItem: 'students'})} >
+                          <span>Students</span>
+                        </a>
+                      </li>
+                      <li className="plansTab">
+                        <a href="#d" data-toggle="tab" className="plan_tab"
+                          onClick={()=>this.setState({currentMenuItem: 'assign course'})} >
+                          <span>Assign Course</span>
+                        </a>
+                      </li>
+                      <li className="viewAssignedTab">
+                        <a href="#c" data-toggle="tab" className="assigned_tab"
+                          onClick={()=>this.setState({currentMenuItem: 'assigned students'})} >
+                          <span>Assigned Students</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="tab-content">
+                  <div className="tab-pane studentsTab" id="b">
+                    <ShowStudentList AllStudents={this.state.allStudents} />
+                    <div className="csv_mas">
+                      <form className="csvClass">
+                        <label>Upload CSV File</label>
+                        <input id="myCsvfile" name="myCsvfile"
+                          encType="multipart/form-data"  type="file"/>
+                        <button className="btn btn-info" onClick={this.csvFile}>Upload CSV File</button>
+                      </form>
+                      <span>Lorem ipsum dolor sit amet, dignissim nibh, accumsan et vulputate consequat, a ultrices lectus. Pharetra odio, per mattis erat sed dolor, velit potenti, sit vestibulum orci volutpat sollicitudin curabitur nam, vivamus dolor.  </span>
+                    </div>
+                  </div>
+                  <div className="tab-pane viewAssignedTab" id="c">
+                    <AssignedStudents
+                      courses={this.state.courses}
+                      show={this.show}
+                    />
+                  </div>
+                  <div className="tab-pane plansTab" id="d">
+                    <ShowPlan
+                        AllPlans={this.state.courses}
+                        AllStudents={this.state.allStudents}
+                    />
+                  </div>
+                  <div className="tab-pane creationTab" id="e">
+                    <CreateAll
+                      AllExercises={this.state.exercises}
+                      AllWorkouts={this.state.workouts}
+                      AllPlans={this.state.courses}
+                      callAllExercises={this.getAllExercise}
+                      callAllWorkouts={this.getAllWorkouts}
+                      callAllPlans={this.getAllPlans}
+                      editItem={this.updateItem.bind(this)}
+                      deleteItem={this.deleteItem.bind(this)}
+                    />
+                  </div>
+                </div>
+              </div> : null
+            }
+          </div>
+      </div>
     </section>
     <Footer />
     <div id="myProfileModal" className="modal fade" role="dialog">

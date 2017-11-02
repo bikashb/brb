@@ -13,9 +13,9 @@ export default class AssignedStudents extends Component {
 			offsetAssignedStudents: 3,
 			currentPageAssignedStudents: 0,
 			searchTextAssignedStudents: ''
-
 		};
 		this.getStudentsUnderCourse = this.getStudentsUnderCourse.bind(this);
+		this.deleteStudentFromCourse = this.deleteStudentFromCourse.bind(this);
 	}
 
 	getStudentsUnderCourse(id) {
@@ -33,6 +33,16 @@ export default class AssignedStudents extends Component {
 		}
 	}
 
+	deleteStudentFromCourse(studentID, index) {
+		let { selectedCourseID, students } = this.state;
+		students.splice(index, 1);
+		this.setState({students: students});
+	}
+
+	openMessageModal() {
+		console.log('message student clicked');
+	}
+
 	render () {
 		const { students, offsetAssignedStudents, currentPageAssignedStudents, searchTextAssignedStudents } = this.state;
 		const { courses } = this.props;
@@ -44,27 +54,24 @@ export default class AssignedStudents extends Component {
 				.startsWith(searchTextAssignedStudents.toLowerCase())) :
 			[...courses];
 
-
 		return (
 			<div>
         {
 					courses.length ?
             <div>
 							<div>
-                 
                 <div className="naivga1a">
-					<form>
-							<input type="text" placeholder="name" value={searchTextAssignedStudents}
-								onChange={(e)=>this.setState({searchTextAssignedStudents: e.target.value})} />
-							<a className="glyphicon glyphicon-remove-circle"
-								onClick={(e)=> {
-									e.preventDefault();
-									this.setState({searchTextAssignedStudents: ''});
-								}}>
-								 
-							</a>
-						</form>
-				</div>
+									<form>
+										<input type="text" placeholder="name" value={searchTextAssignedStudents}
+											onChange={(e)=>this.setState({searchTextAssignedStudents: e.target.value})} />
+										<a className="glyphicon glyphicon-remove-circle"
+											onClick={(e)=> {
+											e.preventDefault();
+											this.setState({searchTextAssignedStudents: ''});
+										}}>
+										</a>
+									</form>
+								</div>
             	</div>
 							<div className="panel-group" id="accordion">
 	            	{
@@ -89,10 +96,11 @@ export default class AssignedStudents extends Component {
 			                        <thead>
 			                          <tr>
 			                            <th width="20%">Name</th>
-			                            <th width="15%">Age</th>
+			                            <th width="10%">Age</th>
 			                            <th width="20%">Weight</th>
 			                            <th width="25%">Email</th>
 			                            <th width="20%">Status</th>
+																	<th width="5%"></th>
 			                          </tr>
 			                        </thead>
 			                      </table>
@@ -104,10 +112,18 @@ export default class AssignedStudents extends Component {
 			                                <tbody>
 			                                  <tr className="success">
 			                                    <td width="20%">{student.first_name}</td>
-			                                    <td width="15%">{student.age}</td>
+			                                    <td width="10%">{student.age}</td>
 			                                    <td width="20%">{student.current_weight}</td>
 			                                    <td width="25%">{student.email}</td>
 			                                    <td width="20%"><a>View Details</a></td>
+																					<td width="5%">
+																						<a className="glyphicon glyphicon-pencil"
+																							onClick={this.openMessageModal.bind(this)}>
+																						</a>&nbsp; &nbsp;
+																						<a className="glyphicon glyphicon-remove-circle"
+																							onClick={(e)=>{this.deleteStudentFromCourse(student.id, j)}}>
+																						</a>
+																					</td>
 			                                  </tr>
 			                                </tbody>
 			                              </table>
