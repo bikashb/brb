@@ -1,5 +1,0 @@
-user_name,authentication_provider_id,password,first_name,last_name,short_name,email,status,cel_phone,age,current_weight,user_type,age
-bsmith0144,,,dinesh,Smith,Bobby Smith,bob.smith@myschool.edu,active,8128199,47,56,I,34
-google,,John,Rahul45,,john.doe@myschool.edu,active,deactive,324535,47,65,I,22
-psue01,7,,barik45lllll,Sue,,peggy.sue@myschool.edu,active,567677,47,70,I,19
-psue01,7,,lokesh,Sue,,peggy.sue@myschool.edu,active,567677,23,70,S,21
