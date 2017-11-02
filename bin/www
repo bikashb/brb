@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+
+app.listen(3000,function(err){
+
+if(!err){
+
+  console.log("server is listening at port :3000");
+}
+
+});

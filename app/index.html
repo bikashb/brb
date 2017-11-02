@@ -1,0 +1,23 @@
+<html>
+   <head>
+      <title>File Uploading Form</title>
+   </head>
+
+   <body>
+      <h3>File Upload:</h3>
+      Select a file to upload: <br />
+
+      <form action ="#" method = "POST"
+         enctype = "multipart/form-data">
+         <input type="file" name="myfile" size="50" id ="fileinput" />
+         <br />
+         <input type = "submit" value = "Upload File"  id="upload"/>
+      </form>
+
+   </body>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="scripts/azure-storage.common.js"></script>
+   <script src="scripts/azure-storage.blob.js"></script>
+   <script src ="/scripts/upload.js"></script>
+</html>
